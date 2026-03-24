@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>소옴크리에이티브 클래식코스 — 미리보기</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; }
+    /* 아임웹 시뮬레이션: 최대 너비 컨테이너 */
+    .imweb-wrap { max-width: 540px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="imweb-wrap">
+    <!-- 아임웹 코드 위젯 콘텐츠 시작 -->
+    <div id="landing-root"></div>
+    <!-- 아임웹 코드 위젯 콘텐츠 끝 -->
+  </div>
+  <script>
+    // classic-landing.html 내용을 fetch해서 삽입
+    fetch('./classic-landing.html')
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('landing-root').innerHTML = html;
+        // 삽입된 script 태그 재실행
+        document.getElementById('landing-root').querySelectorAll('script').forEach(function(old) {
+          var s = document.createElement('script');
+          s.textContent = old.textContent;
+          old.parentNode.replaceChild(s, old);
+        });
+      });
+  </script>
+</body>
+</html>

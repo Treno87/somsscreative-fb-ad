@@ -1,0 +1,731 @@
+<!doctype html>
+
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>솜스 크리에이티브 헤어 아카데미 - 클래식 코스 v3.0</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Raleway:wght@400;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brandLime: "#eefd95",
+              brandCyan: "#00B8FF",
+              brandCharcoal: "#1e1e1e",
+              brandBlack: "#0a0a0a",
+            },
+            fontFamily: {
+              sans: ["Noto Sans KR", "sans-serif"],
+              raleway: ["Raleway", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style data-purpose="custom-animations">
+      @keyframes pulse-soft {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+      .animate-pulse-soft {
+        animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .text-glow-lime {
+        text-shadow: 0 0 15px rgba(238, 253, 149, 0.4);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-brandBlack text-white font-sans antialiased overflow-x-hidden"
+  >
+    <!-- BEGIN: Notice Bar -->
+    <aside
+      class="bg-brandLime text-brandBlack py-2.5 px-4 font-bold text-center text-sm md:text-base sticky top-0 z-[100]"
+      data-purpose="urgent-notice"
+    >
+      <p>🚨 [긴급 모집] 클래식 코스 61기 정원 7명 중 2자리 남음 (3월 개강)</p>
+    </aside>
+    <!-- END: Notice Bar -->
+    <!-- BEGIN: Hero Section -->
+    <header
+      class="relative min-h-[90vh] flex flex-col items-center justify-center px-6 overflow-hidden pt-12"
+      data-purpose="hero"
+    >
+      <!-- Technical Background Decor -->
+      <div
+        class="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-20"
+      >
+        <div
+          class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-brandLime/0 via-brandLime/50 to-brandLime/0"
+        ></div>
+        <div class="absolute top-1/4 w-full h-px bg-brandLime/20"></div>
+        <div class="absolute top-1/2 w-full h-px bg-brandLime/10"></div>
+      </div>
+      <div class="container mx-auto max-w-5xl relative z-10 text-center">
+        <span
+          class="inline-block border border-brandLime text-brandLime px-4 py-1 rounded-full text-xs font-bold tracking-widest mb-6 font-raleway"
+          >SOMSSCREATIVE ACADEMY</span
+        >
+        <h1
+          class="text-4xl md:text-7xl font-black mb-8 leading-[1.2] break-keep"
+        >
+          배웠는데 왜 <br class="md:hidden" />커트실력은
+          <br class="hidden md:block" />
+          <span class="text-brandLime italic">제자리일까요?</span>
+        </h1>
+        <p
+          class="text-gray-400 text-lg md:text-2xl font-light mb-12 max-w-2xl mx-auto break-keep"
+        >
+          단순히 트렌드 '스타일'을 따라하는 것이 아닙니다. <br />
+          36년의 노하우가 담긴
+          <span class="text-white font-medium"
+            >커트의 설계 원리(Principles)</span
+          >를 마스터하세요.
+        </p>
+        <div
+          class="flex flex-col md:flex-row gap-4 justify-center items-center"
+        >
+          <a
+            class="w-full md:w-auto px-10 py-5 bg-brandLime text-brandBlack font-black text-xl rounded-sm hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(238,253,149,0.3)]"
+            href="#consult"
+          >
+            무료 상담 신청하기
+          </a>
+          <a
+            class="w-full md:w-auto px-10 py-5 bg-transparent border border-white/30 text-white font-bold text-xl rounded-sm hover:bg-white/10 transition-colors"
+            href="#curriculum"
+          >
+            커리큘럼 확인
+          </a>
+        </div>
+      </div>
+    </header>
+    <!-- END: Hero Section -->
+    <!-- BEGIN: Stats Bar -->
+    <section class="bg-brandLime py-12 relative" data-purpose="stats">
+      <div
+        class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-brandBlack"
+      >
+        <div class="text-center">
+          <div
+            class="text-xs font-bold tracking-tighter opacity-70 mb-1 font-raleway"
+          >
+            TRADITION
+          </div>
+          <div class="text-4xl font-black italic font-raleway leading-tight">
+            60기+
+          </div>
+          <p class="font-medium mt-1">수많은 디자이너 배출</p>
+        </div>
+        <div
+          class="text-center border-y md:border-y-0 md:border-x border-brandBlack/10 py-8 md:py-0"
+        >
+          <div
+            class="text-xs font-bold tracking-tighter opacity-70 mb-1 font-raleway"
+          >
+            EXPERIENCE
+          </div>
+          <div class="text-4xl font-black italic font-raleway leading-tight">
+            36년
+          </div>
+          <p class="font-medium mt-1">교육 노하우의 정수</p>
+        </div>
+        <div class="text-center">
+          <div
+            class="text-xs font-bold tracking-tighter opacity-70 mb-1 font-raleway"
+          >
+            LIMIT
+          </div>
+          <div class="text-4xl font-black italic font-raleway leading-tight">
+            7명 정원
+          </div>
+          <p class="font-medium mt-1">1:1 밀착 코칭 시스템</p>
+        </div>
+      </div>
+    </section>
+    <!-- END: Stats Bar -->
+    <!-- BEGIN: Problem Section -->
+    <section class="py-24 bg-brandCharcoal/50" data-purpose="pain-points">
+      <div class="container mx-auto px-6 max-w-4xl">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            커트 학원을 수십 번 다녀도 <br />실력이 늘지 않는 이유
+          </h2>
+          <div class="w-16 h-1 bg-brandCyan mx-auto"></div>
+        </div>
+        <div class="space-y-6">
+          <!-- Point 01 -->
+          <div
+            class="flex flex-col md:flex-row gap-6 p-8 bg-brandBlack rounded-xl border border-white/5 group hover:border-brandCyan/50 transition-colors"
+          >
+            <div
+              class="text-4xl font-black font-raleway text-brandCyan/50 group-hover:text-brandCyan transition-colors"
+            >
+              01
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-3">
+                형태의 모방에만 급급한 교육
+              </h3>
+              <p class="text-gray-400 leading-relaxed">
+                사진을 보고 따라하는 '카피' 위주의 교육은 새로운 스타일이 나올
+                때마다 다시 배워야 합니다. 근본적인 모발의 흐름과 뼈대를
+                이해하지 못했기 때문입니다.
+              </p>
+            </div>
+          </div>
+          <!-- Point 02 -->
+          <div
+            class="flex flex-col md:flex-row gap-6 p-8 bg-brandBlack rounded-xl border border-white/5 group hover:border-brandCyan/50 transition-colors"
+          >
+            <div
+              class="text-4xl font-black font-raleway text-brandCyan/50 group-hover:text-brandCyan transition-colors"
+            >
+              02
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-3">두상 구조에 대한 이해 부족</h3>
+              <p class="text-gray-400 leading-relaxed">
+                사람마다 다른 두상의 곡면과 골격의 고저차를 무시한 채 도해도를
+                그대로 적용하면, 결과물은 매번 어색해질 수밖에 없습니다.
+              </p>
+            </div>
+          </div>
+          <!-- Point 03 -->
+          <div
+            class="flex flex-col md:flex-row gap-6 p-8 bg-brandBlack rounded-xl border border-white/5 group hover:border-brandCyan/50 transition-colors"
+          >
+            <div
+              class="text-4xl font-black font-raleway text-brandCyan/50 group-hover:text-brandCyan transition-colors"
+            >
+              03
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-3">섹션과 각도의 불확실성</h3>
+              <p class="text-gray-400 leading-relaxed">
+                자신만의 확실한 기준이 없다 보니 손님 앞에서 머뭇거리게 됩니다.
+                1도 단위의 미세한 차이가 디자인의 퀄리티를 결정합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Problem Section -->
+    <!-- BEGIN: Resolution Callout -->
+    <section class="py-20 px-6">
+      <div class="container mx-auto max-w-4xl">
+        <div
+          class="relative p-8 md:p-16 border-2 border-brandLime bg-brandBlack text-center"
+        >
+          <div
+            class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brandBlack px-6 py-2 border-x border-brandLime font-bold text-brandLime"
+          >
+            THE SOLUTION
+          </div>
+          <h2
+            class="text-2xl md:text-3xl font-black mb-6 leading-tight italic break-keep"
+          >
+            "물고기를 잡아주는 것이 아니라, <br />바다를 읽고 낚시하는 법을
+            가르칩니다."
+          </h2>
+          <p class="text-gray-300 text-lg mb-8 break-keep">
+            솜스 클래식 v3.0은 단순 스타일 전수가 아닌,
+            <br class="hidden md:block" />
+            어떤 디자인이든 스스로 분석하고 창조할 수 있는
+            <br class="hidden md:block" />
+            <span
+              class="text-brandLime font-bold underline underline-offset-4 decoration-brandLime/50"
+              >커트의 설계학적 원리</span
+            >를 교육합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- END: Resolution Callout -->
+    <!-- BEGIN: Instructor Section -->
+    <section
+      class="py-24 bg-white text-brandBlack overflow-hidden"
+      data-purpose="instructor"
+    >
+      <div
+        class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16"
+      >
+        <div class="w-full md:w-1/2 relative">
+          <div class="aspect-[3/4] bg-gray-200 relative overflow-hidden group">
+            <img
+              alt="심일보 강사"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqo-X66joeNgC7biF0TBtTfodEkAEPQXUEfDOp6CuAunKMtEG1adGNnZcZgzFFMjHQrm6N4b2lfzD3HGw67EgMngatVyYqPxCTR681ww9NQ-vFQKNZAeoRr6wAQdB5Se1q5XKnfAcsLn-DqUtpTEsalZJZQCZBIBquzACLfLt6btCr6OllFc686lLnxT5EmYs6u4gP7b5yEFL6Uv-ghjXVrYTN-9lNPhwj08vkbCYRo72_o3l7VrjE7oda2wGzSqp1VR_X5V6Jbe0"
+            />
+            <div
+              class="absolute inset-0 border-[10px] border-brandLime/30 pointer-events-none"
+            ></div>
+          </div>
+        </div>
+        <div class="w-full md:w-1/2">
+          <span
+            class="text-brandCyan font-bold tracking-widest text-sm mb-4 block"
+            >MASTER INSTRUCTOR</span
+          >
+          <h2 class="text-4xl font-black mb-2">심일보 (Shim Il-bo)</h2>
+          <p class="text-xl font-medium mb-8 text-gray-500 italic">
+            36 Years of Hair Design Craftsmanship
+          </p>
+          <div class="space-y-6 mb-12">
+            <div class="border-l-4 border-brandLime pl-4">
+              <h4 class="font-bold text-lg mb-1">
+                솜스 크리에이티브 헤어 아카데미 원장
+              </h4>
+              <p class="text-gray-600">
+                대한민국 클래식 커트의 정수를 60기 넘게 전수
+              </p>
+            </div>
+            <div class="border-l-4 border-brandCyan pl-4">
+              <h4 class="font-bold text-lg mb-1">원리 중심 교육의 선구자</h4>
+              <p class="text-gray-600">
+                유행을 타지 않는 본질적인 테크닉 체계 확립
+              </p>
+            </div>
+          </div>
+          <blockquote
+            class="text-2xl font-bold leading-snug italic text-brandBlack/80 mb-8 break-keep"
+          >
+            "기술은 시간이 흐를수록 <br />단순해져야 하며, 깊어져야 합니다."
+          </blockquote>
+        </div>
+      </div>
+    </section>
+    <!-- END: Instructor Section -->
+    <!-- BEGIN: Curriculum -->
+    <section
+      class="py-24 bg-brandBlack"
+      data-purpose="curriculum"
+      id="curriculum"
+    >
+      <div class="container mx-auto px-6 max-w-5xl">
+        <div class="mb-16">
+          <h2
+            class="text-3xl md:text-5xl font-black mb-4 font-raleway tracking-tight"
+          >
+            CURRICULUM <span class="text-brandLime italic">8 WEEKS</span>
+          </h2>
+          <p class="text-gray-500 font-medium">
+            기초부터 고난도 테크닉까지, 당신의 기준을 재정립하는 8주
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Week 1-4 -->
+          <div class="space-y-4">
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandLime"
+            >
+              <span class="text-brandLime font-black font-raleway block mb-2"
+                >WEEK 01</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Fundamental: 가위질과 섹션의 원리
+              </h4>
+              <p class="text-gray-400 text-sm">
+                기본 파지법부터 미세한 각도 조절을 위한 신체 밸런스 트레이닝
+              </p>
+            </div>
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandLime"
+            >
+              <span class="text-brandLime font-black font-raleway block mb-2"
+                >WEEK 02</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Structure: One-Length 원리 분석
+              </h4>
+              <p class="text-gray-400 text-sm">
+                가장 기본적이지만 가장 어려운 수평과 형태의 완벽한 통제
+              </p>
+            </div>
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandLime"
+            >
+              <span class="text-brandLime font-black font-raleway block mb-2"
+                >WEEK 03</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Graduation: 볼륨의 재구조화
+              </h4>
+              <p class="text-gray-400 text-sm">
+                무게감을 이용한 형태 형성과 층의 조절 원리
+              </p>
+            </div>
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandLime"
+            >
+              <span class="text-brandLime font-black font-raleway block mb-2"
+                >WEEK 04</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Layer: 공기감과 율동감의 이해
+              </h4>
+              <p class="text-gray-400 text-sm">
+                두상의 흐름을 따라가는 상하 레이어 테크닉
+              </p>
+            </div>
+          </div>
+          <!-- Week 5-8 -->
+          <div class="space-y-4">
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandCyan"
+            >
+              <span class="text-brandCyan font-black font-raleway block mb-2"
+                >WEEK 05</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Combination: 복합 디자인 설계
+              </h4>
+              <p class="text-gray-400 text-sm">
+                두 가지 이상의 기술을 혼합하여 얼굴형을 보완하는 설계
+              </p>
+            </div>
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandCyan"
+            >
+              <span class="text-brandCyan font-black font-raleway block mb-2"
+                >WEEK 06</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Salon Work: 숏커트의 디테일
+              </h4>
+              <p class="text-gray-400 text-sm">
+                모서리 정리를 통한 세련된 숏 스타일 연출법
+              </p>
+            </div>
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandCyan"
+            >
+              <span class="text-brandCyan font-black font-raleway block mb-2"
+                >WEEK 07</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Texturizing: 질감 처리의 과학
+              </h4>
+              <p class="text-gray-400 text-sm">
+                모량을 줄이는 것이 아닌, 형태를 조각하는 틴닝 테크닉
+              </p>
+            </div>
+            <div
+              class="p-6 bg-brandCharcoal hover:bg-brandCharcoal/80 transition-colors border-l-4 border-brandCyan"
+            >
+              <span class="text-brandCyan font-black font-raleway block mb-2"
+                >WEEK 08</span
+              >
+              <h4 class="text-xl font-bold mb-2">
+                Final Master: 창작 디자인 &amp; 수료
+              </h4>
+              <p class="text-gray-400 text-sm">
+                스스로 도해도를 그리고 모델에게 구현하는 최종 프레젠테이션
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Curriculum -->
+    <!-- BEGIN: Testimonials -->
+    <section class="py-24 bg-white text-brandBlack" data-purpose="testimonials">
+      <div class="container mx-auto px-6">
+        <h2 class="text-center text-3xl font-black mb-16">
+          현장의 디자이너들이 증명합니다
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Review 1 -->
+          <div class="p-8 bg-gray-50 rounded-2xl relative">
+            <div
+              class="text-brandCyan text-5xl font-serif absolute top-4 left-4 opacity-20"
+            >
+              "
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-6 italic">
+              "10년 넘게 가위를 잡았지만 내가 뭘 하는지 모르겠다는 생각이 들 때
+              이 수업을 만났습니다. 이제는 사진만 봐도 도해도가 머릿속에
+              그려집니다."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+              <div>
+                <p class="font-bold text-sm">김OO 원장 (강남 살롱)</p>
+                <p class="text-xs text-gray-500">60기 수료생</p>
+              </div>
+            </div>
+          </div>
+          <!-- Review 2 -->
+          <div
+            class="p-8 bg-gray-50 rounded-2xl relative border-t-4 border-brandLime"
+          >
+            <div
+              class="text-brandCyan text-5xl font-serif absolute top-4 left-4 opacity-20"
+            >
+              "
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-6 italic">
+              "7명이라는 소수 정원이라서 정말 좋았어요. 원장님이 직접 제 손을
+              잡고 각도를 잡아주시니 교정이 안 될 수가 없더라고요. 커트 매출이
+              2배 올랐습니다."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+              <div>
+                <p class="font-bold text-sm">이OO 디자이너</p>
+                <p class="text-xs text-gray-500">58기 수료생</p>
+              </div>
+            </div>
+          </div>
+          <!-- Review 3 -->
+          <div class="p-8 bg-gray-50 rounded-2xl relative">
+            <div
+              class="text-brandCyan text-5xl font-serif absolute top-4 left-4 opacity-20"
+            >
+              "
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-6 italic">
+              "유명하다는 아카데미 다 다녀봤지만 여기가 진짜입니다. '왜' 그렇게
+              잘라야 하는지 설명해주는 곳은 이곳뿐이었습니다. 진작 올 걸
+              그랬어요."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+              <div>
+                <p class="font-bold text-sm">박OO 팀장</p>
+                <p class="text-xs text-gray-500">59기 수료생</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Testimonials -->
+    <!-- BEGIN: Pricing Section -->
+    <section class="py-24 bg-brandCharcoal" data-purpose="pricing">
+      <div class="container mx-auto px-6 max-w-3xl">
+        <div
+          class="bg-brandBlack border border-white/10 p-10 md:p-16 rounded-3xl shadow-2xl relative overflow-hidden"
+        >
+          <div
+            class="absolute top-0 right-0 bg-brandLime text-brandBlack px-8 py-2 font-black transform rotate-45 translate-x-8 translate-y-4"
+          >
+            HOT
+          </div>
+          <div class="text-center">
+            <h2 class="text-2xl font-bold mb-4">클래식 코스 v3.0 수강료</h2>
+            <div class="flex items-center justify-center gap-2 mb-8">
+              <span class="text-5xl font-black font-raleway">160</span>
+              <span class="text-2xl font-bold text-gray-400">만원</span>
+            </div>
+            <div class="space-y-4 text-left border-y border-white/10 py-8 mb-8">
+              <div class="flex justify-between">
+                <span class="text-gray-400">교육 기간</span>
+                <span class="font-bold">8주 (주 1회, 총 32시간)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">교육 시간</span>
+                <span class="font-bold">매주 화요일 10:00 - 14:00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">포함 내역</span>
+                <span class="font-bold">자체 교재 + 수료증 발급</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">정원</span>
+                <span class="font-bold text-brandLime">선착순 7명 한정</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 mb-8">
+              * 카드 무이자 할부 가능 / 현금 영수증 발행
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- END: Pricing Section -->
+    <!-- BEGIN: Consult Form -->
+    <section
+      class="py-24 bg-brandBlack"
+      data-purpose="consultation-form"
+      id="consult"
+    >
+      <div class="container mx-auto px-6 max-w-xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-black mb-4">무료 상담 및 신청</h2>
+          <p class="text-gray-400">
+            나의 현재 수준에 맞는 교육인지 먼저 확인해보세요.
+          </p>
+        </div>
+        <form class="space-y-6">
+          <div>
+            <label class="block text-sm font-bold mb-2 text-gray-300"
+              >이름</label
+            >
+            <input
+              class="w-full bg-brandCharcoal border-white/10 rounded-sm p-4 focus:border-brandLime focus:ring-1 focus:ring-brandLime"
+              placeholder="성함을 입력해주세요"
+              type="text"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-bold mb-2 text-gray-300"
+              >연락처</label
+            >
+            <input
+              class="w-full bg-brandCharcoal border-white/10 rounded-sm p-4 focus:border-brandLime focus:ring-1 focus:ring-brandLime"
+              placeholder="010-0000-0000"
+              type="tel"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-bold mb-2 text-gray-300"
+              >경력 및 고민사항</label
+            >
+            <textarea
+              class="w-full bg-brandCharcoal border-white/10 rounded-sm p-4 focus:border-brandLime focus:ring-1 focus:ring-brandLime"
+              placeholder="현재 가장 큰 고민은 무엇인가요?"
+              rows="4"
+            ></textarea>
+          </div>
+          <div class="flex items-start gap-3">
+            <input
+              class="mt-1 rounded border-white/20 bg-brandCharcoal text-brandLime focus:ring-brandLime"
+              id="privacy"
+              type="checkbox"
+            />
+            <label class="text-xs text-gray-400" for="privacy"
+              >개인정보 수집 및 이용에 동의합니다.</label
+            >
+          </div>
+          <button
+            class="w-full py-5 bg-brandLime text-brandBlack font-black text-xl rounded-sm hover:bg-white transition-colors"
+            type="submit"
+          >
+            상담 신청 완료
+          </button>
+        </form>
+      </div>
+    </section>
+    <!-- END: Consult Form -->
+    <!-- BEGIN: FAQ -->
+    <section class="py-24 bg-brandCharcoal/30" data-purpose="faq">
+      <div class="container mx-auto px-6 max-w-3xl">
+        <h2 class="text-2xl font-black mb-12 text-center font-raleway">
+          FREQUENTLY ASKED QUESTIONS
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-brandBlack border border-white/5 rounded-lg">
+            <summary
+              class="flex justify-between items-center p-6 cursor-pointer font-bold"
+            >
+              초보 디자이너도 들을 수 있나요?
+              <span class="group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 leading-relaxed">
+              네, 가능합니다. 오히려 잘못된 습관이 들기 전 기초를 확실히 잡는
+              것이 더 효율적입니다. 경력과 상관없이 '원리'에 목마른 분이라면
+              누구나 환영합니다.
+            </div>
+          </details>
+          <details class="group bg-brandBlack border border-white/5 rounded-lg">
+            <summary
+              class="flex justify-between items-center p-6 cursor-pointer font-bold"
+            >
+              결석하게 되면 보강이 가능한가요?
+              <span class="group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 leading-relaxed">
+              사전에 말씀해 주시면 다음 기수 해당 주차 수업에서 보강이
+              가능하거나, 별도의 요약 자료를 제공해 드립니다.
+            </div>
+          </details>
+          <details class="group bg-brandBlack border border-white/5 rounded-lg">
+            <summary
+              class="flex justify-between items-center p-6 cursor-pointer font-bold"
+            >
+              준비물은 무엇인가요?
+              <span class="group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 leading-relaxed">
+              개인 가위 세트, 빗, 가발(위그)이 필요합니다. 상세 품목은 등록 후
+              개별 안내해 드립니다.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+    <!-- END: FAQ -->
+    <!-- BEGIN: Final CTA -->
+    <section class="py-24 bg-brandLime text-brandBlack text-center px-6">
+      <div class="container mx-auto max-w-4xl">
+        <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
+          더 이상 <br class="md:hidden" />헤매지 마세요. <br />기준이 생기면
+          <br class="md:hidden" />자신감이 생깁니다.
+        </h2>
+        <p class="text-xl md:text-2xl font-medium mb-12 opacity-80">
+          당신의 성장은 솜스 크리에이티브에서 시작됩니다.
+        </p>
+        <a
+          class="inline-block px-12 py-6 bg-brandBlack text-brandLime font-black text-2xl rounded-sm hover:scale-105 transition-transform"
+          href="#consult"
+          >지금 바로 도전하기</a
+        >
+      </div>
+    </section>
+    <!-- END: Final CTA -->
+    <!-- BEGIN: Footer -->
+    <footer
+      class="py-12 bg-brandBlack border-t border-white/5 text-gray-600 text-sm"
+    >
+      <div
+        class="container mx-auto px-6 text-center md:text-left md:flex justify-between items-center"
+      >
+        <div>
+          <p class="font-bold text-gray-400 mb-2">
+            솜스 크리에이티브 헤어 아카데미 (Somsscreative)
+          </p>
+          <p>사업자 등록번호: 000-00-00000 | 대표: 심일보</p>
+          <p>주소: 서울특별시 OO구 OO로 000 0층</p>
+        </div>
+        <div class="mt-8 md:mt-0 font-raleway tracking-widest">
+          © 2024 SOMSSCREATIVE. ALL RIGHTS RESERVED.
+        </div>
+      </div>
+    </footer>
+    <!-- END: Footer -->
+    <!-- BEGIN: Sticky Footer CTA -->
+    <div
+      class="fixed bottom-0 left-0 w-full z-[90] p-4 pointer-events-none md:hidden"
+    >
+      <a
+        class="pointer-events-auto w-full py-4 bg-brandLime text-brandBlack font-black text-center block rounded-xl shadow-2xl animate-pulse-soft"
+        href="#consult"
+      >
+        2자리 남음! 상담 신청하기
+      </a>
+    </div>
+    <!-- END: Sticky Footer CTA -->
+  </body>
+</html>

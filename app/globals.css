@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #b8963e;
+  --color-gold-light: #d4af70;
+  --color-brand-black: #0a0a0a;
+  --color-dashboard-bg: #111111;
+  --color-warning: #f59e0b;
+  --color-critical: #ef4444;
+  --color-ok: #22c55e;
+}
+
+body {
+	background: #ffffff;
+	color: #0a0a0a;
+	font-family:
+		-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic",
+		"맑은 고딕", sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
