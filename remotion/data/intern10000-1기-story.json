@@ -1,0 +1,72 @@
+{
+	"id": "intern10000-1기-story",
+	"accent": "#fc1c49",
+	"music": "audio/fassounds-escape-your-love-upbeat-fashion-pop-dance-412230.mp3",
+	"scenes": [
+		{
+			"id": "s1-hook",
+			"kind": "hook",
+			"media": "images/intern10000/01-hook.png",
+			"brief": "가위를 든 인턴의 손 클로즈업 — 동작이 멈춘 듯 정적, 어두운 자연광",
+			"eyebrow": "인턴 · 초급 디자이너",
+			"headline": "영상 볼 땐 알겠는데\n손이 멈춥니다",
+			"body": "",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "pop", "unit": "word" },
+			"durationInSeconds": 3
+		},
+		{
+			"id": "s2-problem",
+			"kind": "problem",
+			"media": "images/intern10000/02-problem.png",
+			"brief": "어두운 살롱 작업 환경, 빈 의자와 도구 — 막막함이 느껴지는 톤",
+			"eyebrow": "왜 안 될까",
+			"headline": "어깨너머로 배운 기술은\n실력이 되지 않습니다",
+			"body": "선배 따라 외운 형태는 다른 두상에선 통하지 않습니다.",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "slide-left", "unit": "line" },
+			"durationInSeconds": 5
+		},
+		{
+			"id": "s3-turn",
+			"kind": "turn",
+			"media": "images/intern10000/03-turn.png",
+			"brief": "종이에 그린 커트 단면 도해도(LINE·GRADUATION·LAYER)와 마네킹",
+			"eyebrow": "인턴10000의 방식",
+			"headline": "형태가 아니라\n커트의 구조를 훈련합니다",
+			"body": "한 번 체득한 메커니즘은 어떤 디자인에도 응용됩니다.",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "blur-in", "unit": "word" },
+			"durationInSeconds": 5
+		},
+		{
+			"id": "s4-proof",
+			"kind": "proof",
+			"media": "images/intern10000/04-proof.mp4",
+			"brief": "심일보 강사가 도해도 앞에서 설명하는 모습, 자연광, 3/4 앵글",
+			"eyebrow": "심일보 · Head Instructor",
+			"headline": "런던 사순 강사코스 수료\n300명+ 배출",
+			"body": "사순 콘테스트 2위. 7명 소수정예로 강사가 직접 지도합니다.",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "fade-up", "unit": "line" },
+			"durationInSeconds": 6
+		},
+		{
+			"id": "s5-cta",
+			"kind": "cta",
+			"media": "images/intern10000/05-cta.mp4",
+			"brief": "7명 소수정예 수업 현장 — 작업 중인 손과 마네킹, 어둡게 톤다운",
+			"eyebrow": "1기 모집 중",
+			"headline": "14회차 42시간\n베이직을 완성합니다",
+			"body": "정원 7명 · 2026년 6월 개강.",
+			"cta": "무료 상담 신청",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "rise", "unit": "word" },
+			"durationInSeconds": 5
+		}
+	]
+}
