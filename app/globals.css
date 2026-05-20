@@ -8,13 +8,60 @@
   --color-warning: #f59e0b;
   --color-critical: #ef4444;
   --color-ok: #22c55e;
+
+  /* Serendale-inspired gradient palette */
+  --color-magenta: #ff3bff;
+  --color-electric: #5c24ff;
+  --color-rose: #ecbfbf;
+  --color-pink: #d94fd5;
+
+  --font-clash: var(--font-clash), "Pretendard", "Noto Sans KR", sans-serif;
+  --font-cabinet: var(--font-cabinet), "Pretendard", "Noto Sans KR", sans-serif;
+  --font-space: var(--font-space), "Pretendard", "Noto Sans KR", sans-serif;
 }
+
+/* Hero gradient text — Serendale signature */
+.text-hero-gradient {
+  background: linear-gradient(
+    90deg,
+    #ff3bff 0%,
+    #ecbfbf 38%,
+    #5c24ff 76%,
+    #d94fd5 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Outlined capsule CTA */
+.cta-capsule {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  padding: 0 32px;
+  border-radius: 100px;
+  border: 2px solid;
+  background: #000;
+  font-family: var(--font-space), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 0.01em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cta-capsule:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px -8px currentColor;
+}
+.cta-capsule-magenta { border-color: #ff3bff; }
+.cta-capsule-white { border-color: #fff; }
 
 body {
 	background: #ffffff;
 	color: #0a0a0a;
-	font-family:
-		-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic",
-		"맑은 고딕", sans-serif;
+	font-family: var(--font-cabinet), -apple-system, BlinkMacSystemFont,
+		"Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
