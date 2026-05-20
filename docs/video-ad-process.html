@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>페이스북 광고 동영상 생성 프로세스 — 소옴크리에이티브</title>
+<style>
+  :root {
+    --accent: #fc1c49;
+    --ink: #1c1c1e;
+    --muted: #6c6c72;
+    --line: #e6e6e9;
+    --bg: #ffffff;
+    --soft: #faf7f8;
+    --code-bg: #f5f5f6;
+    --dark: #141416;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard",
+      "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+  }
+  code, pre, .mono {
+    font-family: "SFMono-Regular", Consolas, "D2Coding", "Courier New", monospace;
+  }
+
+  /* ---- header ---- */
+  header {
+    background: var(--dark);
+    color: #fff;
+    padding: 56px 24px 48px;
+  }
+  .head-inner { max-width: 920px; margin: 0 auto; }
+  header .kicker {
+    font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 14px;
+  }
+  header h1 { font-size: 34px; margin: 0 0 14px; line-height: 1.25; }
+  header p { margin: 0; color: #b9b9c0; font-size: 16px; max-width: 660px; }
+  header .meta { margin-top: 22px; font-size: 13px; color: #76767e; }
+
+  /* ---- layout ---- */
+  main { max-width: 920px; margin: 0 auto; padding: 44px 24px 80px; }
+  section { margin: 0 0 52px; }
+  h2 {
+    font-size: 23px; margin: 48px 0 16px; padding-top: 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  h2 .num {
+    flex: none; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-size: 15px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  h3 { font-size: 17px; margin: 28px 0 10px; }
+  p { margin: 12px 0; }
+  a { color: var(--accent); }
+  ul, ol { padding-left: 22px; }
+  li { margin: 5px 0; }
+  strong { font-weight: 700; }
+  .lead { font-size: 16.5px; color: #38383c; }
+
+  /* ---- table of contents ---- */
+  .toc {
+    background: var(--soft); border: 1px solid var(--line);
+    border-radius: 12px; padding: 20px 26px; margin: 8px 0 8px;
+  }
+  .toc h4 { margin: 0 0 10px; font-size: 13px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); }
+  .toc ol { margin: 0; columns: 2; column-gap: 32px; }
+  .toc a { text-decoration: none; color: var(--ink); }
+  .toc a:hover { color: var(--accent); }
+
+  /* ---- tables ---- */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14.5px; }
+  th, td { text-align: left; padding: 10px 12px; border: 1px solid var(--line);
+    vertical-align: top; }
+  th { background: var(--soft); font-weight: 700; font-size: 13.5px; }
+  td code { white-space: nowrap; }
+
+  /* ---- code ---- */
+  pre {
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 18px; overflow-x: auto; font-size: 13px; line-height: 1.62;
+    margin: 14px 0;
+  }
+  code {
+    background: var(--code-bg); padding: 1.5px 5px; border-radius: 4px;
+    font-size: 90%;
+  }
+  pre code { background: none; padding: 0; font-size: 100%; }
+
+  /* ---- callouts ---- */
+  .box {
+    border: 1px solid var(--line); border-left: 4px solid var(--accent);
+    background: var(--soft); border-radius: 8px; padding: 14px 18px; margin: 16px 0;
+    font-size: 14.5px;
+  }
+  .box.warn { border-left-color: #e0941a; background: #fdf7ec; }
+  .box .label {
+    font-weight: 700; font-size: 12.5px; letter-spacing: .04em;
+    text-transform: uppercase; display: block; margin-bottom: 4px;
+  }
+  .box .label.a { color: var(--accent); }
+  .box.warn .label { color: #b9760a; }
+
+  /* ---- pipeline diagram ---- */
+  .pipe { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; margin: 20px 0; }
+  .pipe .step {
+    flex: 1 1 150px; border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 14px; text-align: center; background: #fff;
+  }
+  .pipe .step b { display: block; font-size: 14.5px; margin-bottom: 4px; }
+  .pipe .step span { font-size: 12.5px; color: var(--muted); }
+  .pipe .arrow {
+    flex: 0 0 26px; display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 20px; font-weight: 700;
+  }
+
+  /* ---- cheatsheet grid ---- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 14px; margin: 16px 0; }
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+    background: #fff; }
+  .card h4 { margin: 0 0 8px; font-size: 13px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); }
+  .card ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+  .card .mono { font-size: 12.5px; }
+
+  footer { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 22px;
+    color: var(--muted); font-size: 13px; }
+
+  .pill { display: inline-block; background: var(--dark); color: #fff;
+    font-size: 11.5px; padding: 2px 9px; border-radius: 999px; font-weight: 600;
+    letter-spacing: .03em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="kicker">소옴크리에이티브 · 제작 가이드</div>
+    <h1>페이스북 광고 동영상 생성 프로세스</h1>
+    <p>씬 구분 · 카피 · 이미지/영상 · 배경음악 · 텍스트 효과를 어떻게 지정해서
+       원하는 광고 영상을 만드는지에 대한 표준 프로세스.</p>
+    <div class="meta">기준일 2026-05-20 · 러닝 예시: intern10000 1기 스토리텔링 영상 ·
+       대상 시스템: <span class="mono">remotion/</span> (Remotion 4)</div>
+  </div>
+</header>
+
+<main>
+
+  <nav class="toc">
+    <h4>목차</h4>
+    <ol>
+      <li><a href="#overview">개요</a></li>
+      <li><a href="#flow">전체 흐름</a></li>
+      <li><a href="#s1">STEP 1 — 씬 구분</a></li>
+      <li><a href="#s2">STEP 2 — 씬별 카피·문구</a></li>
+      <li><a href="#s3">STEP 3 — 이미지·영상 자산</a></li>
+      <li><a href="#s4">STEP 4 — 배경음악</a></li>
+      <li><a href="#s5">STEP 5 — 텍스트 효과</a></li>
+      <li><a href="#s6">STEP 6 — 데이터 피드 작성</a></li>
+      <li><a href="#s7">STEP 7 — 생성·검수</a></li>
+      <li><a href="#cheat">치트시트</a></li>
+      <li><a href="#appendix">부록 — 자주 막히는 곳</a></li>
+    </ol>
+  </nav>
+
+  <!-- ================= 개요 ================= -->
+  <section id="overview">
+    <h2><span class="num">0</span>개요</h2>
+    <p class="lead">이 시스템은 <strong>코드로 광고 영상을 생성</strong>한다. 영상 편집기를
+      쓰지 않고, <strong>데이터 피드 JSON 파일 한 개</strong>로 영상 전체를 정의한다.</p>
+
+    <div class="pipe">
+      <div class="step"><b>입력</b><span>데이터 피드 JSON<br>+ 이미지·영상·음악</span></div>
+      <div class="arrow">→</div>
+      <div class="step"><b>Remotion 렌더</b><span>StorytellingAd 템플릿</span></div>
+      <div class="arrow">→</div>
+      <div class="step"><b>출력</b><span>9:16 MP4<br>릴스·스토리·피드용</span></div>
+    </div>
+
+    <p><strong>핵심 원리 — JSON이 곧 "영상 주문서"다.</strong>
+      <code>remotion/data/{course}-{기수}-story.json</code> 한 파일에 씬 순서·카피·자산
+      경로·텍스트 효과·음악이 모두 들어간다. 이 문서의 목적은 <em>그 주문서를 어떻게
+      채우는가</em>를 단계별로 설명하는 것이다.</p>
+
+    <div class="box">
+      <span class="label a">이 문서의 위치</span>
+      상위 워크플로우 <code>docs/PROCESS.md</code>의 <strong>Phase 5(광고 소재)</strong>는
+      정지 이미지 소재까지만 다룬다. 이 문서는 그 Phase 5를 <strong>"영상 소재"로 확장</strong>하는
+      가지다. 광고 기획(Phase 4 · <code>ad-proposal</code>)까지는 동일하게 진행한 뒤 이 문서로 들어온다.
+    </div>
+
+    <p>결과물 규격: <span class="pill">9:16 세로</span> <span class="pill">1080×1920</span>
+      <span class="pill">30fps</span> <span class="pill">~22초</span>
+      <span class="pill">H.264 MP4</span></p>
+  </section>
+
+  <!-- ================= 흐름 ================= -->
+  <section id="flow">
+    <h2><span class="num">1</span>전체 흐름</h2>
+    <p>영상 한 편은 다음 6단계로 만든다.</p>
+
+    <div class="pipe">
+      <div class="step"><b>① 광고 기획</b><span>ad-proposal 에이전트<br>앵글·카피</span></div>
+      <div class="arrow">→</div>
+      <div class="step"><b>② 씬 기획 문서</b><span>story-plan.md<br>검토·승인 · STEP 1~5</span></div>
+      <div class="arrow">→</div>
+      <div class="step"><b>③ 데이터 피드</b><span>story.json 변환<br>STEP 6</span></div>
+      <div class="arrow">→</div>
+      <div class="step"><b>④ 자산 준비</b><span>이미지·영상·음악<br>remotion/public/</span></div>
+      <div class="arrow">→</div>
+      <div class="step"><b>⑤ 렌더</b><span>npx remotion render</span></div>
+      <div class="arrow">→</div>
+      <div class="step"><b>⑥ 검수</b><span>Windows 플레이어<br>QA · STEP 7</span></div>
+    </div>
+
+    <div class="box">
+      <span class="label a">②가 핵심 검토 관문</span>
+      씬 흐름·카피·자산·효과를 사람이 읽을 수 있는 문서로 먼저 확정·승인한 뒤에야
+      ③ 데이터 피드(JSON) 변환으로 넘어간다. JSON을 바로 쓰지 않는 이유 — 중괄호·따옴표
+      사이에서는 "이 스토리가 설득력 있나"를 판단하기 어렵기 때문이다.
+    </div>
+
+    <p>③ 데이터 피드와 ④ 자산 준비는 순서가 바뀌어도 된다 — 자산이 아직 없어도 데이터 피드만
+      있으면 <strong>플레이스홀더로 렌더</strong>되어 구조를 먼저 확인할 수 있다(<a href="#s3">STEP 3</a> 참고).</p>
+  </section>
+
+  <!-- ================= STEP 1 씬 ================= -->
+  <section id="s1">
+    <h2><span class="num">2</span>STEP 1 — 씬 구분</h2>
+    <p>스토리텔링 광고는 <strong>여러 장면이 이어지는 내러티브</strong>다. 후킹 하나로
+      끝나지 않고, "스크롤을 멈추게 → 설득 → 행동"까지 데려간다. 표준은 <strong>5씬</strong>이며
+      각 씬은 <code>kind</code> 값을 가진다.</p>
+
+    <table>
+      <tr><th>kind</th><th>역할</th><th>권장 길이</th><th>intern10000 예시</th></tr>
+      <tr><td><code>hook</code></td><td>첫 3초 — 스크롤을 멈추게 하는 한 방. 고통·호기심.</td>
+        <td>3초</td><td>"영상 볼 땐 알겠는데 / 손이 멈춥니다"</td></tr>
+      <tr><td><code>problem</code></td><td>공감 확장 — 왜 그 문제가 생기는지.</td>
+        <td>5초</td><td>"어깨너머로 배운 기술은 / 실력이 되지 않습니다"</td></tr>
+      <tr><td><code>turn</code></td><td>전환 — 해결책·관점의 반전.</td>
+        <td>5초</td><td>"형태가 아니라 / 커트의 구조를 훈련합니다"</td></tr>
+      <tr><td><code>proof</code></td><td>증명 — 신뢰 근거(강사·실적·후기).</td>
+        <td>6초</td><td>"런던 사순 강사코스 수료 / 300명+ 배출"</td></tr>
+      <tr><td><code>cta</code></td><td>행동 유도 — 제안 + 버튼.</td>
+        <td>5초</td><td>"14회차 42시간 / 베이직을 완성합니다" + 버튼</td></tr>
+    </table>
+
+    <div class="box">
+      <span class="label a">길이 기준</span>
+      합계 ~24초, 장면 전환(0.5초씩 겹침)을 빼면 최종 <strong>~22초</strong>. 씬 수는
+      가변이지만 <strong>3~6씬</strong>을 권장 — 30초를 넘으면 이탈률이 급격히 오른다.
+      각 씬 길이는 <code>durationInSeconds</code>로 지정한다.
+    </div>
+
+    <h3>산출물 — 씬 기획 문서</h3>
+    <p>STEP 1의 씬 골격은 곧바로 JSON으로 가지 않는다. 먼저 사람이 검토할 수 있는
+      <strong>씬 기획 문서</strong>로 정리한다 —
+      <code>courses/{course}/campaigns/{기수}-story-plan.md</code>, 광고 제안서
+      <code>{기수}.md</code> 옆에 둔다. 양식은 <code>courses/_templates/story-plan.template.md</code>.</p>
+    <p>이 문서는 STEP 1의 씬 흐름 표로 시작해 STEP 2~5에서 카피·자산·음악·효과를 채워
+      완성된다. 두 부분으로 구성된다 — ① 한눈에 보는 <strong>씬 흐름 표</strong>
+      (<code>#·kind·헤드라인·길이·자산</code>)로 스토리 아크의 설득력을 판단하고,
+      ② <strong>씬별 상세</strong>에 씬마다 모든 필드를 적는다. 사람이 이 문서를
+      <strong>검토·승인</strong>한 뒤에야 STEP 6(JSON 변환)으로 넘어간다.</p>
+  </section>
+
+  <!-- ================= STEP 2 카피 ================= -->
+  <section id="s2">
+    <h2><span class="num">3</span>STEP 2 — 씬별 카피·문구</h2>
+    <p>각 씬에는 텍스트 <strong>4종</strong>이 들어간다. 헤드라인이 주인공이고 나머지는 보조다.</p>
+
+    <table>
+      <tr><th>필드</th><th>역할</th><th>길이 가이드</th><th>비고</th></tr>
+      <tr><td><code>eyebrow</code></td><td>헤드라인 위 작은 라벨 — 대상·맥락</td>
+        <td>10~15자</td><td>액센트 색, 대문자 처리</td></tr>
+      <tr><td><code>headline</code></td><td>씬의 핵심 메시지</td>
+        <td>2~3줄, <code>\n</code>으로 줄바꿈</td><td>가장 큰 텍스트. 한 씬 = 한 메시지</td></tr>
+      <tr><td><code>body</code></td><td>헤드라인 보조 한 줄</td>
+        <td>25~35자</td><td>후킹 씬은 보통 비움(<code>""</code>)</td></tr>
+      <tr><td><code>cta</code></td><td>CTA 캡슐 버튼 문구</td>
+        <td>~10자</td><td><code>kind:"cta"</code> 씬에서만. 그 외엔 <code>""</code></td></tr>
+    </table>
+
+    <h3>누가 쓰나</h3>
+    <p>카피는 <code>ad-proposal</code> 에이전트가 코스의 <code>content.md</code>·
+      <code>brand-context.md</code>를 근거로 생성한다(앵글·헤드라인·CTA). 영상용으로는 그
+      카피를 <strong>짧게 압축</strong>해 데이터 피드에 옮긴다 — Meta 메인 텍스트(125자)는
+      영상 자막에 너무 길다. 직접 작성해도 되며, 브랜드 보이스(진지·직접적·수치 기반)를 따른다.</p>
+
+    <div class="box">
+      <span class="label a">예시 — intern10000 1기</span>
+      후킹 씬: <code>eyebrow</code> "인턴 · 초급 디자이너" / <code>headline</code>
+      "영상 볼 땐 알겠는데\n손이 멈춥니다" / <code>body</code> "" (후킹은 보조문 생략) /
+      <code>cta</code> "".
+    </div>
+  </section>
+
+  <!-- ================= STEP 3 자산 ================= -->
+  <section id="s3">
+    <h2><span class="num">4</span>STEP 3 — 이미지·영상 자산</h2>
+    <p>각 씬은 배경 자산 <strong>1개</strong>를 가진다 — 정지 이미지 또는 영상 클립.
+      두 필드로 지정한다.</p>
+
+    <table>
+      <tr><th>필드</th><th>내용</th></tr>
+      <tr><td><code>media</code></td><td>자산 파일 경로. 이미지(<code>.png</code>/<code>.jpg</code>)
+        또는 영상(<code>.mp4</code>/<code>.mov</code>/<code>.webm</code>). 비우면 플레이스홀더.</td></tr>
+      <tr><td><code>brief</code></td><td>자산 설명문. 이미지 미준비 시 플레이스홀더 패널에
+        표시되고, <code>image-prompt-brand</code> 에이전트의 입력으로 쓰인다.</td></tr>
+    </table>
+
+    <h3>규격</h3>
+    <ul>
+      <li><strong>비율 9:16 세로</strong> — 영상 출력은 1080×1920.</li>
+      <li><strong>이미지 해상도 ≥ 1300px 폭</strong> 권장(이상적 1620×2880). 이미지는 켄 번스
+        줌(최대 1.2배)으로 움직이므로, 1080×1920이면 줌 구간에서 흐려진다.</li>
+      <li><strong>영상 클립</strong>은 켄 번스를 적용하지 않는다 — 클립 자체 움직임을 사용.</li>
+    </ul>
+
+    <h3>저장 경로</h3>
+    <pre><code>remotion/public/images/{course}/01-hook.png
+remotion/public/images/{course}/04-proof.mp4   ← 영상도 같은 폴더</code></pre>
+    <p>데이터 피드의 <code>media</code>에는 <code>public/</code>을 뺀 경로를 적는다 —
+      예: <code>"images/intern10000/01-hook.png"</code>.</p>
+
+    <h3>자산 생성</h3>
+    <p><code>image-prompt-brand</code> 에이전트가 <code>brief</code>를 받아 도구별 프롬프트
+      (Midjourney·Sora·Canva)를 산출한다. 이미지는 Midjourney, 영상 클립은 Sora 등으로 생성하고,
+      강사 등 인물 컷은 <strong>실사 촬영</strong>을 우선한다.</p>
+
+    <div class="box">
+      <span class="label a">플레이스홀더 — 자산 없이 먼저 렌더</span>
+      <code>media</code>가 비어 있으면 그 씬은 <code>brief</code> 문구가 적힌 플레이스홀더
+      패널로 렌더된다. 덕분에 자산 준비 전에도 영상 구조·카피·타이밍을 먼저 확인할 수 있다.
+    </div>
+
+    <div class="box warn">
+      <span class="label">주의</span>
+      ① 영상 클립에 <strong>자체 텍스트·로고가 박혀</strong> 있으면 우리 텍스트와 충돌한다 —
+      깨끗한 클립을 쓸 것. ② 5개 자산의 <strong>밝기·색감 톤을 통일</strong>할 것 — 밝은 클립과
+      어두운 이미지가 섞이면 영상이 둘로 갈라져 보인다.
+    </div>
+  </section>
+
+  <!-- ================= STEP 4 음악 ================= -->
+  <section id="s4">
+    <h2><span class="num">5</span>STEP 4 — 배경음악</h2>
+    <p>최상위 <code>music</code> 필드에 음원 경로를 적는다. 비우면(<code>""</code>) 무음.</p>
+
+    <pre><code>remotion/public/audio/{트랙}.mp3      ← 음원 저장 위치
+"music": "audio/{트랙}.mp3"            ← 데이터 피드 필드</code></pre>
+
+    <ul>
+      <li><strong>자동 페이드</strong> — 앞 0.6초 페이드 인 / 끝 1.2초 페이드 아웃, 기본 볼륨 0.55.</li>
+      <li><strong>영상 클립 소리는 음소거</strong> 처리된다 — 배경음악만 들린다.</li>
+    </ul>
+
+    <div class="box warn">
+      <span class="label">라이선스 — 필수</span>
+      유료 광고이므로 <strong>저작권 있는 곡은 사용 불가</strong>. 로열티프리/라이선스 음원만:
+      YouTube 오디오 보관함, Pixabay Music(무료) / Artlist, Epidemic Sound(유료 구독).
+    </div>
+
+    <div class="box">
+      <span class="label a">톤 매칭</span>
+      음악 톤을 영상 내러티브 톤에 맞출 것. 진지·다큐멘터리적 내러티브에 경쾌한 댄스팝을
+      깔면 메시지와 부조화한다. 22초라 짧은 루프나 곡의 앞부분이면 충분하다.
+    </div>
+  </section>
+
+  <!-- ================= STEP 5 텍스트 효과 ================= -->
+  <section id="s5">
+    <h2><span class="num">6</span>STEP 5 — 텍스트 효과</h2>
+    <p>헤드라인은 씬마다 다른 <strong>진입 애니메이션</strong>으로 등장한다. 효과는
+      <em>프리셋</em>(어떻게)과 <em>단위</em>(무엇 단위로)의 조합으로 정한다.</p>
+
+    <h3>프리셋 8종</h3>
+    <table>
+      <tr><th>preset</th><th>동작</th></tr>
+      <tr><td><code>fade-up</code></td><td>아래에서 떠오르며 페이드인 (가장 기본)</td></tr>
+      <tr><td><code>fade-down</code></td><td>위에서 내려오며 페이드인</td></tr>
+      <tr><td><code>slide-left</code></td><td>오른쪽에서 미끄러져 들어옴</td></tr>
+      <tr><td><code>slide-right</code></td><td>왼쪽에서 미끄러져 들어옴</td></tr>
+      <tr><td><code>blur-in</code></td><td>흐릿하게 시작해 선명해짐</td></tr>
+      <tr><td><code>pop</code></td><td>작게 시작해 튕기듯 확대 — 활기찬 후킹에</td></tr>
+      <tr><td><code>rise</code></td><td>아래에서 크게 솟아오름 — 강한 마무리에</td></tr>
+      <tr><td><code>expand</code></td><td>자간이 좁았다 벌어지며 등장</td></tr>
+    </table>
+
+    <h3>적용 단위 3종</h3>
+    <table>
+      <tr><th>unit</th><th>동작</th></tr>
+      <tr><td><code>block</code></td><td>텍스트 통째로 한 번에</td></tr>
+      <tr><td><code>line</code></td><td>줄 단위로 순차 등장</td></tr>
+      <tr><td><code>word</code></td><td>단어 단위로 순차 등장 (가장 동적)</td></tr>
+    </table>
+
+    <p>씬별 지정: <code>"headlineAnim": { "preset": "pop", "unit": "word" }</code>.
+      씬마다 다른 조합을 쓰면 영상이 단조롭지 않다. eyebrow·body는 <code>fade-up</code>,
+      CTA 캡슐은 <code>pop</code>으로 자동 처리된다(요소별 시차 등장).</p>
+
+    <h3>텍스트 위치 — <code>textPosition</code></h3>
+    <table>
+      <tr><th>값</th><th>배치</th><th>언제</th></tr>
+      <tr><td><code>center</code></td><td>화면 세로 중앙</td><td>텍스트가 주인공인 강조형 (기본 권장)</td></tr>
+      <tr><td><code>bottom</code></td><td>화면 하단</td><td>이미지 피사체를 상단에 살리고 싶을 때</td></tr>
+    </table>
+
+    <div class="box">
+      <span class="label a">예시 배정 — intern10000 1기</span>
+      hook <code>pop·word</code> / problem <code>slide-left·line</code> /
+      turn <code>blur-in·word</code> / proof <code>fade-up·line</code> /
+      cta <code>rise·word</code> — 전 씬 <code>center</code>.
+    </div>
+  </section>
+
+  <!-- ================= STEP 6 데이터 피드 ================= -->
+  <section id="s6">
+    <h2><span class="num">7</span>STEP 6 — 데이터 피드 작성 <span style="font-size:14px;color:var(--muted);font-weight:400">(핵심)</span></h2>
+    <p class="lead"><strong>승인된 씬 기획 문서</strong>(<code>{기수}-story-plan.md</code>)를
+      기계가 읽는 JSON으로 옮긴다. 씬 기획 문서의 "씬별 상세" 블록 하나가 JSON 씬 객체
+      하나가 된다 — 1:1 변환이다.</p>
+    <p>이 단계에서 실제 자산 파일 경로(<code>media</code>)를 채운다(STEP 3에서 준비한 파일).
+      이 JSON이 영상의 완전한 명세 = <strong>주문서</strong>다.
+      위치: <code>remotion/data/{course}-{기수}-story.json</code></p>
+
+    <h3>최상위 구조</h3>
+    <table>
+      <tr><th>필드</th><th>설명</th></tr>
+      <tr><td><code>accent</code></td><td>강조색 HEX. 코스의 <code>design_token.css</code>에서 가져온다.</td></tr>
+      <tr><td><code>music</code></td><td>배경음악 경로. <code>""</code>이면 무음.</td></tr>
+      <tr><td><code>scenes</code></td><td>씬 객체 배열 (순서대로 재생).</td></tr>
+    </table>
+
+    <h3>씬(scene) 객체</h3>
+    <table>
+      <tr><th>필드</th><th>설명</th></tr>
+      <tr><td><code>id</code></td><td>씬 식별자 — 예 <code>"s1-hook"</code></td></tr>
+      <tr><td><code>kind</code></td><td><code>hook</code>·<code>problem</code>·<code>turn</code>·<code>proof</code>·<code>cta</code></td></tr>
+      <tr><td><code>media</code></td><td>배경 자산 경로 (이미지/영상). 비면 플레이스홀더.</td></tr>
+      <tr><td><code>brief</code></td><td>자산 설명문 (플레이스홀더 표시 + 프롬프트 입력용)</td></tr>
+      <tr><td><code>eyebrow</code></td><td>상단 작은 라벨</td></tr>
+      <tr><td><code>headline</code></td><td>메인 헤드라인 (<code>\n</code> 줄바꿈)</td></tr>
+      <tr><td><code>body</code></td><td>보조 한 줄 (없으면 <code>""</code>)</td></tr>
+      <tr><td><code>cta</code></td><td>CTA 버튼 문구 (cta 씬에서만, 그 외 <code>""</code>)</td></tr>
+      <tr><td><code>textPosition</code></td><td><code>"center"</code> 또는 <code>"bottom"</code></td></tr>
+      <tr><td><code>headlineAnim</code></td><td><code>{ "preset": ..., "unit": ... }</code></td></tr>
+      <tr><td><code>durationInSeconds</code></td><td>씬 길이(초)</td></tr>
+    </table>
+
+    <h3>예시 — <code>intern10000-1기-story.json</code> (씬 2개 발췌)</h3>
+    <pre><code>{
+  "id": "intern10000-1기-story",
+  "accent": "#fc1c49",
+  "music": "audio/fassounds-...-412230.mp3",
+  "scenes": [
+    {
+      "id": "s1-hook",
+      "kind": "hook",
+      "media": "images/intern10000/01-hook.png",
+      "brief": "가위를 든 인턴의 손 클로즈업 — 동작이 멈춘 듯 정적",
+      "eyebrow": "인턴 · 초급 디자이너",
+      "headline": "영상 볼 땐 알겠는데\n손이 멈춥니다",
+      "body": "",
+      "cta": "",
+      "textPosition": "center",
+      "headlineAnim": { "preset": "pop", "unit": "word" },
+      "durationInSeconds": 3
+    },
+    {
+      "id": "s5-cta",
+      "kind": "cta",
+      "media": "images/intern10000/05-cta.mp4",
+      "brief": "7명 소수정예 수업 현장 — 작업 중인 손과 마네킹",
+      "eyebrow": "1기 모집 중",
+      "headline": "14회차 42시간\n베이직을 완성합니다",
+      "body": "정원 7명 · 2026년 6월 개강.",
+      "cta": "무료 상담 신청",
+      "textPosition": "center",
+      "headlineAnim": { "preset": "rise", "unit": "word" },
+      "durationInSeconds": 5
+    }
+  ]
+}</code></pre>
+
+    <div class="box">
+      <span class="label a">한 줄 요약</span>
+      이 JSON을 정확히 채우면 영상이 그대로 나온다. "원하는 영상을 알려준다" = "이 파일을 채운다".
+    </div>
+  </section>
+
+  <!-- ================= STEP 7 생성 ================= -->
+  <section id="s7">
+    <h2><span class="num">8</span>STEP 7 — 생성·검수</h2>
+
+    <h3>렌더 명령</h3>
+    <pre><code># 최초 1회 — 의존성 설치
+npm install --prefix remotion
+
+# 영상 렌더 (remotion 폴더 기준)
+cd remotion
+npx remotion render StorytellingAd-9x16 \
+  out/intern10000-1기-story.mp4 \
+  --props=data/intern10000-1기-story.json</code></pre>
+    <p>출력 파일은 <code>remotion/out/</code>에 생성된다.</p>
+
+    <h3>미리보기 (스튜디오)</h3>
+    <pre><code>npm run dev --prefix remotion      # 브라우저에서 localhost:3000</code></pre>
+    <p>타임라인을 끌어 재생·정지하며 확인. props 패널에서 값을 바꿔 즉시 미리보기 가능.</p>
+
+    <h3>영상 보기</h3>
+    <p>WSL 환경이라면 <strong>Windows 플레이어</strong>로 열어야 소리가 난다 —
+      <code>explorer.exe</code>로 <code>remotion/out</code> 폴더를 열고 더블클릭.
+      VS Code 내장 미리보기는 오디오가 재생되지 않으니 검수용으로 쓰지 말 것.</p>
+
+    <h3>QA 체크리스트</h3>
+    <ul>
+      <li>씬별 이미지·영상이 의도대로 들어갔는가 (플레이스홀더 안 남았는가)</li>
+      <li>텍스트가 배경 위에서 읽히는가 (대비·그림자)</li>
+      <li>배경음악이 재생되고 톤이 맞는가</li>
+      <li>5개 자산의 밝기·색감 톤이 일관되는가</li>
+      <li>전체 길이가 적정한가 (~22초, 30초 이하)</li>
+      <li>9:16 세로로 출력됐는가</li>
+    </ul>
+  </section>
+
+  <!-- ================= 치트시트 ================= -->
+  <section id="cheat">
+    <h2><span class="num">9</span>치트시트</h2>
+    <div class="grid">
+      <div class="card">
+        <h4>씬 종류 (kind)</h4>
+        <ul><li>hook · 후킹</li><li>problem · 문제</li><li>turn · 전환</li>
+          <li>proof · 증명</li><li>cta · 행동 유도</li></ul>
+      </div>
+      <div class="card">
+        <h4>애니메이션 프리셋</h4>
+        <ul><li>fade-up / fade-down</li><li>slide-left / slide-right</li>
+          <li>blur-in / pop</li><li>rise / expand</li></ul>
+      </div>
+      <div class="card">
+        <h4>적용 단위 (unit)</h4>
+        <ul><li>block · 통째</li><li>line · 줄별</li><li>word · 단어별</li></ul>
+      </div>
+      <div class="card">
+        <h4>규격</h4>
+        <ul><li>9:16 · 1080×1920 · 30fps</li><li>이미지 ≥ 1300px 폭</li>
+          <li>음원: 로열티프리</li></ul>
+      </div>
+      <div class="card">
+        <h4>경로</h4>
+        <ul class="mono"><li>씬 기획: courses/{c}/campaigns/{기}-story-plan.md</li>
+          <li>데이터 피드: remotion/data/{c}-{기}-story.json</li>
+          <li>자산: remotion/public/images/{c}/ · audio/</li></ul>
+      </div>
+      <div class="card">
+        <h4>렌더 한 줄</h4>
+        <ul class="mono"><li>cd remotion</li>
+          <li>npx remotion render StorytellingAd-9x16 out/x.mp4 --props=data/x.json</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 부록 ================= -->
+  <section id="appendix">
+    <h2><span class="num">10</span>부록 — 자주 막히는 곳</h2>
+    <table>
+      <tr><th>증상</th><th>원인 · 대응</th></tr>
+      <tr><td>한글이 브랜드 폰트로 안 나옴</td>
+        <td>Clash·Cabinet·Space Grotesk는 라틴 전용 — 한글은 Pretendard로 자동 폴백된다.
+          정상 동작이며, 숫자·영문만 브랜드 폰트가 적용된다.</td></tr>
+      <tr><td>영상 클립 위에 엉뚱한 글자가 보임</td>
+        <td>클립에 자체 자막·로고가 박혀 있는 것 — 후처리로 못 지운다. 깨끗한 클립으로 교체.</td></tr>
+      <tr><td>한 씬만 유독 밝거나 어두움</td>
+        <td>자산 톤 불일치 — 생성 단계에서 5개 톤을 통일하거나 밝기·채도 보정.</td></tr>
+      <tr><td>이미지가 흐릿하게 나옴</td>
+        <td>켄 번스 줌(1.2배)에 비해 원본이 작음 — 폭 1300px 이상으로 업스케일.</td></tr>
+      <tr><td>긴 렌더가 폰트 오류로 중단</td>
+        <td>해결됨 — 폰트는 렌더를 막지 않는 방식으로 로드된다. 극초반 몇 프레임만 폴백 가능.</td></tr>
+      <tr><td>음악이 안 들림</td>
+        <td>대개 재생기 문제 — VS Code 미리보기는 오디오 미지원. Windows 플레이어로 열 것.</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    소옴크리에이티브 · 페이스북 광고 동영상 생성 프로세스 · 기준일 2026-05-20<br>
+    상위 워크플로우: <code>docs/PROCESS.md</code> · 대상 시스템: <code>remotion/</code>
+  </footer>
+
+</main>
+</body>
+</html>

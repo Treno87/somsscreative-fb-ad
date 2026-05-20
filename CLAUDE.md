@@ -19,13 +19,15 @@ app/                  → Next.js 라우팅
 └── layout.tsx        → 공통 Meta Pixel
 
 courses/              → 코스별 자료 (USP·콘텐츠·아임웹·광고 제안서)
-├── _templates/       → USP / content / campaigns 템플릿
+├── _templates/       → USP / content / campaigns / story-plan 템플릿
 └── {course}/
     ├── USP.md
     ├── content.md
     ├── visual-brief.md
     ├── imweb/
-    └── campaigns/{기수}.md
+    └── campaigns/
+        ├── {기수}.md            → Meta 광고 제안서
+        └── {기수}-story-plan.md  → 동영상 광고 씬 기획
 
 lib/dashboard/
 ├── analytics.ts      → KPI 계산, 인사이트 생성, A/B 감지
@@ -45,6 +47,7 @@ reference/imweb-samples/ → 아임웹 샘플 HTML·Pixel 가이드
 .claude/agents/       → Claude 서브에이전트 정의
 .claude/brand-context.md → 브랜드 컨텍스트
 docs/PROCESS.md       → 7단계 워크플로우 마스터 문서
+docs/video-ad-process.md → 광고 동영상 생성 프로세스 (Remotion · 영상 작업 시 반드시 참고)
 ```
 
 ---

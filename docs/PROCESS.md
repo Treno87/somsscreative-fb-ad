@@ -220,6 +220,12 @@ public/ads/{course}-{기수}/
 
 ✅ 통과 → Phase 6
 
+> **영상 소재가 필요할 때 →** Phase 5는 정지 이미지 소재까지만 다룬다. 릴스·스토리용
+> **동영상 광고**(씬 구분·카피·이미지/영상·배경음악·텍스트 효과)를 만들 때는
+> `docs/video-ad-process.md`(클로드 참고용) / `docs/video-ad-process.html`(사람용)을
+> 따른다 — Remotion `remotion/` 시스템으로 `data/{course}-{기수}-story.json` 한 파일에서
+> 영상을 생성한다.
+
 ---
 
 ## Phase 6 — Meta Ads Manager 캠페인 생성 (수동)
