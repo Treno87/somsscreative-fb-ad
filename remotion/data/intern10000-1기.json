@@ -1,0 +1,26 @@
+[
+	{
+		"id": "intern10000-1기-01-pain",
+		"angle": "고통 포인트",
+		"headline": "영상 볼 땐 알겠는데\n손이 멈춥니다",
+		"subheadline": "구조를 모르면 재현이 안 됩니다.",
+		"cta": "무료 상담 신청",
+		"accent": "#fc1c49"
+	},
+	{
+		"id": "intern10000-1기-02-instructor",
+		"angle": "강사 증명",
+		"headline": "런던 사순 강사코스 수료\n300명+ 배출한 강사",
+		"subheadline": "7명 소수정예, 강사가 직접 지도합니다.",
+		"cta": "상담 신청하기",
+		"accent": "#4685ff"
+	},
+	{
+		"id": "intern10000-1기-03-offer",
+		"angle": "직접 혜택",
+		"headline": "14회차\n7명 한정\n6월 개강",
+		"subheadline": "베이직을 42시간에 완성합니다.",
+		"cta": "지금 신청",
+		"accent": "#8e4cfa"
+	}
+]
