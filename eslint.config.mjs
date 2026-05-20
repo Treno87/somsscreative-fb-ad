@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Remotion 하위 프로젝트 — 독립 npm 프로젝트라 별도로 린트한다.
+    "remotion/**",
   ]),
 ]);
 

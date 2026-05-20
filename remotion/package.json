@@ -1,0 +1,24 @@
+{
+	"name": "somsscreative-remotion",
+	"version": "1.0.0",
+	"private": true,
+	"description": "소옴크리에이티브 광고 소재 영상 — Remotion 템플릿 (somsscreative-fb-ad 리포 내 독립 npm 프로젝트)",
+	"scripts": {
+		"dev": "remotion studio",
+		"render": "remotion render",
+		"render:all": "node scripts/render-all.mjs",
+		"typecheck": "tsc --noEmit",
+		"upgrade": "remotion upgrade"
+	},
+	"dependencies": {
+		"@remotion/cli": "4.0.463",
+		"react": "19.2.3",
+		"react-dom": "19.2.3",
+		"remotion": "4.0.463"
+	},
+	"devDependencies": {
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"typescript": "^5.7.0"
+	}
+}

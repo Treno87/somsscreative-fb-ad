@@ -1,0 +1,26 @@
+[
+	{
+		"id": "classic-01-pain",
+		"angle": "고통 포인트",
+		"headline": "3년을 배웠는데\n왜 안 될까요?",
+		"subheadline": "기술 암기로는 처음 보는 커트를 풀 수 없습니다.",
+		"cta": "무료 상담 신청",
+		"accent": "#ff3bff"
+	},
+	{
+		"id": "classic-02-result",
+		"angle": "결과",
+		"headline": "8주 후,\n처음 보는 커트도\n분석합니다",
+		"subheadline": "구조를 이해하면 재현이 됩니다.",
+		"cta": "수강 안내 받기",
+		"accent": "#5c24ff"
+	},
+	{
+		"id": "classic-03-proof",
+		"angle": "사회적 증명",
+		"headline": "단골 3명에서\n11명으로",
+		"subheadline": "수강 후 3개월, 한 수강생의 실제 변화입니다.",
+		"cta": "후기 더 보기",
+		"accent": "#d94fd5"
+	}
+]
