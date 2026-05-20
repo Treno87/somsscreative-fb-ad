@@ -10,7 +10,7 @@ Meta(릴스·피드·스토리) 광고 소재를 코드로 생성한다.
 npm install --prefix remotion          # 1회 설치
 npm run dev --prefix remotion          # 스튜디오 — 브라우저에서 타임라인 편집
 npm run render --prefix remotion -- KineticHeadlineAd-9x16 out/test.mp4
-npm run render:all --prefix remotion   # 데이터 피드 일괄 렌더
+npm run render:all --prefix remotion -- data/classic-58.json   # 데이터 피드 일괄 렌더 (생략 시 classic-ads.json)
 npm run typecheck --prefix remotion    # 타입 검사
 ```
 
