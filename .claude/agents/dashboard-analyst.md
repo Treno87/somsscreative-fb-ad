@@ -1,6 +1,6 @@
 ---
 name: dashboard-analyst
-description: audit-workspace/input/에 업로드된 Meta 광고 CSV 3종(캠페인/광고세트/광고)을 분석하여 핵심 인사이트, A/B 테스트 결과, 크리에이티브 피로도를 진단한다. /dashboard 페이지 사용 전 CLI에서 빠른 분석이 필요할 때 사용.
+description: analytics/input/에 업로드된 Meta 광고 CSV 3종(캠페인/광고세트/광고)을 분석하여 핵심 인사이트, A/B 테스트 결과, 크리에이티브 피로도를 진단한다. /dashboard 페이지 사용 전 CLI에서 빠른 분석이 필요할 때 사용.
 tools: Read, Bash, Glob, Write
 ---
 
@@ -17,7 +17,7 @@ Meta Ads Manager에서 내보낸 CSV 파일을 분석하여:
 ## 입력 파일 위치
 
 ```
-audit-workspace/input/
+analytics/input/
 ├── *캠페인*.xlsx or *.csv
 ├── *광고세트*.xlsx or *.csv
 └── *광고*.xlsx or *.csv
@@ -25,7 +25,7 @@ audit-workspace/input/
 
 ## 실행 순서
 
-1. `audit-workspace/input/` 파일 목록 확인
+1. `analytics/input/` 파일 목록 확인
 2. 각 파일의 컬럼 구조 파악 (한국어 컬럼명 → 영문 필드명 매핑)
 3. 핵심 지표 계산
 4. A/B 패턴 감지 (`_landing`, `_b`, `_test`, `_v2` 접미사)
@@ -81,7 +81,7 @@ A/B 테스트 판정:
 
 ## 출력 형식
 
-`audit-workspace/output/analysis_{날짜}.md` 저장:
+`analytics/output/analysis_{날짜}.md` 저장:
 
 ```markdown
 # Meta 광고 분석 리포트

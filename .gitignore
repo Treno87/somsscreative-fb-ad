@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (.env.example is committed; .env.local is not)
 .env*.local
 .env.local
+
+# claude code local settings (contains MCP tokens etc.)
+.claude/settings.local.json
 /playwright-report
 /test-results
 

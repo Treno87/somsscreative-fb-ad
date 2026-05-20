@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>대시보드 샘플 데이터 시드</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0a0a0a; color: #eee; padding: 40px; max-width: 720px; margin: auto; }
+    h1 { color: #d4a64a; }
+    pre { background: #1a1a1a; padding: 12px; border-radius: 6px; font-size: 13px; overflow-x: auto; }
+    button { background: #d4a64a; color: #000; border: 0; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    button:hover { background: #e0b558; }
+    .step { padding: 10px 0; }
+    .ok { color: #4ade80; }
+    .err { color: #ef4444; }
+    a { color: #d4a64a; }
+  </style>
+</head>
+<body>
+  <h1>대시보드 샘플 데이터 시드</h1>
+  <p>아래 버튼을 누르면 클래식코스 55기 3주차(W18~W20) 샘플 데이터가 localStorage에 저장되고 대시보드로 이동합니다.</p>
+  <button id="seedBtn">샘플 데이터 로드 → 대시보드로 이동</button>
+  <button id="clearBtn" style="background:#444; color:#eee; margin-left:8px;">데이터 비우기</button>
+  <div id="log" style="margin-top:20px;"></div>
+  <script>
+    const log = document.getElementById('log');
+    function line(msg, cls) {
+      const div = document.createElement('div');
+      div.className = 'step ' + (cls || '');
+      div.textContent = msg;
+      log.appendChild(div);
+    }
+    document.getElementById('seedBtn').onclick = async () => {
+      log.innerHTML = '';
+      try {
+        line('[1/4] /sample-dashboard.json 가져오는 중...');
+        const r = await fetch('/sample-dashboard.json');
+        line('[2/4] HTTP ' + r.status, r.ok ? 'ok' : 'err');
+        if (!r.ok) return;
+        const d = await r.json();
+        line('[3/4] weeks: ' + Object.keys(d.weeks).join(', '));
+        localStorage.setItem('somss_dashboard_v3', JSON.stringify(d));
+        const verify = JSON.parse(localStorage.getItem('somss_dashboard_v3'));
+        line('[4/4] 저장 확인 — version ' + verify.version + ', weeks ' + Object.keys(verify.weeks).length + '개', 'ok');
+        line('1.5초 후 /dashboard/overview 로 이동합니다...');
+        setTimeout(() => { location.href = '/dashboard/overview'; }, 1500);
+      } catch (e) {
+        line('오류: ' + e.message, 'err');
+      }
+    };
+    document.getElementById('clearBtn').onclick = () => {
+      localStorage.removeItem('somss_dashboard_v3');
+      log.innerHTML = '';
+      line('localStorage에서 데이터 제거 완료', 'ok');
+    };
+  </script>
+</body>
+</html>

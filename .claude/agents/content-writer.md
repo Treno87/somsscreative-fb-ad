@@ -1,6 +1,6 @@
 ---
 name: content-writer
-description: 소옴크리에이티브 랜딩페이지 콘텐츠 초안 작성. 코스명과 기수를 입력받아 .claude/product-marketing-context.md 기반으로 workflow/content/{course}_content.md를 생성한다. 새 코스 랜딩페이지 작업 시작 전 반드시 이 에이전트를 먼저 실행.
+description: 소옴크리에이티브 랜딩페이지 콘텐츠 초안 작성. 코스명과 기수를 입력받아 .claude/brand-context.md 기반으로 courses/{course}/content.md를 생성한다. 새 코스 랜딩페이지 작업 시작 전 반드시 이 에이전트를 먼저 실행.
 tools: Read, Write, Glob
 ---
 
@@ -12,14 +12,14 @@ tools: Read, Write, Glob
 
 ## 실행 전 필수 읽기
 
-1. `.claude/product-marketing-context.md` — 브랜드, 타겟, 페르소나, 경쟁사, 반론 대응
-2. `docs/courses/{course}_USP.md` — 과정별 카피 전략, 헤드라인 라이브러리, 후기 강화 버전
-3. 기존 콘텐츠 참고: `workflow/content/` 폴더의 기존 파일
+1. `.claude/brand-context.md` — 브랜드, 타겟, 페르소나, 경쟁사, 반론 대응
+2. `courses/{course}/USP.md` — 과정별 카피 전략, 헤드라인 라이브러리, 후기 강화 버전
+3. 기존 콘텐츠 참고: `courses/*/content.md` 기존 파일
 4. 기존 랜딩페이지 참고: `app/classic/page.tsx` (디자인 패턴)
 
 ## 출력 형식
 
-`workflow/content/{course}_content.md` 파일로 저장. 아래 섹션을 모두 포함:
+`courses/{course}/content.md` 파일로 저장. 아래 섹션을 모두 포함:
 
 ```markdown
 # {코스명} {기수} 랜딩페이지 콘텐츠
@@ -54,7 +54,7 @@ tools: Read, Write, Glob
 | 회차 | 주제 | 학습 목표 |
 
 ## 수강생 후기 섹션 (3개)
-> product-marketing-context.md의 실제 후기 활용. 이름·기수·직업 포함.
+> brand-context.md의 실제 후기 활용. 이름·기수·직업 포함.
 
 ## 수강 성과 섹션 (수치 기반)
 > 박성훈(54기) 케이스처럼 구체적 수치 포함
@@ -67,8 +67,22 @@ tools: Read, Write, Glob
 - 잔여 자리 표시:
 
 ## FAQ 섹션 (6~8개)
-> product-marketing-context.md의 Objections 섹션 참고
+> brand-context.md의 Objections 섹션 참고
 ```
+
+## CRO 체크리스트 (Phase 1 검토 게이트 통과 조건)
+
+출력 콘텐츠가 다음을 모두 만족해야 한다 — 미충족 시 자체 수정 후 저장:
+
+- [ ] Hero 헤드라인 **3개 변형** (USP.md의 헤드라인 ①②③ 매핑)
+- [ ] CTA 버튼 텍스트 **2종** (상담 / 등록)
+- [ ] 고통 포인트 **3~5개** — 페르소나 실제 언어
+- [ ] 후기 **3개** — 각각 수치 또는 외부 검증 포함
+- [ ] 희소성 요소 (잔여 자리·카운트다운 타겟 날짜) 명시
+- [ ] FAQ **6~8개** — brand-context.md의 Objections 모두 다룸
+- [ ] 금지 표현("최고", "최강", "이론" 단독) 없음
+- [ ] 어휘 다양화 — 같은 단락 내 동일 단어 2회 이상 없음
+- [ ] 강사 증명 포인트가 위쪽 섹션에 배치
 
 ## 작성 원칙
 
@@ -95,6 +109,6 @@ tools: Read, Write, Glob
 ## 완료 후
 
 작성 완료 시 사용자에게 다음을 알린다:
-- 저장 경로: `workflow/content/{course}_content.md`
+- 저장 경로: `courses/{course}/content.md`
 - 검토 요청 항목 (강사 소개, 실제 후기, 가격 등 확인 필요한 부분)
 - 다음 단계: `content-writer` 검토 완료 후 `landing-builder` 에이전트 실행

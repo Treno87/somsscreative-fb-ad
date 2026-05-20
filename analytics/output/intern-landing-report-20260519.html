@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>인턴10000 1기 랜딩페이지 진단 보고</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  @page :first { margin: 0; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans CJK KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #111;
+    line-height: 1.55;
+    font-size: 10.5pt;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- COVER ---------- */
+  .cover {
+    width: 210mm; height: 297mm;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a1f 55%, #1f0a2a 100%);
+    color: #fff;
+    padding: 30mm 22mm 24mm;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 30%, rgba(255,59,255,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 20% 75%, rgba(92,36,255,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cover-inner { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover .brand { font-size: 11pt; letter-spacing: 0.32em; color: rgba(255,255,255,0.55); text-transform: uppercase; }
+  .cover .tag { font-size: 10pt; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 14mm; }
+  .cover h1 {
+    font-size: 36pt; line-height: 1.15; margin: 0 0 8mm;
+    font-weight: 700; letter-spacing: -0.02em;
+  }
+  .cover .grad {
+    background: linear-gradient(90deg, #ff3bff 0%, #c270ff 50%, #5c24ff 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .cover .subtitle { font-size: 14pt; color: rgba(255,255,255,0.75); font-weight: 400; max-width: 130mm; line-height: 1.5; }
+  .cover .meta { font-size: 10pt; color: rgba(255,255,255,0.55); border-top: 1px solid rgba(255,255,255,0.15); padding-top: 6mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+  .cover .meta strong { display: block; color: rgba(255,255,255,0.4); font-size: 8pt; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2mm; font-weight: 500; }
+  .cover .meta span { color: #fff; font-size: 11pt; font-weight: 500; }
+
+  /* ---------- COMMON ---------- */
+  h2 {
+    font-size: 18pt; font-weight: 700; letter-spacing: -0.015em;
+    margin: 0 0 4mm; color: #111;
+    padding-bottom: 3mm;
+    border-bottom: 2px solid #111;
+  }
+  h2 .num {
+    display: inline-block; width: 26pt; color: #c8b3ff;
+    font-weight: 800;
+  }
+  h3 {
+    font-size: 12pt; font-weight: 700; margin: 8mm 0 2mm; color: #111;
+  }
+  h4 { font-size: 10.5pt; font-weight: 700; margin: 4mm 0 1.5mm; color: #111; }
+  p { margin: 0 0 2.5mm; }
+  small { font-size: 8.5pt; color: #666; }
+
+  .page { page-break-after: always; padding-top: 2mm; }
+  .page:last-of-type { page-break-after: auto; }
+
+  .pill {
+    display: inline-block; padding: 1pt 8pt; border-radius: 999pt;
+    font-size: 8.5pt; font-weight: 600; letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+  .pill-p0 { background: #fee2e2; color: #991b1b; }
+  .pill-p1 { background: #ffedd5; color: #9a3412; }
+  .pill-p2 { background: #fef9c3; color: #854d0e; }
+  .pill-ok { background: #dcfce7; color: #166534; }
+  .pill-neutral { background: #f3f4f6; color: #374151; }
+
+  .callout {
+    background: linear-gradient(135deg, #fdf2ff 0%, #f3ecff 100%);
+    border-left: 4pt solid #ff3bff;
+    padding: 5mm 6mm; margin: 5mm 0; border-radius: 0 6pt 6pt 0;
+  }
+  .callout p { margin: 0; font-size: 10.5pt; }
+  .callout strong { color: #5c24ff; }
+
+  .grid { display: grid; gap: 4mm; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+
+  .stat-card {
+    border: 1pt solid #e5e7eb; border-radius: 8pt; padding: 5mm;
+    background: #fff;
+  }
+  .stat-card .num {
+    font-size: 26pt; font-weight: 700; letter-spacing: -0.02em;
+    background: linear-gradient(90deg, #ff3bff, #5c24ff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    line-height: 1;
+  }
+  .stat-card .label { font-size: 9pt; color: #6b7280; margin-top: 2mm; letter-spacing: 0.05em; }
+  .stat-card .delta { font-size: 9pt; color: #dc2626; font-weight: 600; }
+
+  table { width: 100%; border-collapse: collapse; margin: 3mm 0; font-size: 9.5pt; }
+  th, td { padding: 2.5mm 3mm; text-align: left; vertical-align: top; }
+  thead { background: #111; color: #fff; }
+  thead th { font-weight: 600; font-size: 9pt; letter-spacing: 0.04em; text-transform: uppercase; }
+  tbody tr { border-bottom: 0.5pt solid #e5e7eb; }
+  tbody tr:nth-child(even) { background: #fafafa; }
+  td.num { font-variant-numeric: tabular-nums; }
+  td.center { text-align: center; }
+
+  /* Funnel bar viz */
+  .funnel { margin: 5mm 0; }
+  .funnel-row { display: grid; grid-template-columns: 14mm 1fr 24mm; align-items: center; gap: 3mm; font-size: 9pt; padding: 0.6mm 0; }
+  .funnel-row .pct { font-variant-numeric: tabular-nums; color: #6b7280; text-align: right; }
+  .funnel-row .bar { height: 5mm; background: #f3f4f6; border-radius: 2pt; position: relative; overflow: hidden; }
+  .funnel-row .bar > span {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, #ff3bff, #5c24ff);
+  }
+  .funnel-row .note { font-size: 8.5pt; color: #111; font-weight: 500; }
+  .funnel-row.alert .bar > span { background: linear-gradient(90deg, #dc2626, #991b1b); }
+  .funnel-row.alert .note { color: #991b1b; font-weight: 600; }
+  .funnel-row.peak .bar > span { background: linear-gradient(90deg, #16a34a, #166534); }
+  .funnel-row.peak .note { color: #166534; font-weight: 600; }
+  .funnel-row.zero .bar > span { background: repeating-linear-gradient(45deg, #d1d5db 0 3pt, #f3f4f6 3pt 6pt); }
+  .funnel-row.zero .note { color: #6b7280; }
+
+  .leak-card {
+    border: 1pt solid #e5e7eb; border-left: 4pt solid #dc2626;
+    border-radius: 0 8pt 8pt 0; padding: 5mm 6mm; margin: 4mm 0;
+    background: #fff;
+    page-break-inside: avoid;
+  }
+  .leak-card.sev-p1 { border-left-color: #ea580c; }
+  .leak-card.sev-p2 { border-left-color: #ca8a04; }
+  .leak-card h4 { margin: 0 0 2mm; display: flex; align-items: baseline; gap: 3mm; }
+  .leak-card .where { font-size: 9pt; color: #6b7280; font-weight: 500; }
+  .leak-card .diag { font-size: 10pt; color: #374151; margin-bottom: 2mm; }
+
+  .rec-card {
+    border: 1pt solid #e5e7eb; border-radius: 8pt; padding: 5mm 6mm; margin: 4mm 0;
+    background: #fff;
+    page-break-inside: avoid;
+  }
+  .rec-card h4 { margin: 0 0 2mm; display: flex; align-items: baseline; gap: 3mm; flex-wrap: wrap; }
+  .rec-card .change {
+    display: grid; grid-template-columns: 24mm 1fr; gap: 2mm 4mm;
+    margin: 3mm 0 1mm; font-size: 10pt;
+  }
+  .rec-card .change .lbl { font-size: 8.5pt; color: #6b7280; letter-spacing: 0.06em; text-transform: uppercase; padding-top: 1mm; }
+  .rec-card .change .before { color: #991b1b; }
+  .rec-card .change .after { color: #166534; font-weight: 500; }
+  .rec-card .change code, .quote {
+    display: block; padding: 2.5mm 4mm; background: #fafafa; border-radius: 4pt;
+    font-family: inherit; font-size: 10pt; line-height: 1.5;
+    border-left: 2pt solid #e5e7eb;
+    white-space: pre-wrap; word-break: keep-all;
+  }
+  .rec-card .change .before code { border-left-color: #dc2626; }
+  .rec-card .change .after code { border-left-color: #16a34a; }
+  .rec-card .why { font-size: 9pt; color: #6b7280; margin-top: 2mm; font-style: italic; }
+
+  ol.decisions { padding-left: 5mm; }
+  ol.decisions li { padding: 2mm 0; font-size: 10.5pt; }
+  ol.decisions li strong { display: block; font-weight: 600; color: #111; margin-bottom: 1mm; }
+  ol.decisions li span { color: #6b7280; font-size: 9.5pt; }
+
+  .footer {
+    position: running(footer);
+    font-size: 8pt; color: #9ca3af; text-align: center;
+    border-top: 0.5pt solid #e5e7eb; padding-top: 2mm;
+  }
+
+  ul.clean { list-style: none; padding: 0; margin: 2mm 0; }
+  ul.clean li { padding: 2mm 0; padding-left: 5mm; position: relative; font-size: 10pt; line-height: 1.6; }
+  ul.clean li::before {
+    content: ''; position: absolute; left: 0; top: 3.5mm;
+    width: 2.5mm; height: 2.5mm; border-radius: 50%;
+    background: linear-gradient(135deg, #ff3bff, #5c24ff);
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER ==================== -->
+<section class="cover">
+  <div class="cover-inner">
+    <div>
+      <div class="brand">SOMSS CREATIVE · 광고 운영 보고</div>
+      <div class="tag" style="margin-top: 90mm">CLARITY-BASED LANDING DIAGNOSIS</div>
+      <h1>
+        <span class="grad">인턴10000 1기</span><br>
+        랜딩페이지 진단 보고
+      </h1>
+      <p class="subtitle">
+        Microsoft Clarity 스크롤·체류 데이터로 본<br>
+        진입 이탈·결정 누수 지점 분석 및 개선 제안
+      </p>
+    </div>
+    <div class="meta">
+      <div><strong>분석 기간</strong><span>2026.05.15 — 05.19 (5일)</span></div>
+      <div><strong>표본</strong><span>페이지뷰 161건</span></div>
+      <div><strong>발행일</strong><span>2026.05.19</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PAGE 2: EXECUTIVE SUMMARY ==================== -->
+<section class="page">
+  <h2><span class="num">01</span>요약</h2>
+
+  <div class="callout">
+    <p>광고로 유입된 <strong>161명 중 23명(14%)만</strong> 페이지 끝까지 도달했습니다. 누수는 세 군데에서 발생합니다 — <strong>① Hero 즉시 이탈 -43%</strong>, <strong>② 가격 노출 직후 -40% 폭락</strong>, <strong>③ 후기·FAQ 구간 0초 체류</strong>. 강사 섹션의 ✓3약속 카피는 평균 <strong>83초 체류</strong>로 가장 강력한 결정 트리거로 작동 중입니다.</p>
+  </div>
+
+  <h3 style="margin-top:8mm">핵심 지표</h3>
+  <div class="grid grid-3" style="margin-top:3mm">
+    <div class="stat-card">
+      <div class="num">43%</div>
+      <div class="label">Hero 즉시 이탈률 (0→10%)</div>
+      <div class="delta">▼ 161명 → 92명</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">14%</div>
+      <div class="label">Final CTA 도달률</div>
+      <div class="delta">▼ 23명만 페이지 끝까지</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">83초</div>
+      <div class="label">최대 몰입 구간 평균 체류</div>
+      <div class="delta" style="color:#16a34a">강사 + ✓3약속 섹션</div>
+    </div>
+  </div>
+
+  <h3>핵심 결론</h3>
+  <ul class="clean">
+    <li>현재 랜딩의 카피·구조가 광고로 유입된 인턴 페르소나에게 첫 화면부터 매칭이 약합니다 — Hero 헤드라인 한 줄 교체로 가장 큰 누수 봉합 가능</li>
+    <li>가격이 페이지 끝에 단독 노출되며 분납·ROI 앵커가 없어 280만원 충격을 흡수하지 못합니다 — 위치 이동 + 가치 앵커 두 줄 추가로 -40% 폭락 완화 가능</li>
+    <li>후기 섹션이 익명 처리 + 자체 디스클레이머("페르소나 기반 후보 후기")로 인해 0초 스킵을 만들고 있습니다 — 클래식 검증 후기 차용 또는 갤러리 대체 결정 필요</li>
+    <li>강사 + ✓3약속 콜아웃이 결정 트리거로 강력하게 작동 중 — 향후 수정 시 절대 약화하지 않아야 함</li>
+  </ul>
+
+  <h3>권장 우선순위</h3>
+  <table>
+    <thead>
+      <tr><th style="width:18mm">우선순위</th><th>변경 항목</th><th style="width:30mm">예상 임팩트</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="pill pill-p0">P0 즉시</span></td><td>Hero 헤드라인 교체 + 광고 카피 통일</td><td class="num">이탈 43% → 30%</td></tr>
+      <tr><td><span class="pill pill-p0">P0 즉시</span></td><td>가격 카드 위치 이동 + 가치 앵커 추가</td><td class="num">CTA 도달 14% → 30%</td></tr>
+      <tr><td><span class="pill pill-p0">P0 즉시</span></td><td>폼 필드 5개 → 3개 축소</td><td class="num">제출률 +30~50%</td></tr>
+      <tr><td><span class="pill pill-p1">P1 1~2주</span></td><td>후기 섹션 재구성 (검증 후기 차용)</td><td>신뢰 회복</td></tr>
+      <tr><td><span class="pill pill-p1">P1 1~2주</span></td><td>커리큘럼 카드에 시각 변화 추가</td><td>중간 이탈 완화</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== PAGE 3: DATA OVERVIEW ==================== -->
+<section class="page">
+  <h2><span class="num">02</span>데이터 핵심 시그널</h2>
+
+  <p>스크롤 깊이별 도달자·평균 체류 시간을 페이지 섹션과 매핑하면 다음과 같은 패턴이 보입니다.</p>
+
+  <h3>섹션별 스크롤 깊이 매핑</h3>
+  <div class="funnel">
+    <div class="funnel-row alert">
+      <div class="pct">0–10%</div>
+      <div class="bar"><span style="width:57%"></span></div>
+      <div class="note">Hero · 161 → 92 (-43%)</div>
+    </div>
+    <div class="funnel-row">
+      <div class="pct">10–25%</div>
+      <div class="bar"><span style="width:52%"></span></div>
+      <div class="note">인트로 카피 · 84명 (체류 9초)</div>
+    </div>
+    <div class="funnel-row peak">
+      <div class="pct">25–35%</div>
+      <div class="bar"><span style="width:52%"></span></div>
+      <div class="note">Pain Points 3카드 · 평균 53–68초</div>
+    </div>
+    <div class="funnel-row peak">
+      <div class="pct">35–50%</div>
+      <div class="bar"><span style="width:50%"></span></div>
+      <div class="note">강사 + ✓3약속 · 최대 83초 (몰입 정점)</div>
+    </div>
+    <div class="funnel-row">
+      <div class="pct">50–65%</div>
+      <div class="bar"><span style="width:50%"></span></div>
+      <div class="note">Curriculum 5단계 · 28초 → 5초 추락</div>
+    </div>
+    <div class="funnel-row zero">
+      <div class="pct">65–85%</div>
+      <div class="bar"><span style="width:49%"></span></div>
+      <div class="note">후기·실전훈련·FAQ · 평균 체류 0초 (스킵 모드)</div>
+    </div>
+    <div class="funnel-row alert">
+      <div class="pct">85–90%</div>
+      <div class="bar"><span style="width:44%"></span></div>
+      <div class="note">가격 280만원 단독 노출 · 71 → 43 (-40%)</div>
+    </div>
+    <div class="funnel-row alert">
+      <div class="pct">90–100%</div>
+      <div class="bar"><span style="width:14%"></span></div>
+      <div class="note">폼 5필드 · 43 → 23 (-47%)</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:8mm">
+    <p><strong>해석.</strong> 광고 → 페이지 진입까지는 정상이지만, 첫 화면 한 번에 절반이 빠지고, 페이지 후반에서 또 한 번 절반이 빠집니다. 가운데 구간(25~50%)은 잘 작동하므로 <strong>'좋은 것은 유지하고, 누수만 봉합'</strong>이 본 보고의 기본 방향입니다.</p>
+  </div>
+
+  <h3 style="margin-top:8mm">광고 운영 측 KPI 추정</h3>
+  <table>
+    <thead>
+      <tr><th>지표</th><th>현재 값</th><th>해석</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>일평균 페이지뷰</td><td class="num">32 PV/일</td><td>Meta 광고 트래픽 기반 추정</td></tr>
+      <tr><td>10% 통과율</td><td class="num">57%</td><td>43%가 첫 화면에서 닫음</td></tr>
+      <tr><td>중간 몰입자 비율</td><td class="num">50%</td><td>80명이 페이지 중반까지 진지하게 읽음</td></tr>
+      <tr><td>가격 → 폼 도달률</td><td class="num">30%</td><td>가격 본 71명 중 43명만 폼까지</td></tr>
+      <tr><td>페이지 끝 도달률</td><td class="num">14%</td><td>23명 — 실제 폼 제출 수는 별도 측정 필요</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ==================== PAGE 4: DIAGNOSIS ==================== -->
+<section class="page">
+  <h2><span class="num">03</span>진단 — 어디서, 왜 빠지는가</h2>
+
+  <div class="leak-card">
+    <h4>1. Hero에서 43%가 즉시 이탈 <span class="pill pill-p0">P0</span></h4>
+    <div class="where">위치: 0–10% 스크롤 · 손실: 161 → 92명 (-69명)</div>
+    <p class="diag"><strong>원인.</strong> 현재 Hero 헤드라인 "<em>첫 단추를 잘못 끼우면 10년 뒤 반드시 후회합니다</em>"는 인턴 페르소나(승급 앞둔 인턴, 갓 승급한 초급 디자이너)에게 회피 동기를 자극합니다. 그러나 인턴이 즉시 떠올리는 자기 문제는 "10년 뒤"가 아니라 "<strong>다음 달 승급 시험</strong>" 또는 "<strong>고객 앞에서 떨리는 손</strong>"입니다. 광고에서 본 카피와 페이지 첫 화면 카피의 매칭 정합성이 떨어지면 0~10초 안에 닫힙니다.</p>
+  </div>
+
+  <div class="leak-card">
+    <h4>2. 가격 노출 직후 40% 폭락 <span class="pill pill-p0">P0</span></h4>
+    <div class="where">위치: 85–90% 스크롤 · 손실: 71 → 43명 (-28명)</div>
+    <p class="diag"><strong>원인.</strong> 280만원이라는 숫자가 페이지 거의 끝에서 단독으로 노출됩니다. <strong>분납·ROI·비교 앵커가 없어</strong> 가격 충격을 흡수하지 못합니다. 사실 USP·FAQ 문서에는 이미 "20% 선납 기수 확정 → 잔여는 개강 전까지" 분납 조건이 정리되어 있으나, 가격 카드에 노출되지 않고 있습니다.</p>
+  </div>
+
+  <div class="leak-card sev-p1">
+    <h4>3. 후기·FAQ 구간 평균 체류 0초 <span class="pill pill-p1">P1</span></h4>
+    <div class="where">위치: 65–85% 스크롤 · 80명 도달하지만 거의 읽지 않음</div>
+    <p class="diag"><strong>원인.</strong> 후기가 익명 처리(김○○, 이○○, 최○○) + "<em>※ 1기 모집 중 — 페르소나 기반 후보 후기</em>"라는 자체 디스클레이머가 노출되어 있습니다. 방문자는 한눈에 "검증된 후기가 아니다"라고 판단하고 스킵합니다. 광고 카피의 신뢰를 페이지가 스스로 깎고 있습니다.</p>
+  </div>
+
+  <div class="leak-card sev-p1">
+    <h4>4. 커리큘럼 후반 흥미 상실 <span class="pill pill-p1">P1</span></h4>
+    <div class="where">위치: 60–65% 스크롤 · 평균 체류 28초 → 5초로 추락</div>
+    <p class="diag"><strong>원인.</strong> Curriculum이 PHASE 1~5의 동일 텍스트 카드로 반복됩니다. 시각적 변화가 없어 후반부에서 "더 볼 게 없겠다"는 판단으로 빠른 스크롤로 전환됩니다. 도해도·결과물 이미지 1장씩만 추가해도 끝까지 읽힐 가능성이 높습니다.</p>
+  </div>
+
+  <div class="leak-card sev-p2">
+    <h4>5. 폼 마찰 — 폼 도달자의 47%가 이탈 <span class="pill pill-p2">P2</span></h4>
+    <div class="where">위치: 90–100% 스크롤 · 손실: 43 → 23명</div>
+    <p class="diag"><strong>원인.</strong> 현재 폼은 5개 필드(이름·연락처·E-mail·미용경력·과정명) + 별도 약관 체크박스를 요구합니다. 마지막 마찰 지점에서 결정 비용이 너무 높습니다. 이메일과 과정명은 회신 단계에서 받아도 충분합니다.</p>
+  </div>
+</section>
+
+<!-- ==================== PAGE 5-6: RECOMMENDATIONS ==================== -->
+<section class="page">
+  <h2><span class="num">04</span>개선 제안 — 즉시 실행 (P0)</h2>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p0">P0</span> 1. Hero 헤드라인 교체</h4>
+    <div class="change">
+      <div class="lbl">Before</div><div class="before"><code>첫 단추를 잘못 끼우면 10년 뒤 반드시 후회합니다</code></div>
+      <div class="lbl">After</div><div class="after"><code>어깨 너머로 배운 기술은 실력이 되지 않습니다</code></div>
+    </div>
+    <p class="why">근거: 인턴 페르소나 VoC의 핵심 어휘 "어깨너머" 직접 차용. 자기 문제로 즉시 인식. 동시에 메타 광고 헤드라인도 동일하게 통일해 광고-페이지 1:1 매칭.</p>
+  </div>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p0">P0</span> 2. Hero CTA 단일화</h4>
+    <div class="change">
+      <div class="lbl">Before</div><div class="before"><code>[ 바로 수강 신청하기 ]   [ 과정 상세 보기 ]</code></div>
+      <div class="lbl">After</div><div class="after"><code>[ 무료 상담 신청 ]   <small>('과정 자세히 보기'는 nav anchor로 축소)</small></code></div>
+    </div>
+    <p class="why">근거: 첫 화면에서 280만원 결정 강요는 무리. '무료 상담'이 인턴에게 자연 진입. 두 개 CTA의 선택 마비도 동시 해소.</p>
+  </div>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p0">P0</span> 3. 가격 카드에 가치 앵커 2줄 추가</h4>
+    <div class="change">
+      <div class="lbl">Before</div><div class="before"><code>2,800,000 원 (총 14회차 / 주 1회 3시간)</code></div>
+      <div class="lbl">After</div><div class="after"><code>2,800,000 원 (총 14회차 / 주 1회 3시간)
+20% 선납으로 1기 확정 · 잔여는 개강 전까지 분납
+단발성 워크숍 4~5회 비용으로 14회차 + 매주 300분 자가 훈련</code></div>
+    </div>
+    <p class="why">근거: 분납 옵션과 비교 앵커는 USP·FAQ 문서에 이미 있는 자산. 가격 충격 직후 -40% 폭락 흡수용. 가격 카드 안에 같은 시각 비중으로 노출이 핵심.</p>
+  </div>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p0">P0</span> 4. 가격 카드 위치 이동</h4>
+    <div class="change">
+      <div class="lbl">Before</div><div class="before"><code>페이지 끝(85~90% 스크롤) 단독 노출</code></div>
+      <div class="lbl">After</div><div class="after"><code>강사 + ✓3약속 콜아웃 직후(약 50% 스크롤) 배치</code></div>
+    </div>
+    <p class="why">근거: 35~50% 구간이 평균 체류 83초로 결정 트리거가 가장 강한 골든존. 그 직후에 가격을 노출해야 흡수력이 살아납니다.</p>
+  </div>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p0">P0</span> 5. 폼 필드 5개 → 3개로 축소</h4>
+    <div class="change">
+      <div class="lbl">Before</div><div class="before"><code>이름 · 핸드폰 · E-mail · 미용경력 · 과정명 (+ 약관 체크박스)</code></div>
+      <div class="lbl">After</div><div class="after"><code>이름 · 핸드폰 · 현재단계 (인턴/초급디자이너/경력자)
+약관은 인라인 fine print + 제출 = 동의 처리</code></div>
+    </div>
+    <p class="why">근거: E-mail·과정명은 회신 단계에서 수집 가능. 폼 도달 43명 중 23명만 끝까지 본 데이터는 폼 자체가 마지막 마찰임을 시사.</p>
+  </div>
+</section>
+
+<!-- ==================== PAGE 7: P1 / P2 ==================== -->
+<section class="page">
+  <h2><span class="num">05</span>개선 제안 — 다음 1~2주 (P1) / 여유 시 (P2)</h2>
+
+  <h3>P1 — 다음 1~2주</h3>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p1">P1</span> 6. 후기 섹션 재구성</h4>
+    <div class="change">
+      <div class="lbl">Before</div><div class="before"><code>익명 1기 후기 3개 + "※ 페르소나 기반 후보 후기" 디스클레이머</code></div>
+      <div class="lbl">After (A)</div><div class="after"><code>라벨: "클래식 60기 졸업생 인터뷰"
+검증 후기: 박성훈(54기) · 김지원(56기) · 53기 익명
+연결 카피: "인턴10000은 클래식 베이직을 14회차로 압축한 과정"</code></div>
+      <div class="lbl">After (B)</div><div class="after"><code>후기 섹션 삭제 후 강사 작업 도해도 / 졸업 작품 갤러리 3장</code></div>
+    </div>
+    <p class="why">사장님 결정 필요: (A) 클래식 후기 차용 / (B) 도해도 갤러리 대체 / (C) 보류. 어느 쪽이든 현재의 자체 디스클레이머 제거가 우선.</p>
+  </div>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p1">P1</span> 7. 커리큘럼 카드 시각 변화</h4>
+    <div class="change">
+      <div class="lbl">변경</div><div class="after"><code>각 PHASE 카드에 결과물 도해도/사진 1장씩 추가
+단계 카드 사이에 마이크로 카피 (예: "여기까지 마치면 사진 한 장으로 셰이프가 보입니다")</code></div>
+    </div>
+    <p class="why">근거: 60→65%에서 28초 → 5초 추락 = 시각 동일성으로 인한 흥미 상실. 이미지 한 장씩 추가만으로 후기·가격 구간까지 끌고 가는 힘이 생깁니다.</p>
+  </div>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p1">P1</span> 8. ✓3약속 콜아웃 위치 유지/강화</h4>
+    <p class="diag"><strong>유지 권장.</strong> 데이터상 평균 83초 체류로 최강 결정 트리거로 작동 중. P0-4 가격 위치 이동 시 <strong>반드시 가격 직전</strong>에 배치 유지. 어떤 수정에서도 약화하지 않을 것.</p>
+  </div>
+
+  <h3 style="margin-top:8mm">P2 — 여유 있을 때</h3>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p2">P2</span> 9. 카운트다운/희소성 정비</h4>
+    <p class="diag">개강일 미확정이라면 카운트다운보다 "<strong>1기 모집 마감 · 잔여 N자리</strong>" 정원 시각화가 신뢰 손상 없이 희소성 전달. 확정 후 카운트다운 복구.</p>
+  </div>
+
+  <div class="rec-card">
+    <h4><span class="pill pill-p2">P2</span> 10. 푸터 직전 개인정보처리방침 축소</h4>
+    <p class="diag">현재 90~100% 구간 0초 체류의 한 원인. 본문 전체 노출 대신 "<strong>처리방침 펼쳐보기</strong>" 토글 또는 별도 페이지 링크로 처리. 페이지 길이도 약 절반 단축.</p>
+  </div>
+</section>
+
+<!-- ==================== PAGE 8: KPI + DECISIONS + NEXT ==================== -->
+<section class="page">
+  <h2><span class="num">06</span>예상 임팩트와 검증 방법</h2>
+
+  <table>
+    <thead>
+      <tr><th>지표</th><th class="center">현재</th><th class="center">P0 적용 후 목표</th><th>측정 방법</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Hero 10% 통과율</td><td class="num center">57%</td><td class="num center">70% +</td><td>Clarity 스크롤</td></tr>
+      <tr><td>가격 → Final CTA 도달률</td><td class="num center">30%</td><td class="num center">50% +</td><td>Clarity 스크롤</td></tr>
+      <tr><td>폼 제출 수</td><td class="num center">실측 필요</td><td class="num center">+30~50%</td><td>이메일/CRM 카운트</td></tr>
+      <tr><td>Meta 광고 CPL</td><td class="num center">실측 필요</td><td class="num center">하향</td><td>광고 매니저 통계</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:3mm"><small>변경 적용 후 <strong>1~2주 동일 광고 트래픽 유지</strong>한 상태에서 Clarity 재측정 → 같은 깊이별 비교. 동시에 Clarity 레코딩 5건 직접 시청 권장 (10% 이탈자가 정확히 어디에서 닫는지 패턴 확인).</small></p>
+
+  <h2 style="margin-top:10mm"><span class="num">07</span>의사결정 필요 항목</h2>
+  <p>다음 5건은 실행 전 결정이 필요합니다.</p>
+
+  <ol class="decisions">
+    <li>
+      <strong>광고 헤드라인 카피 통일</strong>
+      <span>현재 메타 광고 헤드라인과 페이지 Hero의 매칭 상태 확인 후, 한 쪽을 다른 쪽에 맞춰 통일.</span>
+    </li>
+    <li>
+      <strong>후기 처리 방향 (A / B / C)</strong>
+      <span>(A) 클래식 60기 검증 후기 차용 / (B) 도해도·작품 갤러리 대체 / (C) 결정 보류.</span>
+    </li>
+    <li>
+      <strong>클래식 졸업생 후기 인용 동의</strong>
+      <span>박성훈·김지원 등 인턴 페이지 노출에 대한 본인 동의 재확인 (Option A 선택 시).</span>
+    </li>
+    <li>
+      <strong>1기 개강일</strong>
+      <span>확정 시 카운트다운 노출. 미확정 시 정원 시각화로 대체.</span>
+    </li>
+    <li>
+      <strong>폼 필드 축소 합의</strong>
+      <span>E-mail·과정명 제거에 대한 CRM/영업 측 동의 (회신 단계 수집으로 대체).</span>
+    </li>
+  </ol>
+
+  <h2 style="margin-top:10mm"><span class="num">08</span>다음 단계</h2>
+
+  <ol class="decisions">
+    <li>
+      <strong>1단계 — 이번 주</strong>
+      <span>의사결정 5건 정리 → P0 5건 iMweb 편집기에서 적용 (Hero 헤드라인·CTA·가격 카드·폼).</span>
+    </li>
+    <li>
+      <strong>2단계 — 다음 1~2주</strong>
+      <span>광고 운영 유지하며 Clarity 재측정. Clarity 레코딩 5건 직접 시청.</span>
+    </li>
+    <li>
+      <strong>3단계 — 후속</strong>
+      <span>P1 3건 (후기 재구성·커리큘럼 시각화) 적용. 이번 기수 마감 후 P2 항목 정비 및 다음 기수에 새 디자인 배포 검토.</span>
+    </li>
+  </ol>
+
+  <div class="callout" style="margin-top:8mm">
+    <p><strong>참고.</strong> 본 보고는 Clarity 스크롤·체류 데이터에만 기반합니다. Meta 광고 매니저의 CTR/CPL, 폼 제출 후 상담 전환율, Clarity 레코딩 패턴까지 함께 보면 진단의 해상도가 한 단계 더 올라갑니다.</p>
+  </div>
+
+  <p style="margin-top:14mm; font-size:8.5pt; color:#9ca3af; text-align:center; border-top: 0.5pt solid #e5e7eb; padding-top: 3mm;">
+    SOMSS CREATIVE 광고 운영 보고 · 2026.05.19 · 분석 대상: somsscreative.com/intern-landing
+  </p>
+</section>
+
+</body>
+</html>

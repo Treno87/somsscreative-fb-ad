@@ -1,6 +1,6 @@
 ---
 name: ad-proposal
-description: 랜딩페이지 콘텐츠와 기존 광고 성과 데이터를 바탕으로 Meta(Facebook/Instagram) 광고 제안서를 작성한다. workflow/campaigns/{course}_{기수}.md로 저장. landing-builder 완료 후 실행.
+description: 랜딩페이지 콘텐츠와 기존 광고 성과 데이터를 바탕으로 Meta(Facebook/Instagram) 광고 제안서를 작성한다. courses/{course}/campaigns/{기수}.md로 저장. landing-builder 완료 후 실행.
 tools: Read, Write, Glob
 ---
 
@@ -12,14 +12,14 @@ tools: Read, Write, Glob
 
 ## 실행 전 필수 읽기
 
-1. `workflow/content/{course}_content.md` — 타겟, 메시지, 후기
-2. `.claude/product-marketing-context.md` — 페르소나, 반론, VoC
-3. `audit-workspace/output/META-ADS-REPORT.md` (있을 경우) — 기존 성과 데이터 참고
-4. `audit-workspace/input/` — 최신 광고 데이터 CSV (있을 경우)
+1. `courses/{course}/content.md` — 타겟, 메시지, 후기
+2. `.claude/brand-context.md` — 페르소나, 반론, VoC
+3. `analytics/output/META-ADS-REPORT.md` (있을 경우) — 기존 성과 데이터 참고
+4. `analytics/input/` — 최신 광고 데이터 CSV (있을 경우)
 
 ## 출력 형식
 
-`workflow/campaigns/{course}_{기수}.md` 파일로 저장:
+`courses/{course}/campaigns/{기수}.md` 파일로 저장:
 
 ```markdown
 # {코스명} {기수} Meta 광고 제안서
@@ -130,6 +130,6 @@ utm_term={오디언스타입}
 
 ## 완료 후
 
-- 저장 경로 알림: `workflow/campaigns/{course}_{기수}.md`
+- 저장 경로 알림: `courses/{course}/campaigns/{기수}.md`
 - 검토 요청: 예산 규모, 기간, 오디언스 크기 확인
 - 다음 단계: 제안서 승인 후 Meta Ads Manager에서 캠페인 생성

@@ -43,7 +43,7 @@ npm run dev
 
 ## AI 진단 보고서
 
-CSV 파일을 `audit-workspace/input/`에 넣고 Claude에게 `"분석해줘"`라고 요청하면 `fb-ad-audit` 에이전트가 14개 항목을 평가한 보고서를 생성합니다.
+CSV 파일을 `analytics/input/`에 넣고 Claude에게 `"분석해줘"`라고 요청하면 `fb-ad-audit` 에이전트가 14개 항목을 평가한 보고서를 생성합니다.
 
 ---
 

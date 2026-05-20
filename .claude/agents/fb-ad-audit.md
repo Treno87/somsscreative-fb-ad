@@ -1,6 +1,6 @@
 ---
 name: fb-ad-audit
-description: Facebook/Meta 광고 데이터를 진단하여 대시보드용 AI 분석 보고서를 생성한다. audit-workspace/input/ CSV 파일을 읽어 14개 항목을 평가하고 report.json을 저장. "분석해줘" 요청 시 실행.
+description: Facebook/Meta 광고 데이터를 진단하여 대시보드용 AI 분석 보고서를 생성한다. analytics/input/ CSV 파일을 읽어 14개 항목을 평가하고 report.json을 저장. "분석해줘" 요청 시 실행.
 tools: Read, Bash, Glob, Write
 ---
 
@@ -12,7 +12,7 @@ Meta 광고 CSV 데이터를 분석하여 대시보드(`/dashboard/overview`)에
 
 ## 실행 전 필수 읽기
 
-1. `audit-workspace/input/` — 캠페인·광고세트·광고 CSV (또는 xlsx)
+1. `analytics/input/` — 캠페인·광고세트·광고 CSV (또는 xlsx)
 2. `lib/dashboard/types.ts` — `AuditReport` 타입 구조 확인 (출력 스키마 기준)
 
 ## 14개 진단 항목
@@ -50,7 +50,7 @@ grade: A(90+) / B(75+) / C(60+) / D(45+) / F(45미만)
 
 ## 출력: report.json
 
-`audit-workspace/output/report.json`에 저장. 반드시 `lib/dashboard/types.ts`의 `AuditReport` 타입을 준수:
+`analytics/output/report.json`에 저장. 반드시 `lib/dashboard/types.ts`의 `AuditReport` 타입을 준수:
 
 ```json
 {
@@ -95,6 +95,6 @@ grade: A(90+) / B(75+) / C(60+) / D(45+) / F(45미만)
 
 ## 완료 후
 
-1. `audit-workspace/output/report.json` 저장
+1. `analytics/output/report.json` 저장
 2. healthScore + grade + 상위 3개 critical 항목 요약 출력
 3. "대시보드에서 확인하려면 `/dashboard/overview` 로 이동하세요" 안내

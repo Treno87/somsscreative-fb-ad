@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-05-16T07:05:24.156Z",
+  "period": "2026-04-27 ~ 2026-05-17",
+  "healthScore": 68,
+  "grade": "C",
+  "summary": "클래식 55기 캠페인은 리드 확보는 진행 중이나, 3주차에 들어 CTR 27% 하락·CPL 45% 상승의 피로도 신호가 명확합니다. hero_b 소재가 A/B 승자로 확정 — 즉시 예산 이동 권장.",
+  "categories": {
+    "creative": {
+      "score": 55,
+      "label": "주의"
+    },
+    "budget": {
+      "score": 78,
+      "label": "양호"
+    },
+    "structure": {
+      "score": 72,
+      "label": "양호"
+    },
+    "audience": {
+      "score": 65,
+      "label": "주의"
+    }
+  },
+  "findings": [
+    {
+      "category": "creative",
+      "level": "critical",
+      "title": "testimonial_control CTR 56% 하락",
+      "detail": "W18 1.8% → W20 0.8%. MIN_IMPRESSIONS_FOR_FATIGUE 통과. 즉시 교체 권장."
+    },
+    {
+      "category": "creative",
+      "level": "warning",
+      "title": "전체 평균 CTR 27% 하락",
+      "detail": "W18 1.8% → W20 1.3%. 소재 다양성 부족 가능성."
+    },
+    {
+      "category": "budget",
+      "level": "pass",
+      "title": "예산 소진율 92%",
+      "detail": "목표 85% 초과 달성. 학습 단계 종료."
+    },
+    {
+      "category": "structure",
+      "level": "warning",
+      "title": "광고세트당 광고 수 부족",
+      "detail": "AST-002에 광고 3개. 권장 2~4개 범위지만 신규 소재 추가 권장."
+    },
+    {
+      "category": "audience",
+      "level": "warning",
+      "title": "LAL 광고세트 빈도 2.1 진입",
+      "detail": "빈도 3 초과 시 소진. 신규 오디언스 확장 검토."
+    }
+  ],
+  "quickWins": [
+    {
+      "priority": 1,
+      "action": "testimonial_control 중단 → 예산 hero_b로 이동",
+      "impact": "예상 CPL 35% 개선"
+    },
+    {
+      "priority": 2,
+      "action": "hero_b 변형 2~3개 추가 제작",
+      "impact": "소재 피로도 완화, CTR 회복"
+    },
+    {
+      "priority": 3,
+      "action": "리타겟팅(랜딩 30일) 광고세트 신설",
+      "impact": "주차당 리드 +15% 예상"
+    }
+  ],
+  "killList": [
+    {
+      "name": "testimonial_control",
+      "reason": "CTR 56% 하락, CPL 목표 대비 +180%",
+      "wastedSpend": 280000
+    },
+    {
+      "name": "offer_control",
+      "reason": "CTR 0.8% 미만, 결과 없음",
+      "wastedSpend": 95000
+    }
+  ],
+  "scalingOpportunities": [
+    {
+      "name": "hero_b",
+      "recommendation": "일 예산 2배로 확장 (3만 → 6만)",
+      "expectedImpact": "주당 리드 +12명 예상"
+    },
+    {
+      "name": "pain_point_control",
+      "recommendation": "LAL 오디언스 확장 (1-3% → 1-5%)",
+      "expectedImpact": "도달 1.6배, CPL 안정"
+    }
+  ],
+  "abConclusion": {
+    "winner": "hero_b",
+    "winnerCpl": 21500,
+    "loserCpl": 38200,
+    "cplReduction": 43.7,
+    "recommendation": "hero_b 변형으로 전체 예산 이동. hero_control 즉시 중단."
+  },
+  "topCreatives": [
+    {
+      "name": "hero_b",
+      "cpl": 21500,
+      "leads": 24,
+      "ctr": 0.025
+    },
+    {
+      "name": "pain_point_control",
+      "cpl": 27000,
+      "leads": 16,
+      "ctr": 0.019
+    },
+    {
+      "name": "hero_control",
+      "cpl": 38200,
+      "leads": 11,
+      "ctr": 0.016
+    }
+  ]
+}

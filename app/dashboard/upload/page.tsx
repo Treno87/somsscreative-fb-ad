@@ -163,7 +163,7 @@ export default function UploadPage() {
 				ads: ads!,
 			});
 
-			// audit-workspace/input 에 저장 (분석용 — 실패해도 무시)
+			// analytics/input 에 저장 (분석용 — 실패해도 무시)
 			fetch("/api/audit", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },

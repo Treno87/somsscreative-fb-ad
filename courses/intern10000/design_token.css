@@ -1,0 +1,136 @@
+/* =============================================================================
+ * design-tokens.css
+ * Source: fastcampus.co.kr/dgn_online_uxuisignature (FULL UX/UI 시그니처)
+ * Extracted: 2026-05-19
+ * ============================================================================= */
+
+:root {
+  /* ---------- BRAND ---------- */
+  --color-brand-primary: #4685ff;          /* Fast Campus 블루: 링크, 강조 아이콘, 보조 CTA */
+  --color-brand-accent: #fc1c49;           /* 마젠타: 할인율, 긴급성 텍스트 */
+  --color-brand-accent-strong: #ed234b;    /* 마젠타 버튼 배경 (액션 변형) */
+  --color-brand-secondary: #8e4cfa;        /* 퍼플: 보조 강조 (사용 빈도 낮음) */
+
+  /* ---------- SURFACE / BACKGROUND ---------- */
+  --color-bg-base: #ffffff;                /* 기본 라이트 배경 */
+  --color-bg-subtle: #f1f3f5;              /* 섹션 구분용 오프화이트 */
+  --color-bg-muted: #eff0f0;               /* 카드 배경 */
+  --color-bg-info: #eff6ff;                /* 파란 톤 인포 박스 */
+  --color-bg-accent-tint: rgba(252, 28, 73, 0.08); /* 마젠타 하이라이트 박스 */
+
+  --color-bg-inverse: #000000;             /* Hero / 다크 섹션 */
+  --color-bg-inverse-subtle: #171717;      /* 다크 섹션 내부 카드 */
+  --color-bg-inverse-elevated: #282828;    /* 다크 위 부상된 요소 */
+
+  /* ---------- TEXT ---------- */
+  --color-text-primary: #111111;           /* 본문 (라이트 배경) */
+  --color-text-secondary: #171b1f;         /* 보조 텍스트 (라이트) */
+  --color-text-tertiary: #737373;          /* 캡션, 부가 정보 */
+  --color-text-muted: #919191;             /* 비활성, 메타 */
+  --color-text-subtle: #cccccc;            /* 가장 옅은 그레이 */
+
+  --color-text-inverse: #ffffff;           /* 본문 (다크 배경) */
+  --color-text-inverse-secondary: #cccccc; /* 보조 텍스트 (다크) */
+  --color-text-inverse-muted: #9b9ba0;     /* 캡션 (다크) */
+
+  /* ---------- BORDER ---------- */
+  --color-border-subtle: #eff0f0;          /* 카드 가장자리 */
+  --color-border-default: #b7b9ba;         /* 일반 보더 */
+
+  /* ---------- OVERLAY ---------- */
+  --color-overlay-light: rgba(255, 255, 255, 0.1); /* 다크 위 백색 오버레이 */
+  --color-overlay-dark: rgba(0, 0, 0, 0.3);        /* 이미지 위 다크 오버레이 */
+
+  /* ---------- GRADIENT ---------- */
+  --gradient-dark: linear-gradient(180deg, rgba(34, 34, 34, 0.8) 0%, #292929 100%);
+
+  /* ---------- TYPOGRAPHY ---------- */
+  --font-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;                 /* 추출 데이터 65% 차지: 기본 강조 */
+
+  --font-size-2xs: 0.625rem;               /* 10px - 마이크로 라벨 */
+  --font-size-xs: 0.6875rem;               /* 11px */
+  --font-size-sm: 0.75rem;                 /* 12px - 캡션, 메타 */
+  --font-size-base: 0.875rem;              /* 14px - 본문 (사용 빈도 1위) */
+  --font-size-md: 1rem;                    /* 16px - 본문 large */
+  --font-size-lg: 1.25rem;                 /* 20px - 서브헤딩 */
+  --font-size-xl: 1.5rem;                  /* 24px - 헤딩 */
+  --font-size-2xl: 2rem;                   /* 32px - 추출된 최대값 */
+  /* Hero H1 등 large display는 추출 데이터에 없음 → 이미지 기반 추정 */
+  --font-size-3xl: 2.5rem;                 /* 40px (확장 토큰, 직접 정의 필요) */
+  --font-size-4xl: 3rem;                   /* 48px (확장) */
+  --font-size-5xl: 4rem;                   /* 64px (확장) */
+
+  /* ---------- RADIUS ---------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;                        /* 추출 빈도 1위: 카드, 버튼 기본 */
+  --radius-lg: 8px;
+  --radius-pill: 9999px;                   /* 19px(=38px 요소의 50%) 정규화 */
+  --radius-circle: 50%;
+
+  /* ---------- SPACING (관습 기반 8pt grid 권장) ---------- */
+  --space-1: 0.25rem;   /*  4px */
+  --space-2: 0.5rem;    /*  8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* ---------- LAYOUT ---------- */
+  --container-max: 1200px;                 /* LP 기준 컨테이너 */
+  --section-py-mobile: var(--space-16);
+  --section-py-desktop: var(--space-24);
+}
+
+/* =============================================================================
+ * Semantic component shortcuts (선택)
+ * ============================================================================= */
+
+.btn-primary {
+  background: var(--color-brand-accent-strong);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+}
+
+.btn-secondary {
+  background: var(--color-brand-primary);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+}
+
+.section-dark {
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.section-light {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.badge-discount {
+  background: var(--color-bg-accent-tint);
+  color: var(--color-brand-accent);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+}

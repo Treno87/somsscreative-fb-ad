@@ -15,10 +15,10 @@ tools: Read, Write, Edit, Glob, Bash
 
 ## 실행 전 필수 읽기
 
-1. `audit-workspace/output/analysis_{최신날짜}.md` — 최신 성과 리포트
+1. `analytics/output/analysis_{최신날짜}.md` — 최신 성과 리포트
 2. `app/{course}/page.tsx` — 현재 랜딩페이지 코드
-3. `workflow/content/{course}_content.md` — 원본 콘텐츠
-4. `.claude/product-marketing-context.md` — 타겟, 페르소나, 반론
+3. `courses/{course}/content.md` — 원본 콘텐츠
+4. `.claude/brand-context.md` — 타겟, 페르소나, 반론
 
 ## 진단 프레임워크
 

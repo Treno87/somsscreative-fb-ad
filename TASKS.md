@@ -32,19 +32,19 @@
 
 ---
 
-## Phase 1: docs/courses/ 과정별 USP 문서
+## Phase 1: courses/ 과정별 USP 문서
 
 > 사람이 직접 작성/검토. 기수마다 업데이트. 에이전트(content-writer)가 참조.
 
-- ✅ `docs/courses/클래식_USP.md` — 클래식코스 카피 전략, 헤드라인 라이브러리, 후기 강화 버전
-- ⬜ `docs/courses/파운데이션_USP.md` — 파운데이션코스 USP (코스 개설 시 작성)
-- ⬜ `docs/courses/인턴_USP.md` — 인턴코스 USP (코스 개설 시 작성)
+- ✅ `courses/classic/USP.md` — 클래식코스 카피 전략, 헤드라인 라이브러리, 후기 강화 버전
+- ⬜ `courses/foundation/USP.md` — 파운데이션코스 USP (코스 개설 시 작성)
+- ⬜ `courses/intern/USP.md` — 인턴코스 USP (코스 개설 시 작성)
 
 ---
 
-## Phase 2: workflow/ 템플릿 작성
+## Phase 2: courses/_templates/ 템플릿 작성
 
-- ⬜ `workflow/content/_template.md` 작성 — 랜딩페이지 콘텐츠 작성 양식
+- ⬜ `courses/_templates/content.template.md` 작성 — 랜딩페이지 콘텐츠 작성 양식
   - 메타 정보 섹션 (코스명, 타겟, 기간, 가격, 작성일)
   - 히어로 섹션 (메인 헤드라인, 서브 헤드라인, CTA 버튼 텍스트 2개)
   - 고통 포인트 섹션 (3~5개 항목)
@@ -55,7 +55,7 @@
   - 가격/등록 섹션 (가격, 할인 조건, 보너스)
   - FAQ 섹션 (질문 6~8개)
 
-- ⬜ `workflow/campaigns/_template.md` 작성 — FB 광고 제안서 양식
+- ⬜ `courses/_templates/campaigns.template.md` 작성 — FB 광고 제안서 양식
   - 제안 배경 (랜딩페이지 링크, 목표 CPL, 기간)
   - 캠페인 구조 요약 (목표, 총 예산, 기간)
   - 광고세트 A (오디언스 정의, 일일 예산, 기간)
@@ -64,10 +64,8 @@
   - A/B 테스트 설계 (테스트 변수, 측정 지표, 판단 기준)
   - KPI 목표 (목표 리드수, 목표 CPL, 예산 소진율)
 
-- ✅ `workflow/content/.gitkeep` 생성 (빈 폴더 유지)
-- ✅ `workflow/imweb/.gitkeep` 생성 (빈 폴더 유지)
-- ✅ `workflow/campaigns/.gitkeep` 생성 (빈 폴더 유지)
-- ⬜ `.gitignore`에 워크플로우 산출물 규칙 추가 여부 결정
+- ✅ `courses/_templates/USP.template.md` 작성 (Phase 2 USP 양식)
+- ⬜ `.gitignore`에 산출물 규칙 추가 여부 결정
 
 ---
 
@@ -241,12 +239,12 @@
 
 > Agent 2 도구 완성 후 실행
 
-- ⬜ `workflow/content/` foundation 코스 콘텐츠 생성 (Agent 1 실행)
-- ⬜ `app/foundation/page.tsx` 생성 (Agent 2 실행)
-- ⬜ `workflow/imweb/` foundation 아임웹 HTML 생성 (Agent 2 실행)
-- ⬜ `workflow/content/` intern 코스 콘텐츠 생성 (Agent 1 실행)
-- ⬜ `app/intern/page.tsx` 생성 (Agent 2 실행)
-- ⬜ `workflow/imweb/` intern 아임웹 HTML 생성 (Agent 2 실행)
+- ⬜ `courses/foundation/content.md` 생성 (content-writer 에이전트)
+- ⬜ `app/foundation/page.tsx` 생성 (landing-builder 에이전트)
+- ⬜ `courses/foundation/imweb.html` 생성 (landing-builder 에이전트)
+- ⬜ `courses/intern/content.md` 생성 (content-writer 에이전트)
+- ⬜ `app/intern/page.tsx` 생성 (landing-builder 에이전트)
+- ⬜ `courses/intern/imweb.html` 생성 (landing-builder 에이전트)
 
 ---
 

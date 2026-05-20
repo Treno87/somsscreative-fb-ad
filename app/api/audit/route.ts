@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import { type NextRequest, NextResponse } from "next/server";
 import path from "path";
 
-const WORKSPACE = path.join(process.cwd(), "audit-workspace");
+const WORKSPACE = path.join(process.cwd(), "analytics");
 const INPUT_DIR = path.join(WORKSPACE, "input");
 const OUTPUT_DIR = path.join(WORKSPACE, "output");
 const REPORT_FILE = path.join(OUTPUT_DIR, "report.json");
