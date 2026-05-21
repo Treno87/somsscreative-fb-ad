@@ -2,7 +2,7 @@
 
 씬 구분 · 카피 · 이미지/영상 · 배경음악 · 텍스트 효과를 어떻게 지정해서 원하는 광고 영상을 만드는지에 대한 표준 프로세스.
 
-> 기준일 2026-05-20 · 러닝 예시: intern10000 1기 스토리텔링 영상 · 대상 시스템: `remotion/` (Remotion 4)
+> 기준일 2026-05-20 (개정 2026-05-21) · 러닝 예시: intern10000 스토리텔링 영상 · 대상 시스템: `remotion/` (Remotion 4)
 >
 > **이 문서는 클로드 참고용 마크다운 트윈이다.** 사람이 보는 버전은 `docs/video-ad-process.html` (브라우저로 열림). 한쪽을 고치면 다른 쪽도 함께 갱신할 것.
 
@@ -22,7 +22,7 @@
 
 > **이 문서의 위치** — 상위 워크플로우 `docs/PROCESS.md`의 **Phase 5(광고 소재)**는 정지 이미지 소재까지만 다룬다. 이 문서는 그 Phase 5를 **"영상 소재"로 확장**하는 가지다. 광고 기획(Phase 4 · `ad-proposal`)까지는 동일하게 진행한 뒤 이 문서로 들어온다.
 
-결과물 규격: **9:16 세로 · 1080×1920 · 30fps · ~22초 · H.264 MP4**
+결과물 규격: **9:16 · 1:1 · 4:5 (Meta 게재 위치 3종) · 1080px 폭 · 30fps · H.264 MP4**. 본편 ~20–30초 권장, 끝에 로고 아웃트로(옵션)를 붙일 수 있다.
 
 ---
 
@@ -35,8 +35,8 @@
 ② 씬 기획 문서      {기수}-story-plan.md 작성 → 사람 검토·승인   (STEP 1~5)
 ③ 데이터 피드       승인된 문서를 story.json으로 변환            (STEP 6)
 ④ 자산 준비         이미지·영상·음악 → remotion/public/
-⑤ 렌더             npx remotion render
-⑥ 검수             Windows 플레이어 · QA 체크리스트             (STEP 7)
+⑤ 렌더             9:16·1:1·4:5 3종 렌더                       (STEP 7)
+⑥ 검수             스틸 자가검수 · Windows 플레이어 · QA        (STEP 7)
 ```
 
 **②가 핵심 검토 관문이다.** 씬 흐름·카피·자산·효과를 사람이 읽을 수 있는 문서로 먼저 확정·승인한 뒤에야 ③ 데이터 피드(JSON) 변환으로 넘어간다. JSON을 바로 쓰지 않는 이유 — 중괄호·따옴표 사이에서는 "이 스토리가 설득력 있나"를 판단하기 어렵기 때문이다.
@@ -120,6 +120,16 @@ remotion/public/images/{course}/04-proof.mp4   ← 영상도 같은 폴더
 > **플레이스홀더 — 자산 없이 먼저 렌더** — `media`가 비어 있으면 그 씬은 `brief` 문구가 적힌 플레이스홀더 패널로 렌더된다. 덕분에 자산 준비 전에도 영상 구조·카피·타이밍을 먼저 확인할 수 있다.
 
 > ⚠️ **주의** — ① 영상 클립에 **자체 텍스트·로고가 박혀** 있으면 우리 텍스트와 충돌한다 — 깨끗한 클립을 쓸 것. ② 5개 자산의 **밝기·색감 톤을 통일**할 것 — 밝은 클립과 어두운 이미지가 섞이면 영상이 둘로 갈라져 보인다.
+
+### 공용 로고 아웃트로 (브랜드 자산)
+
+모든 광고 영상은 **끝에 소옴크리에이티브 로고 아웃트로**를 붙인다 — 코스·기수와 무관한 **공용 브랜드 자산**이다.
+
+- 파일: `remotion/public/brand/somss-outro.mp4` (검정 배경 키네틱 로고 스팅, 8.94초)
+- 데이터 피드 최상위에 `"outro": "brand/somss-outro.mp4"` · `"outroSeconds": 8.94`로 지정한다.
+- 마지막 씬에서 크로스페이드로 이어지고, 자체 오디오를 유지한다 (BGM은 아웃트로 전에 페이드아웃).
+- 16:9 가로 클립이라 세로 프레임에선 `StorytellingAd.tsx`의 `OUTRO_SCALE`(현재 2배)로 확대해 로고 가시성을 확보한다.
+- 새로 만드는 브랜드 공용 영상 자산은 코스 폴더가 아니라 `remotion/public/brand/`에 둔다.
 
 ---
 
@@ -209,6 +219,8 @@ remotion/public/audio/{트랙}.mp3      ← 음원 저장 위치
 | `headlineAnim` | `{ "preset": ..., "unit": ... }` |
 | `durationInSeconds` | 씬 길이(초) |
 
+> **필드 확장** — 위 두 표는 핵심 기본 필드다. 템플릿이 발전하며 필드가 추가됐다 — 최상위 `outro`·`outroSeconds`(로고 아웃트로), 씬의 `layout:"stack"`(텍스트→일러스트→텍스트 세로 연출)·`lead`(헤드라인 위 리드인 줄)·`bullets`(body 대신 불릿 리스트). `media`는 단일 경로 외에 **경로 배열**(영상 몽타주)·**HEX 색상**(솔리드 카드)도 받는다. 최신 전체 명세는 `remotion/src/StorytellingAd.tsx` 타입 정의와 `remotion/data/intern10000-2기-story.json` 예시를 참조한다.
+
 **예시 — `intern10000-1기-story.json` (씬 2개 발췌)**
 
 ```json
@@ -259,14 +271,14 @@ remotion/public/audio/{트랙}.mp3      ← 음원 저장 위치
 # 최초 1회 — 의존성 설치
 npm install --prefix remotion
 
-# 영상 렌더 (remotion 폴더 기준)
+# 영상 렌더 — Meta 게재 위치 3종 (remotion 폴더 기준)
 cd remotion
-npx remotion render StorytellingAd-9x16 \
-  out/intern10000-1기-story.mp4 \
-  --props=data/intern10000-1기-story.json
+npx remotion render StorytellingAd-9x16 out/{feed}.mp4     --props=data/{feed}.json
+npx remotion render StorytellingAd-1x1  out/{feed}-1x1.mp4 --props=data/{feed}.json
+npx remotion render StorytellingAd-4x5  out/{feed}-4x5.mp4 --props=data/{feed}.json
 ```
 
-출력 파일은 `remotion/out/`에 생성된다.
+출력 파일은 `remotion/out/`에 생성된다. 9:16은 접미사 없는 파일명을 쓴다.
 
 **미리보기 (스튜디오)**
 
@@ -281,26 +293,67 @@ npm run dev --prefix remotion      # 브라우저에서 localhost:3000
 **QA 체크리스트**
 
 - 씬별 이미지·영상이 의도대로 들어갔는가 (플레이스홀더 안 남았는가)
-- 텍스트가 배경 위에서 읽히는가 (대비·그림자)
-- 배경음악이 재생되고 톤이 맞는가
-- 5개 자산의 밝기·색감 톤이 일관되는가
-- 전체 길이가 적정한가 (~22초, 30초 이하)
-- 9:16 세로로 출력됐는가
+- 텍스트가 배경 위에서 읽히는가 (대비·그림자·eyebrow 칩)
+- 텍스트·요소가 화면 밖으로 잘리지 않았는가
+- 배경음악이 재생되고 톤이 맞는가 · 영상 클립의 자체 자막과 충돌 없는가
+- 자산들의 밝기·색감 톤이 일관되는가
+- 끝에 로고 아웃트로가 정상 연결됐는가
+- 본편 길이가 적정한가 (~20–30초)
+- 9:16 · 1:1 · 4:5 세 비율 모두 정상 출력됐는가
 
 ---
 
-## 9. 치트시트
+## 9. 수정·검수 작업 표준
+
+영상은 한 번에 끝나지 않는다 — 초안을 보고 카피·연출·자산을 고치는 **수정 사이클**이 반복된다. 아래 5가지는 영상 작업(신규·수정 공통)의 **고정 절차**이며, 어느 하나도 건너뛰지 않는다.
+
+### ① 손대기 전에 확정한다
+
+수정 요청을 받으면 코드(JSON·템플릿)부터 고치지 않는다. 먼저 요청을 **씬·요소 단위로 해석**해 "무엇을 어떻게 바꿀지"를 정리하고, 사람에게 확정받은 뒤 일괄 구현한다.
+
+- 선택이 갈리는 지점(카피 강조 방식, 라벨 문구, 길이 등)은 **추천안을 먼저 제시**하고 묻는다.
+- 카피가 한 문장인데 위계가 어긋나 보이면(작은 eyebrow + 큰 headline 등) 증상만 손대지 말고 **근본 원인**을 짚어 제안한다.
+- 이미 명시된 것은 다시 묻지 않는다 — 해석해서 진행한다.
+
+### ② 게재 위치 3종을 모두 렌더한다
+
+Meta 게재 위치별 컴포지션 3개를 전부 렌더한다 — `StorytellingAd-9x16` · `-1x1` · `-4x5`. 하나만 뽑고 끝내지 않는다.
+
+### ③ 렌더 후 스틸로 자가 검수한다
+
+렌더 `exit code 0`은 "영상이 의도대로 나왔다"가 아니라 "인코딩이 끝났다"는 뜻일 뿐이다. 변경된 씬의 핵심 프레임을 **스틸(PNG)로 추출해 직접 눈으로 확인**한 뒤에 완료를 보고한다.
+
+```bash
+npx remotion still StorytellingAd-9x16 out/chk-<frame>.png \
+  --props=data/<feed>.json --frame=<frame>
+```
+
+확인 항목 — 레이아웃 정렬 / 텍스트·요소 잘림 / 배경 위 가독성 / 자산 크기·비율 / 영상 클립 자막 충돌.
+
+### ④ 품질 문제는 그 자리에서 처리한다
+
+검수 중 화질 저하·가시성 부족·잘림·톤 불일치 같은 문제를 발견하면 **그대로 보고하지 않는다.** 그 자리에서 고치거나, 판단이 필요하면 사람에게 묻는다. 알면서 그냥 넘기는 것은 금지다.
+
+### ⑤ 기획 문서를 동기화한다
+
+JSON·템플릿을 바꿨으면 `{기수}-story-plan.md`(씬 기획 문서)도 같은 내용으로 갱신해 둘이 어긋나지 않게 한다.
+
+---
+
+## 10. 치트시트
 
 - **씬 종류 (kind)** — hook · problem · turn · proof · cta
 - **애니메이션 프리셋** — fade-up / fade-down / slide-left / slide-right / blur-in / pop / rise / expand
 - **적용 단위 (unit)** — block(통째) / line(줄별) / word(단어별)
-- **규격** — 9:16 · 1080×1920 · 30fps / 이미지 ≥ 1300px 폭 / 음원 로열티프리
-- **경로** — 씬 기획 `courses/{c}/campaigns/{기}-story-plan.md` / 데이터 피드 `remotion/data/{c}-{기}-story.json` / 자산 `remotion/public/images/{c}/`·`audio/`
-- **렌더 한 줄** — `cd remotion && npx remotion render StorytellingAd-9x16 out/x.mp4 --props=data/x.json`
+- **규격** — 9:16 · 1:1 · 4:5 3종 · 1080px 폭 · 30fps / 이미지 ≥ 1300px 폭 / 음원 로열티프리
+- **경로** — 씬 기획 `courses/{c}/campaigns/{기}-story-plan.md` / 데이터 피드 `remotion/data/{c}-{기}-story.json` / 자산 `remotion/public/images/{c}/`·`audio/` / 브랜드 공용 `remotion/public/brand/`
+- **공용 아웃트로** — `remotion/public/brand/somss-outro.mp4` — 모든 영상 끝에 붙인다
+- **렌더** — `cd remotion` 후 `StorytellingAd-9x16`·`-1x1`·`-4x5` 3개 컴포지션을 각각 `npx remotion render <comp> out/x.mp4 --props=data/x.json`
+- **작업 루프** — 확정 → 3종 렌더 → 스틸 자가검수 → 품질문제 즉시처리 → 기획문서 동기화
 
 ---
 
-## 10. 부록 — 자주 막히는 곳
+## 11. 부록 — 자주 막히는 곳
 
 | 증상 | 원인 · 대응 |
 |---|---|
@@ -313,5 +366,5 @@ npm run dev --prefix remotion      # 브라우저에서 localhost:3000
 
 ---
 
-*소옴크리에이티브 · 페이스북 광고 동영상 생성 프로세스 · 기준일 2026-05-20*
+*소옴크리에이티브 · 페이스북 광고 동영상 생성 프로세스 · 기준일 2026-05-20 · 개정 2026-05-21*
 *상위 워크플로우: `docs/PROCESS.md` · 대상 시스템: `remotion/` · 사람용 버전: `docs/video-ad-process.html`*

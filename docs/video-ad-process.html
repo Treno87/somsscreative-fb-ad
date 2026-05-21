@@ -148,7 +148,7 @@
     <h1>페이스북 광고 동영상 생성 프로세스</h1>
     <p>씬 구분 · 카피 · 이미지/영상 · 배경음악 · 텍스트 효과를 어떻게 지정해서
        원하는 광고 영상을 만드는지에 대한 표준 프로세스.</p>
-    <div class="meta">기준일 2026-05-20 · 러닝 예시: intern10000 1기 스토리텔링 영상 ·
+    <div class="meta">기준일 2026-05-20 (개정 2026-05-21) · 러닝 예시: intern10000 스토리텔링 영상 ·
        대상 시스템: <span class="mono">remotion/</span> (Remotion 4)</div>
   </div>
 </header>
@@ -167,6 +167,7 @@
       <li><a href="#s5">STEP 5 — 텍스트 효과</a></li>
       <li><a href="#s6">STEP 6 — 데이터 피드 작성</a></li>
       <li><a href="#s7">STEP 7 — 생성·검수</a></li>
+      <li><a href="#standard">수정·검수 작업 표준</a></li>
       <li><a href="#cheat">치트시트</a></li>
       <li><a href="#appendix">부록 — 자주 막히는 곳</a></li>
     </ol>
@@ -198,9 +199,10 @@
       가지다. 광고 기획(Phase 4 · <code>ad-proposal</code>)까지는 동일하게 진행한 뒤 이 문서로 들어온다.
     </div>
 
-    <p>결과물 규격: <span class="pill">9:16 세로</span> <span class="pill">1080×1920</span>
-      <span class="pill">30fps</span> <span class="pill">~22초</span>
-      <span class="pill">H.264 MP4</span></p>
+    <p>결과물 규격: <span class="pill">9:16 · 1:1 · 4:5</span> <span class="pill">1080px 폭</span>
+      <span class="pill">30fps</span> <span class="pill">H.264 MP4</span>
+      <span class="pill">본편 ~20–30초</span></p>
+    <p>Meta 게재 위치별로 9:16 · 1:1 · 4:5 세 비율을 모두 출력하고, 끝에 로고 아웃트로(옵션)를 붙일 수 있다.</p>
   </section>
 
   <!-- ================= 흐름 ================= -->
@@ -217,9 +219,9 @@
       <div class="arrow">→</div>
       <div class="step"><b>④ 자산 준비</b><span>이미지·영상·음악<br>remotion/public/</span></div>
       <div class="arrow">→</div>
-      <div class="step"><b>⑤ 렌더</b><span>npx remotion render</span></div>
+      <div class="step"><b>⑤ 렌더</b><span>9:16·1:1·4:5 3종<br>STEP 7</span></div>
       <div class="arrow">→</div>
-      <div class="step"><b>⑥ 검수</b><span>Windows 플레이어<br>QA · STEP 7</span></div>
+      <div class="step"><b>⑥ 검수</b><span>스틸 자가검수<br>Windows 플레이어 · STEP 7</span></div>
     </div>
 
     <div class="box">
@@ -349,6 +351,18 @@ remotion/public/images/{course}/04-proof.mp4   ← 영상도 같은 폴더</code
       깨끗한 클립을 쓸 것. ② 5개 자산의 <strong>밝기·색감 톤을 통일</strong>할 것 — 밝은 클립과
       어두운 이미지가 섞이면 영상이 둘로 갈라져 보인다.
     </div>
+
+    <h3>공용 로고 아웃트로 (브랜드 자산)</h3>
+    <p>모든 광고 영상은 <strong>끝에 소옴크리에이티브 로고 아웃트로</strong>를 붙인다 —
+      코스·기수와 무관한 <strong>공용 브랜드 자산</strong>이다.</p>
+    <ul>
+      <li>파일: <code>remotion/public/brand/somss-outro.mp4</code> (검정 배경 키네틱 로고 스팅, 8.94초)</li>
+      <li>데이터 피드 최상위에 <code>"outro": "brand/somss-outro.mp4"</code> ·
+        <code>"outroSeconds": 8.94</code>로 지정한다.</li>
+      <li>마지막 씬에서 크로스페이드로 이어지고, 자체 오디오를 유지한다 (BGM은 아웃트로 전에 페이드아웃).</li>
+      <li>16:9 가로 클립이라 세로 프레임에선 <code>OUTRO_SCALE</code>(현재 2배)로 확대해 로고 가시성을 확보한다.</li>
+      <li>새로 만드는 브랜드 공용 영상 자산은 코스 폴더가 아니라 <code>remotion/public/brand/</code>에 둔다.</li>
+    </ul>
   </section>
 
   <!-- ================= STEP 4 음악 ================= -->
@@ -457,6 +471,17 @@ remotion/public/images/{course}/04-proof.mp4   ← 영상도 같은 폴더</code
       <tr><td><code>durationInSeconds</code></td><td>씬 길이(초)</td></tr>
     </table>
 
+    <div class="box">
+      <span class="label a">필드 확장</span>
+      위 두 표는 핵심 기본 필드다. 템플릿이 발전하며 필드가 추가됐다 — 최상위
+      <code>outro</code>·<code>outroSeconds</code>(로고 아웃트로), 씬의
+      <code>layout:"stack"</code>(텍스트→일러스트→텍스트 세로 연출)·<code>lead</code>(헤드라인 위 리드인 줄)·
+      <code>bullets</code>(body 대신 불릿 리스트). <code>media</code>는 단일 경로 외에
+      <strong>경로 배열</strong>(영상 몽타주)·<strong>HEX 색상</strong>(솔리드 카드)도 받는다.
+      최신 전체 명세는 <code>remotion/src/StorytellingAd.tsx</code> 타입 정의와
+      <code>remotion/data/intern10000-2기-story.json</code> 예시를 참조한다.
+    </div>
+
     <h3>예시 — <code>intern10000-1기-story.json</code> (씬 2개 발췌)</h3>
     <pre><code>{
   "id": "intern10000-1기-story",
@@ -506,12 +531,12 @@ remotion/public/images/{course}/04-proof.mp4   ← 영상도 같은 폴더</code
     <pre><code># 최초 1회 — 의존성 설치
 npm install --prefix remotion
 
-# 영상 렌더 (remotion 폴더 기준)
+# 영상 렌더 — Meta 게재 위치 3종 (remotion 폴더 기준)
 cd remotion
-npx remotion render StorytellingAd-9x16 \
-  out/intern10000-1기-story.mp4 \
-  --props=data/intern10000-1기-story.json</code></pre>
-    <p>출력 파일은 <code>remotion/out/</code>에 생성된다.</p>
+npx remotion render StorytellingAd-9x16 out/{feed}.mp4     --props=data/{feed}.json
+npx remotion render StorytellingAd-1x1  out/{feed}-1x1.mp4 --props=data/{feed}.json
+npx remotion render StorytellingAd-4x5  out/{feed}-4x5.mp4 --props=data/{feed}.json</code></pre>
+    <p>출력 파일은 <code>remotion/out/</code>에 생성된다. 9:16은 접미사 없는 파일명을 쓴다.</p>
 
     <h3>미리보기 (스튜디오)</h3>
     <pre><code>npm run dev --prefix remotion      # 브라우저에서 localhost:3000</code></pre>
@@ -525,17 +550,62 @@ npx remotion render StorytellingAd-9x16 \
     <h3>QA 체크리스트</h3>
     <ul>
       <li>씬별 이미지·영상이 의도대로 들어갔는가 (플레이스홀더 안 남았는가)</li>
-      <li>텍스트가 배경 위에서 읽히는가 (대비·그림자)</li>
-      <li>배경음악이 재생되고 톤이 맞는가</li>
-      <li>5개 자산의 밝기·색감 톤이 일관되는가</li>
-      <li>전체 길이가 적정한가 (~22초, 30초 이하)</li>
-      <li>9:16 세로로 출력됐는가</li>
+      <li>텍스트가 배경 위에서 읽히는가 (대비·그림자·eyebrow 칩)</li>
+      <li>텍스트·요소가 화면 밖으로 잘리지 않았는가</li>
+      <li>배경음악이 재생되고 톤이 맞는가 · 영상 클립의 자체 자막과 충돌 없는가</li>
+      <li>자산들의 밝기·색감 톤이 일관되는가</li>
+      <li>끝에 로고 아웃트로가 정상 연결됐는가</li>
+      <li>본편 길이가 적정한가 (~20–30초)</li>
+      <li>9:16 · 1:1 · 4:5 세 비율 모두 정상 출력됐는가</li>
     </ul>
+  </section>
+
+  <!-- ================= 수정·검수 작업 표준 ================= -->
+  <section id="standard">
+    <h2><span class="num">9</span>수정·검수 작업 표준</h2>
+    <p class="lead">영상은 한 번에 끝나지 않는다 — 초안을 보고 카피·연출·자산을 고치는
+      <strong>수정 사이클</strong>이 반복된다. 아래 5가지는 영상 작업(신규·수정 공통)의
+      <strong>고정 절차</strong>이며, 어느 하나도 건너뛰지 않는다.</p>
+
+    <h3>① 손대기 전에 확정한다</h3>
+    <p>수정 요청을 받으면 코드(JSON·템플릿)부터 고치지 않는다. 먼저 요청을
+      <strong>씬·요소 단위로 해석</strong>해 "무엇을 어떻게 바꿀지"를 정리하고, 사람에게
+      확정받은 뒤 일괄 구현한다.</p>
+    <ul>
+      <li>선택이 갈리는 지점(카피 강조 방식, 라벨 문구, 길이 등)은 <strong>추천안을 먼저 제시</strong>하고 묻는다.</li>
+      <li>카피가 한 문장인데 위계가 어긋나 보이면(작은 eyebrow + 큰 headline 등) 증상만 손대지 말고 <strong>근본 원인</strong>을 짚어 제안한다.</li>
+      <li>이미 명시된 것은 다시 묻지 않는다 — 해석해서 진행한다.</li>
+    </ul>
+
+    <h3>② 게재 위치 3종을 모두 렌더한다</h3>
+    <p>Meta 게재 위치별 컴포지션 3개를 전부 렌더한다 — <code>StorytellingAd-9x16</code> ·
+      <code>-1x1</code> · <code>-4x5</code>. 하나만 뽑고 끝내지 않는다.</p>
+
+    <h3>③ 렌더 후 스틸로 자가 검수한다</h3>
+    <p>렌더 <code>exit code 0</code>은 "영상이 의도대로 나왔다"가 아니라 "인코딩이 끝났다"는
+      뜻일 뿐이다. 변경된 씬의 핵심 프레임을 <strong>스틸(PNG)로 추출해 직접 눈으로 확인</strong>한
+      뒤에 완료를 보고한다.</p>
+    <pre><code>npx remotion still StorytellingAd-9x16 out/chk-&lt;frame&gt;.png \
+  --props=data/&lt;feed&gt;.json --frame=&lt;frame&gt;</code></pre>
+    <p>확인 항목 — 레이아웃 정렬 / 텍스트·요소 잘림 / 배경 위 가독성 / 자산 크기·비율 /
+      영상 클립 자막 충돌.</p>
+
+    <h3>④ 품질 문제는 그 자리에서 처리한다</h3>
+    <div class="box warn">
+      <span class="label">알면서 넘기지 않는다</span>
+      검수 중 화질 저하·가시성 부족·잘림·톤 불일치 같은 문제를 발견하면
+      <strong>그대로 보고하지 않는다.</strong> 그 자리에서 고치거나, 판단이 필요하면
+      사람에게 묻는다.
+    </div>
+
+    <h3>⑤ 기획 문서를 동기화한다</h3>
+    <p>JSON·템플릿을 바꿨으면 <code>{기수}-story-plan.md</code>(씬 기획 문서)도 같은 내용으로
+      갱신해 둘이 어긋나지 않게 한다.</p>
   </section>
 
   <!-- ================= 치트시트 ================= -->
   <section id="cheat">
-    <h2><span class="num">9</span>치트시트</h2>
+    <h2><span class="num">10</span>치트시트</h2>
     <div class="grid">
       <div class="card">
         <h4>씬 종류 (kind)</h4>
@@ -553,26 +623,38 @@ npx remotion render StorytellingAd-9x16 \
       </div>
       <div class="card">
         <h4>규격</h4>
-        <ul><li>9:16 · 1080×1920 · 30fps</li><li>이미지 ≥ 1300px 폭</li>
+        <ul><li>9:16 · 1:1 · 4:5 · 1080px 폭</li><li>30fps · 이미지 ≥ 1300px 폭</li>
           <li>음원: 로열티프리</li></ul>
       </div>
       <div class="card">
         <h4>경로</h4>
         <ul class="mono"><li>씬 기획: courses/{c}/campaigns/{기}-story-plan.md</li>
           <li>데이터 피드: remotion/data/{c}-{기}-story.json</li>
-          <li>자산: remotion/public/images/{c}/ · audio/</li></ul>
+          <li>자산: remotion/public/images/{c}/ · audio/</li>
+          <li>브랜드 공용: remotion/public/brand/</li></ul>
       </div>
       <div class="card">
-        <h4>렌더 한 줄</h4>
+        <h4>렌더 · 3종</h4>
         <ul class="mono"><li>cd remotion</li>
-          <li>npx remotion render StorytellingAd-9x16 out/x.mp4 --props=data/x.json</li></ul>
+          <li>npx remotion render StorytellingAd-9x16 out/x.mp4 --props=data/x.json</li>
+          <li>-1x1 · -4x5 컴포지션도 동일하게</li></ul>
+      </div>
+      <div class="card">
+        <h4>공용 아웃트로</h4>
+        <ul class="mono"><li>remotion/public/brand/somss-outro.mp4</li>
+          <li>모든 영상 끝에 크로스페이드로</li></ul>
+      </div>
+      <div class="card">
+        <h4>작업 루프</h4>
+        <ul><li>확정 → 3종 렌더</li><li>스틸 자가검수</li>
+          <li>품질문제 즉시처리</li><li>기획문서 동기화</li></ul>
       </div>
     </div>
   </section>
 
   <!-- ================= 부록 ================= -->
   <section id="appendix">
-    <h2><span class="num">10</span>부록 — 자주 막히는 곳</h2>
+    <h2><span class="num">11</span>부록 — 자주 막히는 곳</h2>
     <table>
       <tr><th>증상</th><th>원인 · 대응</th></tr>
       <tr><td>한글이 브랜드 폰트로 안 나옴</td>
@@ -592,7 +674,7 @@ npx remotion render StorytellingAd-9x16 \
   </section>
 
   <footer>
-    소옴크리에이티브 · 페이스북 광고 동영상 생성 프로세스 · 기준일 2026-05-20<br>
+    소옴크리에이티브 · 페이스북 광고 동영상 생성 프로세스 · 기준일 2026-05-20 · 개정 2026-05-21<br>
     상위 워크플로우: <code>docs/PROCESS.md</code> · 대상 시스템: <code>remotion/</code>
   </footer>
 

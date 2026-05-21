@@ -17,6 +17,18 @@ export type AnimUnit = "block" | "line" | "word";
 
 const clamp01 = (n: number): number => Math.max(0, Math.min(1, n));
 
+// **...** 로 감싼 구간을 강조색 span 으로, 나머지는 평문으로 렌더한다.
+const renderEmphasis = (text: string, color: string): React.ReactNode =>
+	text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+		part.length > 4 && part.startsWith("**") && part.endsWith("**") ? (
+			<span key={i} style={{ color, fontWeight: 700 }}>
+				{part.slice(2, -2)}
+			</span>
+		) : (
+			part
+		),
+	);
+
 // 프리셋 = 진행도 p(0→1, 스프링이라 1을 살짝 넘을 수 있음) → CSS
 const PRESETS: Record<AnimPreset, (p: number) => React.CSSProperties> = {
 	"fade-up": (p) => ({
@@ -62,6 +74,8 @@ type Props = {
 	delayInFrames?: number;
 	/** line·word 단위에서 토큰 간 간격(프레임) */
 	staggerInFrames?: number;
+	/** 설정 시 block 단위에서 **...** 로 감싼 어구를 이 색으로 강조한다. */
+	emphasisColor?: string;
 	style?: React.CSSProperties;
 };
 
@@ -71,6 +85,7 @@ export const AnimatedText: React.FC<Props> = ({
 	unit,
 	delayInFrames = 0,
 	staggerInFrames = 4,
+	emphasisColor,
 	style,
 }) => {
 	const frame = useCurrentFrame();
@@ -91,7 +106,7 @@ export const AnimatedText: React.FC<Props> = ({
 	if (unit === "block") {
 		return (
 			<div style={{ ...style, ...styleAt(0), whiteSpace: "pre-line" }}>
-				{text}
+				{emphasisColor ? renderEmphasis(text, emphasisColor) : text}
 			</div>
 		);
 	}
@@ -109,11 +124,25 @@ export const AnimatedText: React.FC<Props> = ({
 	}
 
 	// word — 줄바꿈 유지, 단어별 스태거
+	// flex 정렬이라 textAlign이 안 먹으므로 style.textAlign을 justifyContent로 옮긴다.
+	const wordJustify =
+		style?.textAlign === "center"
+			? "center"
+			: style?.textAlign === "right" || style?.textAlign === "end"
+				? "flex-end"
+				: "flex-start";
 	let wordIndex = 0;
 	return (
 		<div style={style}>
 			{lines.map((line, li) => (
-				<div key={li} style={{ display: "flex", flexWrap: "wrap" }}>
+				<div
+					key={li}
+					style={{
+						display: "flex",
+						flexWrap: "wrap",
+						justifyContent: wordJustify,
+					}}
+				>
 					{line.split(" ").map((word, k) => {
 						const delay = wordIndex * staggerInFrames;
 						wordIndex += 1;
