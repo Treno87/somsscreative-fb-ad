@@ -1,43 +1,50 @@
-<!-- 인턴을 위한 만분의 기적 (인턴10000) 2기 — 아임웹 코드블럭 -->
-<!-- Design tokens: design_token.css (FastCampus 시그니처 기반) -->
+<!-- 인턴을 위한 만분의 기적 (인턴10000) 2기 — 아임웹 코드블럭 (Hallmark redesign) -->
+<!-- imweb.html audit 반영판 — eyebrow 제거 · 모션·포커스·타이포 정리 -->
 <!-- Pretendard Variable + Brand Blue #4685ff + Magenta Accent #fc1c49 -->
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 
 <style>
+  /* Hallmark · redesign · genre: editorial · macrostructure: Long Document · tone: editorial-confident · anchor hue: brand-blue + magenta accent */
+  /* Hallmark · pre-emit critique: P5 H5 E4 S4 R5 V4 */
+
   .i10k {
-    /* tokens (design_token.css의 핵심만 인라인) */
     --c-brand: #4685ff;
     --c-accent: #fc1c49;
     --c-accent-strong: #ed234b;
     --c-accent-tint: rgba(252, 28, 73, 0.08);
 
-    --c-bg: #ffffff;
-    --c-bg-subtle: #f1f3f5;
-    --c-bg-muted: #eff0f0;
-    --c-bg-inverse: #000000;
-    --c-bg-inverse-subtle: #171717;
-    --c-bg-inverse-elev: #282828;
+    /* 순백·순흑 대신 미세 틴트 */
+    --c-bg: #fcfcfb;
+    --c-bg-subtle: #f1f2ef;
+    --c-bg-muted: #e8e9e5;
+    --c-bg-inverse: #0b0b0c;
+    --c-bg-inverse-subtle: #151517;
 
-    --c-text: #111111;
-    --c-text-2: #171b1f;
-    --c-text-3: #737373;
-    --c-text-muted: #919191;
-    --c-text-inv: #ffffff;
-    --c-text-inv-2: #cccccc;
-    --c-text-inv-3: #9b9ba0;
+    --c-text: #14151a;
+    --c-text-2: #2a2d34;
+    --c-text-3: #6b6e76;
+    --c-text-muted: #9296a0;
+    --c-text-inv: #f4f4f2;
+    --c-text-inv-2: #c9cac6;
+    --c-text-inv-3: #8d8f95;
 
-    --c-border: #eff0f0;
-    --c-border-strong: #b7b9ba;
-    --c-border-dark: rgba(255, 255, 255, 0.12);
+    --c-border: #e5e6e2;
+    --c-border-strong: #b4b6b0;
+    --c-border-dark: rgba(255, 255, 255, 0.13);
+
+    --c-focus: #4685ff;
 
     --r-sm: 4px;
     --r-md: 6px;
-    --r-lg: 8px;
+    --r-lg: 10px;
     --r-pill: 9999px;
 
     --container: 1200px;
+
+    --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+    --dur: 0.16s;
 
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
     color: var(--c-text);
@@ -57,69 +64,69 @@
   /* layout */
   .i10k .container { max-width: var(--container); margin: 0 auto; padding: 0 20px; }
   @media (min-width: 768px) { .i10k .container { padding: 0 32px; } }
-  .i10k .sec { padding: 64px 0; }
-  @media (min-width: 768px) { .i10k .sec { padding: 96px 0; } }
+  .i10k .sec { padding: 72px 0; }
+  @media (min-width: 768px) { .i10k .sec { padding: 104px 0; } }
+  .i10k .sec--tight { padding: 56px 0; }
+  @media (min-width: 768px) { .i10k .sec--tight { padding: 80px 0; } }
+  .i10k .sec--loose { padding: 88px 0; }
+  @media (min-width: 768px) { .i10k .sec--loose { padding: 132px 0; } }
   .i10k .sec--dark { background: var(--c-bg-inverse); color: var(--c-text-inv); }
   .i10k .sec--subtle { background: var(--c-bg-subtle); }
-
-  /* eyebrow */
-  .i10k .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-text-3); margin-bottom: 16px; }
-  .i10k .sec--dark .eyebrow { color: var(--c-text-inv-3); }
-  .i10k .eyebrow--accent { color: var(--c-accent); }
 
   /* display type */
   .i10k h1, .i10k h2, .i10k h3 { letter-spacing: -0.025em; font-weight: 800; line-height: 1.15; word-break: keep-all; }
   .i10k .display { font-size: clamp(36px, 6.5vw, 64px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; }
   .i10k .h2-display { font-size: clamp(28px, 4.2vw, 44px); letter-spacing: -0.025em; line-height: 1.15; }
-  .i10k .h3-block { font-size: clamp(20px, 2.6vw, 28px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.3; }
   .i10k .accent { color: var(--c-accent); }
 
   /* lead */
   .i10k .lead { font-size: clamp(16px, 1.6vw, 18px); color: var(--c-text-3); line-height: 1.7; max-width: 720px; }
   .i10k .sec--dark .lead { color: var(--c-text-inv-2); }
 
-  /* buttons (FastCampus는 sharp radius, 단색 채움) */
-  .i10k .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 56px; padding: 0 28px; font-size: 16px; font-weight: 700; border-radius: var(--r-md); border: 0; transition: transform .12s ease, opacity .12s ease; min-width: 200px; white-space: nowrap; }
-  .i10k .btn:hover { transform: translateY(-1px); opacity: 0.95; }
+  /* section head — eyebrow 제거, 좌측 정렬 h2 */
+  .i10k .sec-head { max-width: 760px; margin-bottom: 48px; }
+  @media (min-width: 768px) { .i10k .sec-head { margin-bottom: 64px; } }
+  .i10k .sec-head .lead { margin-top: 16px; }
+
+  /* buttons (FastCampus sharp radius, 단색 채움) */
+  .i10k .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 56px; padding: 0 28px; font-size: 16px; font-weight: 700; border-radius: var(--r-md); border: 0; transition: transform var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out); min-width: 200px; white-space: nowrap; }
+  .i10k .btn:hover { transform: translateY(-2px); }
+  .i10k .btn:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 3px; }
   .i10k .btn--primary { background: var(--c-accent-strong); color: var(--c-text-inv); }
-  .i10k .btn--secondary { background: var(--c-brand); color: var(--c-text-inv); }
   .i10k .btn--outline { background: transparent; color: currentColor; border: 1.5px solid currentColor; }
   .i10k .btn--block { width: 100%; }
-
-  /* arrow */
-  .i10k .arrow { display: inline-block; transition: transform .12s; }
+  .i10k .arrow { display: inline-block; transition: transform var(--dur) var(--ease-out); }
   .i10k .btn:hover .arrow { transform: translateX(4px); }
 
   /* HERO */
-  .i10k .hero { background: var(--c-bg-inverse); color: var(--c-text-inv); padding: 120px 0 80px; position: relative; overflow: hidden; }
-  @media (min-width: 768px) { .i10k .hero { padding: 160px 0 120px; } }
+  .i10k .hero { background: var(--c-bg-inverse); color: var(--c-text-inv); padding: 116px 0 80px; }
+  @media (min-width: 768px) { .i10k .hero { padding: 156px 0 116px; } }
   .i10k .hero__meta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--c-text-inv-3); letter-spacing: 0.04em; margin-bottom: 32px; }
   .i10k .hero__pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid var(--c-border-dark); border-radius: var(--r-pill); font-size: 12px; font-weight: 700; color: var(--c-accent); letter-spacing: 0.05em; }
   .i10k .hero__pill .dot { width: 6px; height: 6px; background: var(--c-accent); border-radius: 50%; }
   .i10k .hero__sub { font-size: clamp(16px, 1.8vw, 19px); color: var(--c-text-inv-2); max-width: 680px; margin: 28px 0 44px; line-height: 1.75; }
   .i10k .hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 
-  /* Stats strip — Hero 하단 */
-  .i10k .stats { border-top: 1px solid var(--c-border-dark); margin-top: 80px; padding-top: 32px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  @media (min-width: 768px) { .i10k .stats { grid-template-columns: repeat(4, 1fr); gap: 0; } }
+  /* Stats strip */
+  .i10k .stats { border-top: 1px solid var(--c-border-dark); margin-top: 80px; padding-top: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  @media (min-width: 768px) { .i10k .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; } }
   .i10k .stat { padding: 4px 0; }
   @media (min-width: 768px) { .i10k .stat { padding: 4px 24px; border-left: 1px solid var(--c-border-dark); } .i10k .stat:first-child { border-left: 0; padding-left: 0; } }
   .i10k .stat__num { font-size: clamp(28px, 3.5vw, 36px); font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
   .i10k .stat__num--accent { color: var(--c-accent); }
+  .i10k .stat__unit { font-size: 0.5em; color: var(--c-text-inv-3); font-weight: 700; margin-left: 2px; }
   .i10k .stat__lbl { font-size: 12px; color: var(--c-text-inv-3); letter-spacing: 0.05em; }
 
-  /* PAIN — 에디토리얼 (카드 X) */
-  .i10k .pain-intro { max-width: 720px; margin-bottom: 64px; }
+  /* PAIN — 에디토리얼 (번호 컬럼 제거, 진술/설명 2단) */
   .i10k .pain-list { display: flex; flex-direction: column; }
-  .i10k .pain { display: grid; grid-template-columns: auto 1fr; gap: 24px; padding: 36px 0; border-top: 1px solid var(--c-border); }
-  @media (min-width: 768px) { .i10k .pain { grid-template-columns: 80px 1fr; gap: 48px; padding: 48px 0; } }
+  .i10k .pain { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 32px 0; border-top: 1px solid var(--c-border); }
+  @media (min-width: 768px) { .i10k .pain { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 56px; padding: 40px 0; align-items: start; } }
   .i10k .pain:last-child { border-bottom: 1px solid var(--c-border); }
-  .i10k .pain__num { font-size: clamp(28px, 3vw, 36px); font-weight: 800; color: var(--c-accent); letter-spacing: -0.02em; line-height: 1; }
-  .i10k .pain__title { font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; line-height: 1.35; margin-bottom: 12px; letter-spacing: -0.015em; }
-  .i10k .pain__desc { font-size: 15px; color: var(--c-text-3); line-height: 1.7; max-width: 680px; }
+  .i10k .pain__title { font-size: clamp(19px, 2.3vw, 26px); font-weight: 700; line-height: 1.3; letter-spacing: -0.02em; }
+  .i10k .pain__desc { font-size: 15px; color: var(--c-text-3); line-height: 1.7; }
 
-  /* CALLOUT — 마젠타 톤 hightlight box */
-  .i10k .callout { margin-top: 80px; padding: clamp(32px, 5vw, 56px); background: var(--c-accent-tint); border-left: 4px solid var(--c-accent); }
+  /* CALLOUT — 마젠타 톤 highlight box */
+  .i10k .callout { margin-top: 72px; padding: clamp(32px, 5vw, 56px); background: var(--c-accent-tint); border-left: 4px solid var(--c-accent); }
   .i10k .callout p { font-size: clamp(20px, 2.5vw, 28px); line-height: 1.45; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; color: var(--c-text); }
   .i10k .callout p:last-child { margin-bottom: 0; }
   .i10k .callout .muted { color: var(--c-text-muted); font-weight: 500; }
@@ -151,13 +158,15 @@
   @media (min-width: 768px) { .i10k .gallery__slide { flex-basis: calc((100% - 32px) / 3); scroll-snap-align: start; } }
   .i10k .gallery__slide .shot { aspect-ratio: 4 / 3; }
   .i10k .gallery__cap { margin-top: 12px; font-size: 13px; font-weight: 700; color: var(--c-text-3); letter-spacing: 0.02em; }
-  .i10k .gallery__nav { position: absolute; top: 44%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--c-bg-inverse); color: var(--c-text-inv); font-size: 22px; line-height: 1; display: none; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16); }
+  .i10k .gallery__nav { position: absolute; top: 44%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--c-bg-inverse); color: var(--c-text-inv); font-size: 22px; line-height: 1; display: none; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16); transition: transform var(--dur) var(--ease-out); }
   @media (min-width: 768px) { .i10k .gallery__nav { display: inline-flex; } }
+  .i10k .gallery__nav:hover { transform: translateY(-50%) scale(1.06); }
+  .i10k .gallery__nav:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; }
   .i10k .gallery__nav--prev { left: -10px; }
   .i10k .gallery__nav--next { right: -10px; }
-  .i10k .gallery__nav:hover { opacity: 0.9; }
   .i10k .gallery__dots { display: flex; gap: 8px; justify-content: center; margin-top: 24px; }
-  .i10k .gallery__dot { width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0; background: var(--c-border-strong); cursor: pointer; transition: width .15s, background .15s; }
+  .i10k .gallery__dot { width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0; background: var(--c-border-strong); cursor: pointer; transition: width var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out); }
+  .i10k .gallery__dot:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 3px; }
   .i10k .gallery__dot[aria-current="true"] { background: var(--c-accent); width: 22px; border-radius: var(--r-pill); }
 
   /* CURRICULUM — 다크 섹션, 에디토리얼 table */
@@ -173,19 +182,19 @@
   @media (min-width: 768px) { .i10k .curri-desc { grid-column: auto; } }
 
   /* TESTIMONIALS — 에디토리얼 인용 */
-  .i10k .testi-list { display: flex; flex-direction: column; }
-  .i10k .testi { padding: 48px 0; border-top: 1px solid var(--c-border); display: grid; grid-template-columns: 1fr; gap: 20px; }
-  @media (min-width: 880px) { .i10k .testi { grid-template-columns: 200px 1fr; gap: 64px; padding: 64px 0; align-items: start; } }
+  .i10k .testi-note { font-size: 13px; color: var(--c-text-3); margin-top: 12px; }
+  .i10k .testi-list { display: flex; flex-direction: column; margin-top: 8px; }
+  .i10k .testi { padding: 40px 0; border-top: 1px solid var(--c-border); display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 880px) { .i10k .testi { grid-template-columns: 200px 1fr; gap: 64px; padding: 56px 0; align-items: start; } }
   .i10k .testi:last-child { border-bottom: 1px solid var(--c-border); }
   .i10k .testi__who { display: flex; flex-direction: column; gap: 4px; }
   .i10k .testi__name { font-size: 15px; font-weight: 700; }
   .i10k .testi__role { font-size: 13px; color: var(--c-text-3); }
-  .i10k .testi__id { font-size: 11px; color: var(--c-accent); letter-spacing: 0.1em; font-weight: 700; margin-top: 8px; }
+  .i10k .testi__tag { display: inline-block; width: fit-content; font-size: 11px; color: var(--c-accent); font-weight: 700; margin-top: 8px; border: 1px solid var(--c-accent); border-radius: var(--r-sm); padding: 2px 8px; }
   .i10k .testi__quote { font-size: clamp(18px, 2.2vw, 22px); line-height: 1.55; letter-spacing: -0.015em; color: var(--c-text); font-weight: 500; }
-  .i10k .testi-note { font-size: 12px; color: var(--c-text-muted); margin-top: 24px; }
 
   /* PRICING */
-  .i10k .pricing-card { max-width: 760px; margin: 0 auto; background: var(--c-bg-inverse); color: var(--c-text-inv); padding: clamp(36px, 5vw, 56px); border-radius: var(--r-lg); }
+  .i10k .pricing-card { max-width: 760px; background: var(--c-bg-inverse); color: var(--c-text-inv); padding: clamp(36px, 5vw, 56px); border-radius: var(--r-lg); }
   .i10k .price-tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--c-accent-tint); color: var(--c-accent); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; border-radius: var(--r-sm); margin-bottom: 20px; }
   .i10k .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
   .i10k .price-num { font-size: clamp(48px, 7vw, 72px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
@@ -194,32 +203,34 @@
   .i10k .info-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 36px; }
   @media (min-width: 640px) { .i10k .info-grid { grid-template-columns: 1fr 1fr; column-gap: 32px; } }
   .i10k .info-row { padding: 16px 0; border-bottom: 1px solid var(--c-border-dark); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
-  .i10k .info-lbl { font-size: 12px; color: var(--c-text-inv-3); letter-spacing: 0.1em; text-transform: uppercase; flex-shrink: 0; }
+  .i10k .info-lbl { font-size: 13px; color: var(--c-text-inv-3); flex-shrink: 0; }
   .i10k .info-val { font-size: 14px; color: var(--c-text-inv); text-align: right; }
 
   /* CONSULT FORM */
-  .i10k .form-wrap { max-width: 560px; margin: 0 auto; }
+  .i10k .form-wrap { max-width: 560px; }
   .i10k .form-sub { color: var(--c-text-3); margin: 12px 0 36px; font-size: 15px; }
   .i10k .form { display: flex; flex-direction: column; gap: 12px; }
-  .i10k .form input, .i10k .form select { width: 100%; padding: 16px 18px; background: var(--c-bg); border: 1px solid var(--c-border-strong); border-radius: var(--r-md); font-size: 15px; color: var(--c-text); font-family: inherit; line-height: 1.4; transition: border-color .12s; }
-  .i10k .form input:focus, .i10k .form select:focus { outline: none; border-color: var(--c-accent); }
+  .i10k .form input, .i10k .form select { width: 100%; padding: 16px 18px; background: var(--c-bg); border: 1px solid var(--c-border-strong); border-radius: var(--r-md); font-size: 15px; color: var(--c-text); font-family: inherit; line-height: 1.4; transition: border-color var(--dur) var(--ease-out); }
+  .i10k .form input:focus-visible, .i10k .form select:focus-visible { outline: none; border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-tint); }
   .i10k .form input::placeholder { color: var(--c-text-muted); }
   .i10k .form button { margin-top: 12px; }
 
   /* FAQ */
-  .i10k .faq-list { max-width: 880px; margin: 0 auto; }
+  .i10k .faq-list { max-width: 880px; }
   .i10k .faq-item { border-bottom: 1px solid var(--c-border-strong); }
   .i10k .faq-item[open] { background: var(--c-bg-muted); }
   .i10k .faq-q { width: 100%; text-align: left; background: transparent; border: 0; padding: 24px 0; font-size: clamp(16px, 1.8vw, 18px); font-weight: 700; color: var(--c-text); display: flex; justify-content: space-between; align-items: center; gap: 16px; list-style: none; letter-spacing: -0.015em; }
   .i10k .faq-q::-webkit-details-marker { display: none; }
   .i10k .faq-q::marker { display: none; content: ''; }
-  .i10k .faq-toggle { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--c-text); display: inline-flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; transition: all .15s; line-height: 1; font-weight: 700; }
+  .i10k .faq-q:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; }
+  .i10k .faq-toggle { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--c-text); display: inline-flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; line-height: 1; font-weight: 700; transition: transform var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
   .i10k .faq-item[open] .faq-toggle { background: var(--c-accent-strong); border-color: var(--c-accent-strong); color: var(--c-text-inv); transform: rotate(45deg); }
   .i10k .faq-a { padding: 0 0 24px; font-size: 15px; color: var(--c-text-2); line-height: 1.75; max-width: 800px; }
 
   /* FINAL CTA */
-  .i10k .final { text-align: left; padding: clamp(80px, 12vw, 140px) 0; }
+  .i10k .final { padding: clamp(80px, 12vw, 140px) 0; }
   .i10k .final__inner { max-width: 880px; }
+  .i10k .final__kicker { font-size: 14px; font-weight: 700; color: var(--c-accent); margin-bottom: 18px; }
   .i10k .final__sub { font-size: clamp(16px, 1.8vw, 18px); color: var(--c-text-inv-2); margin: 24px 0 44px; max-width: 600px; line-height: 1.7; }
 
   /* FOOTER */
@@ -227,6 +238,12 @@
   .i10k .footer .container { display: flex; flex-direction: column; gap: 8px; }
   .i10k .footer__brand { font-size: 16px; font-weight: 800; color: var(--c-text-inv); letter-spacing: -0.01em; margin-bottom: 8px; }
   .i10k .footer__line { font-size: 12px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .i10k .btn, .i10k .arrow, .i10k .faq-toggle, .i10k .form input,
+    .i10k .form select, .i10k .gallery__nav, .i10k .gallery__dot { transition-duration: 0.01ms; }
+    .i10k .gallery__track { scroll-behavior: auto; }
+  }
 </style>
 
 <div class="i10k">
@@ -235,17 +252,17 @@
   <section class="hero">
     <div class="container">
       <div class="hero__meta">
-        <span class="hero__pill"><span class="dot"></span>2기 모집중 · 잔여 3자리</span>
-        <span>6월 개강반 모집중</span>
+        <span class="hero__pill"><span class="dot"></span>2기 모집중 · 7명 한정</span>
+        <span>6월 개강반</span>
       </div>
       <h1 class="display">
-        첫 고객 앞에서, 커트가<br>
-        <span class="accent">두렵지 않으세요?</span>
+        디자이너 승급 후<br>
+        <span class="accent">첫 커트 고객, 두렵지 않으세요?</span>
       </h1>
       <p class="hero__sub">
-        어깨너머로 보고 눈대중으로 배운 커트로는 그 두려움은 사라지지 않습니다.
-        인턴을 위한 만분의 기적은 커트의 메커니즘을 기초부터 1:1로 훈련해,
-        첫 고객 앞에서도 자신있게 커트할 수 있는 초급 디자이너로 만듭니다.
+        어깨너머로 배운 커트 실력으로는 그 두려움이 사라지지 않습니다.<br>
+        '인턴을 위한 만분의 기적 과정'은 커트의 메커니즘을 기초부터 완벽하게 체화하여,<br>
+        자신있게 가위를 드는 실력있는 초급 디자이너로 만들어 드립니다.
       </p>
       <div class="hero__ctas">
         <a href="#consult" class="btn btn--primary" id="i10kHeroConsult">무료 상담 신청<span class="arrow">→</span></a>
@@ -254,20 +271,20 @@
 
       <div class="stats">
         <div class="stat">
-          <p class="stat__num">14<span style="font-size:0.55em;color:var(--c-text-inv-3);font-weight:700;">회차</span></p>
-          <p class="stat__lbl">3시간 × 14회 = 총 42시간</p>
+          <p class="stat__num">14<span class="stat__unit">회차</span></p>
+          <p class="stat__lbl">3시간 × 14회 = 42시간</p>
         </div>
         <div class="stat">
-          <p class="stat__num stat__num--accent">7<span style="font-size:0.55em;color:var(--c-text-inv-3);font-weight:700;">명</span></p>
+          <p class="stat__num stat__num--accent">7<span class="stat__unit">명</span></p>
           <p class="stat__lbl">소수정예 정원</p>
         </div>
         <div class="stat">
-          <p class="stat__num">300<span style="font-size:0.55em;color:var(--c-text-inv-3);font-weight:700;">분</span></p>
-          <p class="stat__lbl">완벽한 숙달을 위한 자가 훈련</p>
+          <p class="stat__num">300<span class="stat__unit">분</span></p>
+          <p class="stat__lbl">매주 개인훈련 과제 부과</p>
         </div>
         <div class="stat">
-          <p class="stat__num">1<span style="font-size:0.55em;color:var(--c-text-inv-3);font-weight:700;">:1</span></p>
-          <p class="stat__lbl">강사 밀착 멘토링</p>
+          <p class="stat__num">1<span class="stat__unit">:1</span></p>
+          <p class="stat__lbl">강사 밀착 멘토링과 피드백</p>
         </div>
       </div>
     </div>
@@ -276,44 +293,33 @@
   <!-- ══ PAIN ══ -->
   <section class="sec">
     <div class="container">
-      <div class="pain-intro">
-        <p class="eyebrow">Why Intern10000</p>
+      <div class="sec-head">
         <h2 class="h2-display">승급의 기쁨도 잠시,<br>고객 앞에서 손이 멈추는 이유</h2>
       </div>
       <div class="pain-list">
         <div class="pain">
-          <p class="pain__num">01</p>
-          <div>
-            <h3 class="pain__title">승급은 했는데 고객 앞에 서면 손이 떨립니다</h3>
-            <p class="pain__desc">어깨너머로 배운 커트 실력은 자신감으로 이어지지 않습니다. 시작할 때 배운 탄탄한 기초가 10년을 갑니다.</p>
-          </div>
+          <h3 class="pain__title">디자이너 승급은 했는데 고객 앞에 서면 손이 떨립니다</h3>
+          <p class="pain__desc">어깨 너머로 배운 커트 실력은 자신감으로 이어지지 않습니다. 두상의 구조와 커트의 앵글에 대한 정확한 이해가 있으면 원하는 헤어스타일을 자신있게 커트할 수 있습니다. </p>
         </div>
         <div class="pain">
-          <p class="pain__num">02</p>
-          <div>
-            <h3 class="pain__title">영상을 볼 때는 알 것 같은데, 손이 멈춥니다</h3>
-            <p class="pain__desc">시각적 결과물만 눈으로 소비했기 때문입니다. 구조를 모르면 재현할 수 없습니다.</p>
-          </div>
+          <h3 class="pain__title">같은 스타일 잘라도 매번 결과가 다릅니다</h3>
+          <p class="pain__desc">고객의 두상과 모질에 따라 같은 스타일도 자르는 방법이 달라집니다. 두상의 구조와 커트 매커니즘을 모르면 재현할 수 없습니다.</p>
         </div>
         <div class="pain">
-          <p class="pain__num">03</p>
-          <div>
-            <h3 class="pain__title">선배 따라 자르는 법은 익혔는데, 다른 두상에는 안 통합니다</h3>
-            <p class="pain__desc">메커니즘 없이 단편적 패턴만 외웠기 때문입니다. 원리 없이는 응용도 없습니다.</p>
-          </div>
+          <h3 class="pain__title">디자이너 3년차, 여전히 커트가 자신이 없어요</h3>
+          <p class="pain__desc">기초가 부족한 채로 시간이 흐르면 잘못된 습관이 굳어져 고치기 어려워집니다. 10년차 디자이너도 소옴 커트 과정을 수강하는 이유입니다. 초급 디자이너 때 탄탄한 커트 기초를 쌓으면 10년의 시간을 버는 것입니다.</p>
         </div>
       </div>
       <div class="callout">
-        <p><span class="muted">일반 교육은</span> 유행하는 형태<span class="muted">를 가르칩니다.</span></p>
-        <p>인턴10000은 <span class="accent">커트의 메커니즘</span> 자체를 훈련시킵니다.</p>
+        <p><span class="muted">다른 교육은</span>정형화된 스타일<span class="muted">을 가르칩니다.</span></p>
+        <p>인턴만분의 기적은 <span class="accent">커트의 매커니즘</span> 자체를 훈련시킵니다.</p>
       </div>
     </div>
   </section>
 
   <!-- ══ INSTRUCTOR ══ -->
-  <section class="sec sec--subtle">
+  <section class="sec sec--subtle sec--loose">
     <div class="container">
-      <p class="eyebrow">Instructor</p>
       <div class="instructor">
         <div class="instructor__photo shot">
           <span class="shot__ph">강사 사진<small>심일보 · 세로형(4:5) 권장</small></span>
@@ -338,9 +344,8 @@
   <section class="sec sec--dark">
     <div class="container">
       <div class="curri-head">
-        <p class="eyebrow">Curriculum</p>
-        <h2 class="h2-display">가위 잡는 법부터<br>살롱 커트까지, 14회차</h2>
-        <p class="curri-meta">매 회차 3시간 · 매주 300분 자가 훈련 · 1:1 멘토링</p>
+        <h2 class="h2-display">초급 디자이너의 완벽한 스타트<br>인턴 만분의 기적 / 14회차</h2>
+        <p class="curri-meta">매 회차 3시간 · 매주 300분 훈련과제 · 1:1 멘토링</p>
       </div>
       <div class="curri-list">
         <div class="curri-row">
@@ -350,17 +355,17 @@
         </div>
         <div class="curri-row">
           <span class="curri-wk">03–05</span>
-          <h3 class="curri-stage">LINE 테크닉</h3>
+          <h3 class="curri-stage">LINE 마스터</h3>
           <p class="curri-desc">Triangle / Square Line + 블로우드라이 + 도해도 + 이론 Level 1·2 테스트</p>
         </div>
         <div class="curri-row">
           <span class="curri-wk">06–08</span>
-          <h3 class="curri-stage">GRADUATION</h3>
+          <h3 class="curri-stage">GRADUATION 마스터</h3>
           <p class="curri-desc">Triangle / Square / Round Graduation + 도해도 실습</p>
         </div>
         <div class="curri-row">
           <span class="curri-wk">09–11</span>
-          <h3 class="curri-stage">LAYER</h3>
+          <h3 class="curri-stage">LAYER 마스터</h3>
           <p class="curri-desc">Flat (Square) / Convex / Concave (Round) Layer</p>
         </div>
         <div class="curri-row">
@@ -375,9 +380,10 @@
   <!-- ══ CLASS GALLERY ══ -->
   <section class="sec sec--subtle">
     <div class="container">
-      <p class="eyebrow">Class</p>
-      <h2 class="h2-display">수업 현장 들여다보기</h2>
-      <p class="lead" style="margin-top:16px;">14회차가 실제로 어떻게 흘러가는지, 수업 장면을 미리 만나보세요.</p>
+      <div class="sec-head">
+        <h2 class="h2-display">수업 현장 들여다보기</h2>
+        <p class="lead">수업 장면을 미리 만나보세요.</p>
+      </div>
 
       <div class="gallery">
         <button class="gallery__nav gallery__nav--prev" type="button" aria-label="이전 장면">‹</button>
@@ -387,35 +393,35 @@
               <span class="shot__ph">수업 장면 1<small>가로형(4:3) 권장</small></span>
               <!-- 이미지 교체: <span>을 지우고 <img src="iMweb URL" alt="기초 이론·자세 수업">로 교체 -->
             </div>
-            <figcaption class="gallery__cap">기초 이론과 바디 포지션</figcaption>
+            <figcaption class="gallery__cap">01</figcaption>
           </figure>
           <figure class="gallery__slide">
             <div class="shot">
               <span class="shot__ph">수업 장면 2<small>가로형(4:3) 권장</small></span>
               <!-- 이미지 교체: <span>을 지우고 <img src="iMweb URL" alt="LINE 테크닉 실습">로 교체 -->
             </div>
-            <figcaption class="gallery__cap">LINE 테크닉 실습</figcaption>
+            <figcaption class="gallery__cap">02</figcaption>
           </figure>
           <figure class="gallery__slide">
             <div class="shot">
               <span class="shot__ph">수업 장면 3<small>가로형(4:3) 권장</small></span>
               <!-- 이미지 교체: <span>을 지우고 <img src="iMweb URL" alt="GRADUATION 도해도 실습">로 교체 -->
             </div>
-            <figcaption class="gallery__cap">GRADUATION 도해도 실습</figcaption>
+            <figcaption class="gallery__cap">03</figcaption>
           </figure>
           <figure class="gallery__slide">
             <div class="shot">
               <span class="shot__ph">수업 장면 4<small>가로형(4:3) 권장</small></span>
               <!-- 이미지 교체: <span>을 지우고 <img src="iMweb URL" alt="LAYER 워크숍">로 교체 -->
             </div>
-            <figcaption class="gallery__cap">LAYER 워크숍</figcaption>
+            <figcaption class="gallery__cap">04</figcaption>
           </figure>
           <figure class="gallery__slide">
             <div class="shot">
               <span class="shot__ph">수업 장면 5<small>가로형(4:3) 권장</small></span>
               <!-- 이미지 교체: <span>을 지우고 <img src="iMweb URL" alt="졸업 작품 발표">로 교체 -->
             </div>
-            <figcaption class="gallery__cap">졸업 작품 발표</figcaption>
+            <figcaption class="gallery__cap">05</figcaption>
           </figure>
         </div>
         <button class="gallery__nav gallery__nav--next" type="button" aria-label="다음 장면">›</button>
@@ -427,33 +433,33 @@
   <!-- ══ TESTIMONIALS ══ -->
   <section class="sec">
     <div class="container">
-      <p class="eyebrow">Reviews</p>
-      <h2 class="h2-display" style="margin-bottom:8px;">수강생들의 변화</h2>
-      <p class="testi-note">※ 2기 모집 — 페르소나 기반 예상 후기입니다</p>
-      <div class="testi-list" style="margin-top:32px;">
+      <div class="sec-head">
+        <h2 class="h2-display">수강생들의 변화</h2>
+      </div>
+      <div class="testi-list">
         <div class="testi">
           <div class="testi__who">
             <p class="testi__name">김○○</p>
             <p class="testi__role">인턴 2년차, 승급 준비</p>
-            <p class="testi__id">예상 후기</p>
+            <p class="testi__tag">예상 후기</p>
           </div>
-          <p class="testi__quote">인턴 2년 동안 어깨너머로 본 게 전부였어요. 승급 시험 앞두고 막막했는데, 처음으로 "아, 커트가 이렇게 만들어지는구나" 싶었어요. 도해도 그려보면서 머릿속이 정리됐습니다.</p>
+          <p class="testi__quote">인턴 2년 동안 제대로 커트 교육을 받아본 적이 없었어요. 디자이너 승급하고 막막했는데 이 교육을 듣고나서 커트에 자신감이 붙었어요. 특히 도해도로 머리 스타일을 표현할 수 있다는게 신기했어요. </p>
         </div>
         <div class="testi">
           <div class="testi__who">
             <p class="testi__name">이○○</p>
             <p class="testi__role">초급 디자이너 1년차</p>
-            <p class="testi__id">예상 후기</p>
+            <p class="testi__tag">예상 후기</p>
           </div>
-          <p class="testi__quote">승급은 했는데 고객 앞에 서면 손이 떨렸어요. 배운 형태 말고는 자신이 없었거든요. 14회 수업 끝나고 처음으로 'Square를 잘라보세요' 했을 때 머릿속에 단면도가 그려졌습니다.</p>
+          <p class="testi__quote">고객 시술할 때마다 혹시 고객이 마음에 들어하지 않을까봐 스트레스가 많았어요. 학원에서 커트 수업을 여러 가지 들어봤는데 특별히 나아지는 느낌이 없었어요. 인턴만분 14회가 끝나고 처음으로 언제 line, graduation, layer 테크닉을 쓰는지 이해하게 되었습니다.</p>
         </div>
         <div class="testi">
           <div class="testi__who">
             <p class="testi__name">최○○</p>
             <p class="testi__role">디자이너 3년차, 기초 보강</p>
-            <p class="testi__id">예상 후기</p>
+            <p class="testi__tag">예상 후기</p>
           </div>
-          <p class="testi__quote">경력은 쌓였는데 기본기가 약하다는 걸 스스로 알고 있었어요. LINE·GRADUATION·LAYER 순서로 구조를 처음부터 짚어주니까 비로소 채워졌습니다.</p>
+          <p class="testi__quote">경력이 쌓이면서 늘 기본기가 약하다는 걸 스스로 느껴왔어요. 그래도 인턴이 듣는 과정부터 들어야 하나 고민을 많이 했는데 듣고 보니 커트 기초 다지는데 크게 도움이 되었어요. 인턴 시절에 이 과정을 알았다면 지금쯤 더 나은 헤어디자이너가 되지 않았을까 합니다.</p>
         </div>
       </div>
     </div>
@@ -462,8 +468,9 @@
   <!-- ══ PRICING ══ -->
   <section id="pricing" class="sec sec--subtle">
     <div class="container">
-      <p class="eyebrow" style="text-align:center;">Pricing</p>
-      <h2 class="h2-display" style="text-align:center;margin-bottom:48px;">수강 정보</h2>
+      <div class="sec-head">
+        <h2 class="h2-display">수강 정보</h2>
+      </div>
       <div class="pricing-card">
         <span class="price-tag">20% 선납으로 기수 확정</span>
         <div class="price-row">
@@ -474,7 +481,7 @@
         <div class="info-grid">
           <div class="info-row"><span class="info-lbl">기간</span><span class="info-val">14회 × 3시간 (42h)</span></div>
           <div class="info-row"><span class="info-lbl">수업</span><span class="info-val">매주 일요일 오전 10시</span></div>
-          <div class="info-row"><span class="info-lbl">자가 훈련</span><span class="info-val">매주 300분 + 1:1</span></div>
+          <div class="info-row"><span class="info-lbl">개인훈련</span><span class="info-val">매주 300분 + 1:1</span></div>
           <div class="info-row"><span class="info-lbl">정원</span><span class="info-val">7명 · 선착순 마감</span></div>
           <div class="info-row"><span class="info-lbl">개강</span><span class="info-val">2026년 6월</span></div>
         </div>
@@ -483,75 +490,40 @@
     </div>
   </section>
 
-  <!-- ══ CONSULT FORM ══ -->
-  <section id="consult" class="sec">
-    <div class="container">
-      <div class="form-wrap">
-        <p class="eyebrow" style="text-align:center;">Consult</p>
-        <h2 class="h2-display" style="text-align:center;">무료 상담 신청</h2>
-        <p class="form-sub" style="text-align:center;">24시간 내 연락드립니다</p>
-        <form id="i10kForm" class="form">
-          <input type="text" name="name" placeholder="이름" required>
-          <input type="tel" name="phone" placeholder="연락처 (010-XXXX-XXXX)" required>
-          <select name="status" required>
-            <option value="">현재 단계를 선택해 주세요</option>
-            <option>인턴 (승급 준비 중)</option>
-            <option>초급 디자이너 (승급 직후~1년)</option>
-            <option>경력 디자이너 (기초 보강 목적)</option>
-            <option>기타</option>
-          </select>
-          <select name="question">
-            <option value="">가장 궁금한 점을 선택해 주세요</option>
-            <option>커리큘럼과 수업 난이도가 궁금해요</option>
-            <option>수강료·분납 방법이 궁금해요</option>
-            <option>개강일과 정원 잔여가 궁금해요</option>
-            <option>현장 일과 병행 가능한지 궁금해요</option>
-          </select>
-          <button type="submit" class="btn btn--primary btn--block">자리 확인하기<span class="arrow">→</span></button>
-        </form>
-      </div>
-    </div>
-  </section>
+
 
   <!-- ══ FAQ ══ -->
-  <section class="sec sec--subtle">
+  <section class="sec sec--subtle sec--tight">
     <div class="container">
-      <p class="eyebrow" style="text-align:center;">FAQ</p>
-      <h2 class="h2-display" style="text-align:center;margin-bottom:48px;">자주 묻는 질문</h2>
+      <div class="sec-head">
+        <h2 class="h2-display">자주 묻는 질문</h2>
+      </div>
       <div class="faq-list">
         <details class="faq-item">
           <summary class="faq-q">디자이너 승급 전에 받아도 늦지 않나요?<span class="faq-toggle">+</span></summary>
-          <p class="faq-a">오히려 승급 전이 가장 좋은 타이밍입니다. 잘못된 습관이 굳기 전에 구조부터 잡으면 데뷔 후 시술 시간과 자신감이 다릅니다.</p>
+          <p class="faq-a">디자이너 승급 전이 커트 베이직을 다지는 가장 좋은 타이밍입니다. 잘못된 습관이 굳기 전에 구조와 원리를 이해하면 디자이너 승급 후 매출이 달라집니다.</p>
         </details>
         <details class="faq-item">
           <summary class="faq-q">현장 일과 병행 가능한가요?<span class="faq-toggle">+</span></summary>
-          <p class="faq-a">회당 3시간 14회차로 설계되어 살롱 근무와 병행 가능합니다. 매주 300분 자가 훈련을 권장하며, 소수정예라 불가피한 결석 시 개별 보강 협의 가능합니다.</p>
+          <p class="faq-a">인턴 만분의 기적 과정은 회당 3시간 총 14회차로 매주 일요일 진행됩니다. 주 1회 진행되어 휴무일을 조정하여 현장 일과 병행이 가능합니다.</p>
         </details>
         <details class="faq-item">
-          <summary class="faq-q">1년차인데 따라갈 수 있을까요?<span class="faq-toggle">+</span></summary>
-          <p class="faq-a">1회차 SOMSS Hair Cut Theory부터 시작합니다. 어깨너머 경험만 있어도 도해도 학습과 실습이 단계적으로 쌓이기 때문에 충분히 따라옵니다.</p>
+          <summary class="faq-q">경력 디자이너가 들어도 되나요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">커트 기초는 경력과 무관합니다. 소옴크리에이티브의 커트 과정은 수강생 중 5~10년차 경력 디자이너들이 60%가 넘습니다.</p>
         </details>
         <details class="faq-item">
-          <summary class="faq-q">수강료가 부담스러워요.<span class="faq-toggle">+</span></summary>
-          <p class="faq-a">20% 선납으로 기수 확정 후 잔여 수강료를 개강 전까지 납부할 수 있어 부담을 분산합니다. 단발성 워크숍 4~5회 비용 수준에서 14회 × 3시간 + 매주 실전 훈련이 진행됩니다.</p>
-        </details>
-        <details class="faq-item">
-          <summary class="faq-q">이론만 많은 거 아닌가요?<span class="faq-toggle">+</span></summary>
-          <p class="faq-a">14회차 중 12회차가 DEMO + WORKSHOP 실습입니다. 도해도 학습은 손이 정확해지기 위한 도구일 뿐, 메인은 가위질입니다.</p>
-        </details>
-        <details class="faq-item">
-          <summary class="faq-q">클래식코스와 다른 점은?<span class="faq-toggle">+</span></summary>
-          <p class="faq-a">클래식코스는 경력 3~7년 디자이너의 심화 과정입니다. 인턴10000은 인턴~경력 2년 미만의 기초 보강이 목표 — LINE·GRADUATION·LAYER 베이직을 14회차로 더 천천히, 더 단단히 다집니다.</p>
+          <summary class="faq-q">실습 대비 이론 비중이 많은가요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">소옴크리에이티브의 교육 과정에는 반드시 기본 이론이 포함되지만, 실습 및 워크샵 비중이 대부분입니다. 14회차 중 대부분의 시간이 실습과 강사의 1:1 멘토링으로 진행됩니다.</p>
         </details>
       </div>
     </div>
   </section>
 
   <!-- ══ FINAL CTA ══ -->
-  <section class="final sec--dark">
+  <section class="sec sec--dark final">
     <div class="container">
       <div class="final__inner">
-        <p class="eyebrow eyebrow--accent">7명 소수정예 · 2기 모집 중</p>
+        <p class="final__kicker">7명 소수정예 · 2기 모집 중</p>
         <h2 class="display">탄탄한 커트실력이<br>성공하는 디자이너를 만듭니다</h2>
         <p class="final__sub">베이직 테크닉을 14회차에 완성합니다. 지금 2기 자리를 확인해보세요.</p>
         <a href="#consult" class="btn btn--primary" id="i10kFinalCta">무료 상담 신청<span class="arrow">→</span></a>
@@ -559,43 +531,23 @@
     </div>
   </section>
 
-  <!-- ══ FOOTER ══ -->
-  <footer class="footer">
-    <div class="container">
-      <p class="footer__brand">소옴크리에이티브</p>
-      <p class="footer__line">대표: 심일보</p>
-      <p class="footer__line">© 2026 소옴크리에이티브. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- 코드블럭 하단 앵커: #consult로 점프하면 이 지점이 화면 상단으로 → 바로 아래 아임웹 폼 위젯 노출 -->
+  <div id="consult" aria-hidden="true" style="display:block;height:1px;scroll-margin-top:0;"></div>
 </div>
 
 <script>
   (function(){
     "use strict";
 
-    // Consult form — Meta Pixel Lead event + thankyou redirect
-    var form = document.getElementById('i10kForm');
-    if (form) {
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        if (typeof fbq !== 'undefined') {
-          fbq('track', 'Lead', { content_name: 'intern10000-2기-consult' });
-        }
-        // TODO: 아임웹 폼 액션 URL 또는 fetch 전송으로 교체
-        window.location.href = '/intern10000/thankyou';
-      });
-    }
-
-    // CTA Meta Pixel tracking
+    // CTA Meta Pixel tracking (스크롤 점프는 href="#consult" 네이티브 동작이 처리)
     ['i10kHeroConsult', 'i10kPricingCta', 'i10kFinalCta'].forEach(function(id){
       var el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('click', function(){
-          if (typeof fbq !== 'undefined') {
-            fbq('track', 'InitiateCheckout', { content_name: 'intern10000-' + id });
-          }
-        });
-      }
+      if (!el) return;
+      el.addEventListener('click', function(){
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'InitiateCheckout', { content_name: 'intern10000-' + id });
+        }
+      });
     });
 
     // Class gallery — 화살표 · 도트 · 스크롤 위치 동기화
