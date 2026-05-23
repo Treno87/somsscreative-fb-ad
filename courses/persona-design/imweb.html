@@ -1,0 +1,1306 @@
+<!-- hallmark:start course=persona-design v=1 generated=2026-05-23 -->
+<!-- 페르소나 디자인 — 얼굴파츠분석 과정 1기 · 아임웹 코드블록 정본 -->
+<!-- 정본: courses/persona-design/imweb.html · 아임웹 코드 위젯에 그대로 붙여넣기 (<html>/<head>/<body> 없이) -->
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Raleway:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  .pd {
+    /* tokens — NOBASE CLASS DNA: 다크 페이퍼 · 화이트 잉크 · 바이올렛 액센트 · radial orb */
+    --c-paper:        #0a0a0e;             /* 거의 검정에 살짝 보라 띠 */
+    --c-paper-2:      #15181e;             /* 카드 표면 (살짝 옅음) */
+    --c-paper-3:      #1f232b;             /* 카드 호버 / 인풋 */
+    --c-paper-light:  #ffffff;             /* 라이트 인버전 섹션 */
+    --c-paper-tint:   #f6f7fa;             /* 라이트 인버전 옅음 */
+
+    --c-ink:        #ffffff;               /* 다크 위 본문 */
+    --c-ink-2:      rgba(255, 255, 255, 0.78);
+    --c-ink-3:      rgba(255, 255, 255, 0.55);
+    --c-ink-muted:  rgba(255, 255, 255, 0.40);
+    --c-ink-dark:   #0a0a0e;               /* 라이트 인버전 본문 */
+    --c-ink-dark-2: rgba(10, 10, 14, 0.72);
+    --c-ink-dark-3: rgba(10, 10, 14, 0.55);
+
+    --c-line:       rgba(255, 255, 255, 0.10);
+    --c-line-soft:  rgba(255, 255, 255, 0.05);
+    --c-line-dark:  rgba(10, 10, 14, 0.10);
+
+    --c-accent:      #7b3eed;              /* violet — NOBASE 시그니처 */
+    --c-accent-2:    #a575ff;              /* violet light */
+    --c-accent-deep: #5a23c0;              /* violet pressed */
+    --c-accent-soft: rgba(123, 62, 237, 0.14);
+    --c-accent-line: rgba(123, 62, 237, 0.30);
+    --c-accent-glow: rgba(123, 62, 237, 0.55);
+    --c-magenta:     #d946ef;              /* AI 카드용 보조 (NOBASE 그라데이션 톤) */
+    --c-disclosure:  rgba(255, 255, 255, 0.45);
+
+    /* signature orb — radial bloom */
+    --orb-hero: radial-gradient(60% 70% at 50% 35%, var(--c-accent-glow), transparent 65%);
+    --orb-soft: radial-gradient(50% 60% at 80% 50%, rgba(123, 62, 237, 0.28), transparent 60%);
+
+    /* radii — NOBASE DOM 추출 기준 (12px 카드 베이스, 30px 알약 CTA, 8px 칩) */
+    --r-input: 6px;
+    --r-chip: 8px;
+    --r-card: 12px;
+    --r-sheet: 16px;
+    --r-pill: 30px;
+    /* legacy alias — 기존 클래스 호환용 */
+    --r-sm: var(--r-chip);
+    --r-md: var(--r-card);
+    --r-lg: var(--r-card);
+
+    /* type sizes — NOBASE DOM 기준 (18px 본문 베이스) */
+    --text-base: 1.125rem;  /* 18px */
+    --text-md:   1rem;      /* 16px */
+    --text-sm:   0.875rem;  /* 14px */
+    --text-xs:   0.75rem;   /* 12px */
+
+    /* weights — 3-tier (DOM에 500/300 미사용) */
+    --w-body:  400;
+    --w-label: 600;
+    --w-head:  700;
+
+    --container: 1180px;
+
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    color: var(--c-ink);
+    background: var(--c-paper);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+
+  .pd *, .pd *::before, .pd *::after { box-sizing: border-box; }
+  .pd a { text-decoration: none; color: inherit; }
+  .pd img { display: block; max-width: 100%; }
+  .pd h1, .pd h2, .pd h3, .pd h4, .pd p, .pd ul, .pd ol { margin: 0; }
+  .pd ul, .pd ol { padding: 0; list-style: none; }
+  .pd button { font-family: inherit; cursor: pointer; }
+
+  /* layout — 기본 다크, 일부 라이트 인버전으로 리듬 */
+  .pd .container { max-width: var(--container); margin: 0 auto; padding: 0 22px; position: relative; }
+  @media (min-width: 768px) { .pd .container { padding: 0 36px; } }
+  .pd .sec { padding: 88px 0; position: relative; }
+  @media (min-width: 768px) { .pd .sec { padding: 120px 0; } }
+
+  /* sec--dark는 기본 자체가 다크라 alias (legacy 호환) */
+  .pd .sec--dark { background: var(--c-paper); color: var(--c-ink); }
+  /* sec--light — 라이트 인버전. --c-disclosure 등을 라이트용으로 cascade redefine */
+  .pd .sec--light {
+    background: var(--c-paper-light); color: var(--c-ink-dark);
+    --c-disclosure: rgba(10, 10, 14, 0.50);
+  }
+  .pd .sec--tint  {
+    background: var(--c-paper-tint);  color: var(--c-ink-dark);
+    --c-disclosure: rgba(10, 10, 14, 0.50);
+  }
+  .pd .sec--warm  { background: var(--c-paper-2); }
+
+  /* 다크 섹션끼리도 표면이 다르게 — 위치 변주 orb 모디파이어 */
+  .pd .sec--orb-tr, .pd .sec--orb-bl, .pd .sec--orb-tl, .pd .sec--orb-br { position: relative; overflow: hidden; }
+  .pd .sec--orb-tr::before, .pd .sec--orb-bl::before,
+  .pd .sec--orb-tl::before, .pd .sec--orb-br::before {
+    content: ""; position: absolute; width: 720px; height: 720px;
+    pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(123, 62, 237, 0.22), transparent 60%);
+  }
+  .pd .sec--orb-tr::before { top: -360px; right: -180px; }
+  .pd .sec--orb-bl::before { bottom: -360px; left: -180px; }
+  .pd .sec--orb-tl::before { top: -360px; left: -180px; background: radial-gradient(circle, rgba(123, 62, 237, 0.35), transparent 60%); }
+  .pd .sec--orb-br::before { bottom: -300px; right: -160px; background: radial-gradient(circle, rgba(217, 70, 239, 0.16), transparent 60%); }
+  .pd .sec--orb-tr > *, .pd .sec--orb-bl > *,
+  .pd .sec--orb-tl > *, .pd .sec--orb-br > * { position: relative; z-index: 1; }
+
+  /* eyebrow — 다크 기본 = 바이올렛, 라이트 인버전에서도 바이올렛 유지 */
+  .pd .eyebrow {
+    font-family: "Raleway", "Pretendard Variable", sans-serif;
+    font-size: var(--text-xs); font-weight: var(--w-head); letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--c-accent); margin-bottom: 18px;
+  }
+
+  .pd h1, .pd h2, .pd h3 { letter-spacing: -0.02em; font-weight: 700; line-height: 1.22; word-break: keep-all; }
+  .pd .serif { font-family: "Cormorant Garamond", "Pretendard Variable", serif; font-weight: 500; letter-spacing: -0.005em; }
+  .pd .display { font-size: clamp(32px, 5.6vw, 58px); font-weight: 700; line-height: 1.18; letter-spacing: -0.025em; }
+  .pd .h2-display { font-size: clamp(26px, 4vw, 40px); line-height: 1.22; letter-spacing: -0.02em; }
+  .pd .h3-block { font-size: clamp(18px, 2.4vw, 24px); font-weight: 700; line-height: 1.3; letter-spacing: -0.015em; }
+
+  /* lead — 다크 위 기본, 라이트 인버전에서 어두운 본문 */
+  .pd .lead { font-size: clamp(16px, 1.55vw, 18px); color: var(--c-ink-2); line-height: 1.75; max-width: 720px; }
+  .pd .sec--light .lead, .pd .sec--tint .lead { color: var(--c-ink-dark-2); }
+
+  /* buttons — 알약 pill, violet 메인 */
+  .pd .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    height: 56px; padding: 0 32px; font-size: var(--text-md); font-weight: var(--w-head);
+    border-radius: var(--r-pill); border: 1px solid transparent;
+    transition: transform .12s ease, background .12s ease, color .12s ease, box-shadow .15s ease;
+    min-width: 200px; white-space: nowrap; letter-spacing: 0.01em;
+  }
+  .pd .btn:hover { transform: translateY(-1px); }
+  .pd .btn--primary {
+    background: var(--c-accent); color: #fff;
+    box-shadow: 0 8px 24px rgba(123, 62, 237, 0.30);
+  }
+  .pd .btn--primary:hover { background: var(--c-accent-deep); box-shadow: 0 10px 28px rgba(123, 62, 237, 0.42); }
+  .pd .btn--ghost-dark { background: transparent; color: #fff; border-color: rgba(255,255,255,0.30); }
+  .pd .btn--ghost-dark:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.55); }
+  .pd .btn--ghost { background: transparent; color: var(--c-ink-dark); border-color: var(--c-ink-dark); }
+  .pd .btn--ghost:hover { background: var(--c-ink-dark); color: #fff; }
+  .pd .btn--kakao { background: #FEE500; color: #191919; }
+  .pd .btn--kakao:hover { background: #ffd900; }
+  .pd .btn--block { width: 100%; }
+  .pd .arrow { display: inline-block; transition: transform .15s; }
+  .pd .btn:hover .arrow { transform: translateX(4px); }
+
+  /* notice bar — 다크 위 다크 */
+  .pd .notice {
+    position: sticky; top: 0; z-index: 50;
+    background: #000; color: #fff;
+    text-align: center; font-size: var(--text-sm); font-weight: var(--w-label); letter-spacing: 0.04em;
+    padding: 12px 16px; border-bottom: 1px solid var(--c-line);
+  }
+  .pd .notice strong { color: var(--c-accent-2); font-weight: var(--w-head); }
+
+  /* HERO — NOBASE 다크 + violet radial orb */
+  .pd .hero {
+    background: var(--c-paper); color: var(--c-ink);
+    padding: 110px 0 96px; position: relative; overflow: hidden; isolation: isolate;
+  }
+  @media (min-width: 880px) { .pd .hero { padding: 156px 0 132px; } }
+  /* violet orb 배경 — pseudo-element로 깔아 콘텐츠에 영향 0 */
+  .pd .hero::before {
+    content: "";
+    position: absolute; inset: -10%;
+    background: var(--orb-hero);
+    z-index: -1; pointer-events: none;
+  }
+  /* corner flag chips — 4귀퉁이 (Curvy / Neutral / Sharp / Face 9) */
+  .pd .hero__flag {
+    position: absolute; z-index: 1;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: var(--c-accent); color: #fff;
+    border-radius: var(--r-chip);
+    font-family: "Raleway", sans-serif;
+    font-size: var(--text-xs); font-weight: var(--w-head); letter-spacing: 0.08em; text-transform: uppercase;
+    box-shadow: 0 8px 24px rgba(123, 62, 237, 0.35);
+  }
+  .pd .hero__flag::before {
+    content: ""; width: 6px; height: 6px;
+    background: #fff; border-radius: 50%;
+  }
+  .pd .hero__flag--tl { top: 18%;  left:  4%; }
+  .pd .hero__flag--tr { top: 14%;  right: 5%; background: var(--c-accent-deep); }
+  .pd .hero__flag--bl { bottom: 22%; left: 7%; background: var(--c-magenta); box-shadow: 0 8px 24px rgba(217, 70, 239, 0.35); }
+  .pd .hero__flag--br { bottom: 18%; right: 4%; background: var(--c-accent); }
+  @media (max-width: 720px) {
+    .pd .hero__flag { font-size: 10px; padding: 6px 10px; }
+    .pd .hero__flag--tl { top: 8%; left: 3%; }
+    .pd .hero__flag--tr { top: 6%; right: 3%; }
+    .pd .hero__flag--bl, .pd .hero__flag--br { display: none; }
+  }
+
+  .pd .hero__inner { max-width: 820px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
+  .pd .hero__pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 18px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--c-accent-line);
+    border-radius: 999px; font-size: var(--text-xs); font-weight: var(--w-head);
+    color: var(--c-accent-2); letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 32px;
+    backdrop-filter: blur(6px);
+  }
+  .pd .hero__pill .dot { width: 6px; height: 6px; background: var(--c-accent); border-radius: 50%; box-shadow: 0 0 12px var(--c-accent); }
+  .pd .hero__sub {
+    font-size: clamp(16px, 1.7vw, 19px); color: var(--c-ink-2);
+    margin: 28px auto 44px; max-width: 620px; line-height: 1.78;
+  }
+  .pd .hero__sub strong { color: var(--c-ink); font-weight: var(--w-label); }
+  .pd .hero__ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+  /* matrix strip — Hero 하단, 다크 카드 */
+  .pd .matrix {
+    margin-top: 72px; padding: 24px clamp(20px, 3vw, 40px);
+    background: var(--c-paper-2); border: 1px solid var(--c-line);
+    border-radius: var(--r-card);
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px;
+    position: relative; z-index: 2;
+  }
+  @media (min-width: 768px) { .pd .matrix { grid-template-columns: repeat(4, 1fr); gap: 0; } }
+  .pd .matrix__col { padding: 10px 0; text-align: center; }
+  @media (min-width: 768px) { .pd .matrix__col { padding: 10px 22px; border-left: 1px solid var(--c-line); text-align: left; } .pd .matrix__col:first-child { border-left: 0; padding-left: 6px; } }
+  .pd .matrix__lbl { font-family: "Raleway", sans-serif; font-size: 10px; font-weight: var(--w-head); letter-spacing: 0.18em; color: var(--c-ink-muted); text-transform: uppercase; margin-bottom: 8px; }
+  .pd .matrix__val { font-size: clamp(19px, 2.2vw, 24px); font-weight: var(--w-head); letter-spacing: -0.015em; color: var(--c-ink); line-height: 1.3; }
+  .pd .matrix__val em { font-style: normal; color: var(--c-accent-2); }
+
+  /* PAIN — 에디토리얼 리스트 */
+  .pd .pain-intro { max-width: 760px; margin-bottom: 56px; }
+  .pd .pain-list { display: flex; flex-direction: column; }
+  .pd .pain { display: grid; grid-template-columns: auto 1fr; gap: 24px; padding: 36px 0; border-top: 1px solid var(--c-line); }
+  @media (min-width: 768px) { .pd .pain { grid-template-columns: 96px 1fr; gap: 56px; padding: 48px 0; } }
+  .pd .pain:last-of-type { border-bottom: 1px solid var(--c-line); }
+  .pd .pain__num {
+    font-family: "Raleway", sans-serif; font-size: clamp(22px, 2.6vw, 30px); font-weight: 300;
+    color: var(--c-accent); letter-spacing: 0.04em; line-height: 1; letter-spacing: 0.04em;
+  }
+  .pd .pain__title { font-size: clamp(18px, 2.2vw, 23px); font-weight: 700; line-height: 1.35; margin-bottom: 14px; letter-spacing: -0.015em; }
+  .pd .pain__desc { font-size: 15px; color: var(--c-ink-3); line-height: 1.75; max-width: 680px; }
+
+  /* CALLOUT — 진단지 톤 */
+  .pd .callout {
+    margin-top: 72px; padding: clamp(28px, 4.5vw, 48px);
+    background: var(--c-paper-tint); border-left: 3px solid var(--c-accent);
+    border-radius: 0 var(--r-card) var(--r-card) 0;
+  }
+  .pd .callout p {
+    font-size: clamp(17px, 2.1vw, 22px); line-height: 1.55; font-weight: 500;
+    letter-spacing: -0.015em; color: var(--c-ink); margin-bottom: 10px;
+  }
+  .pd .callout p:last-child { margin-bottom: 0; }
+  .pd .callout .muted { color: var(--c-ink-muted); font-weight: 400; }
+  .pd .callout .accent { color: var(--c-accent); font-weight: 700; }
+
+  /* INSTRUCTOR */
+  .pd .instructor { display: grid; grid-template-columns: 1fr; gap: 36px; }
+  @media (min-width: 880px) { .pd .instructor { grid-template-columns: 0.82fr 1.18fr; gap: 72px; align-items: start; } }
+  .pd .instructor__photo { aspect-ratio: 4 / 5; }
+  .pd .instructor__name {
+    font-family: "Cormorant Garamond", serif; font-size: clamp(34px, 5vw, 50px);
+    font-weight: 500; letter-spacing: -0.01em; line-height: 1.05; margin-bottom: 10px;
+  }
+  .pd .instructor__role { font-size: 12px; color: var(--c-ink-3); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 22px; }
+  .pd .instructor__bio { font-size: 16px; color: var(--c-ink-2); line-height: 1.75; }
+  .pd .cred-list { display: flex; flex-direction: column; gap: 0; margin-top: 32px; }
+  .pd .cred-list li {
+    display: grid; grid-template-columns: 92px 1fr; gap: 20px;
+    padding: 16px 0; border-bottom: 1px solid var(--c-line);
+    font-size: 15px; line-height: 1.55; color: var(--c-ink);
+  }
+  .pd .cred-list li:first-child { border-top: 1px solid var(--c-line); }
+  .pd .cred-list .yr { color: var(--c-accent); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 2px; }
+  .pd .tbd { color: var(--c-ink-muted); font-style: italic; font-weight: 400; }
+
+  /* heritage note — ICPA */
+  .pd .heritage {
+    margin-top: 48px; padding: clamp(24px, 3.5vw, 36px);
+    border: 1px solid var(--c-line); background: var(--c-paper);
+    border-radius: var(--r-card);
+  }
+  .pd .heritage__title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--c-accent); text-transform: uppercase; margin-bottom: 14px; }
+  .pd .heritage__body { font-size: 15px; color: var(--c-ink-2); line-height: 1.75; }
+  .pd .disclosure {
+    display: block; margin-top: 16px; padding-top: 14px;
+    border-top: 1px dashed var(--c-line);
+    font-size: 12px; color: var(--c-disclosure); line-height: 1.65; font-style: italic;
+  }
+
+  /* IMAGE SLOT */
+  .pd .shot { position: relative; overflow: hidden; border-radius: var(--r-md); background: var(--c-paper-warm); display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--c-line); }
+  .pd .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pd .shot__ph { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--c-ink-muted); text-align: center; padding: 14px; text-transform: uppercase; }
+  .pd .shot__ph small { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.04em; margin-top: 6px; opacity: 0.85; text-transform: none; }
+
+  /* FRAMEWORK — 9 페이스 타입 매트릭스 미니뷰 */
+  .pd .framework-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 48px; }
+  @media (min-width: 880px) { .pd .framework-grid { grid-template-columns: repeat(3, 1fr); gap: 28px; } }
+  .pd .framework-card {
+    position: relative; overflow: hidden;
+    padding: 32px 28px 36px; background: var(--c-paper);
+    border: 1px solid var(--c-line); border-top: 3px solid var(--c-accent);
+    border-radius: var(--r-card);
+    --card-hue: var(--c-accent);
+    --card-hue-glow: rgba(123, 62, 237, 0.22);
+  }
+  /* 카드별 hue 분리 — NOBASE 카테고리 카드처럼 색을 흩뿌림 */
+  .pd .framework-card:nth-child(1) {
+    --card-hue: #7b3eed;            /* violet */
+    --card-hue-glow: rgba(123, 62, 237, 0.22);
+  }
+  .pd .framework-card:nth-child(2) {
+    --card-hue: #d946ef;            /* magenta */
+    --card-hue-glow: rgba(217, 70, 239, 0.20);
+  }
+  .pd .framework-card:nth-child(3) {
+    --card-hue: #38bdf8;            /* cyan-blue */
+    --card-hue-glow: rgba(56, 189, 248, 0.20);
+  }
+  .pd .framework-card { border-top-color: var(--card-hue); }
+  /* 카드 우하단 hue glow — orb 같은 느낌의 corner wash */
+  .pd .framework-card::after {
+    content: "";
+    position: absolute; right: -40px; bottom: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, var(--card-hue-glow), transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .pd .framework-card > * { position: relative; z-index: 1; }
+
+  .pd .framework-card__art {
+    position: absolute; right: -8px; bottom: -8px; width: 96px; height: 96px;
+    opacity: 0.85; pointer-events: none; z-index: 1;
+    color: var(--card-hue);
+  }
+  .pd .framework-card__art svg { width: 100%; height: 100%; display: block; }
+
+  /* period accent — NOBASE "Contact us." 시그니처 (violet) */
+  .pd .dot-accent::after {
+    content: ".";
+    color: var(--c-accent);
+    font-weight: var(--w-head);
+    margin-left: 2px;
+    display: inline-block;
+  }
+  .pd .framework__label { font-family: "Raleway", sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-ink-muted); margin-bottom: 12px; }
+  .pd .framework__title { font-size: 19px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 12px; line-height: 1.35; }
+  .pd .framework__desc { font-size: 14px; color: var(--c-ink-3); line-height: 1.7; }
+
+  .pd .face9 {
+    margin-top: 56px; padding: clamp(28px, 4vw, 44px);
+    background: var(--c-ink); color: var(--c-paper); border-radius: var(--r-lg);
+  }
+  .pd .face9__head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .pd .face9__title { font-size: clamp(20px, 2.6vw, 26px); font-weight: 700; letter-spacing: -0.02em; }
+  .pd .face9__lead { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+  .pd .face9__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.14); }
+  .pd .face9__cell {
+    padding: 18px 14px; background: var(--c-ink); text-align: center;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: var(--c-paper);
+  }
+  @media (min-width: 640px) { .pd .face9__cell { padding: 24px 16px; font-size: 14px; } }
+  .pd .face9__cell em { font-style: normal; display: block; font-family: "Raleway", sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(255,255,255,0.45); margin-bottom: 6px; text-transform: uppercase; }
+
+  /* CURRICULUM — amber 액센트 + soft orb로 다크 사이 톤 변주 */
+  .pd .curri-head { display: flex; flex-direction: column; gap: 14px; max-width: 800px; margin-bottom: 48px; }
+  .pd .curri-meta { font-size: 13px; color: rgba(255,255,255,0.65); letter-spacing: 0.04em; }
+  .pd .curri-list { display: flex; flex-direction: column; }
+  .pd .curri-row { display: grid; grid-template-columns: 64px 1fr; gap: 18px; padding: 28px 0; border-top: 1px solid rgba(255,255,255,0.12); align-items: start; }
+  @media (min-width: 768px) { .pd .curri-row { grid-template-columns: 92px 1.4fr 1.4fr; gap: 36px; padding: 32px 0; } }
+  .pd .curri-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
+  /* SESS 번호 — amber로 cool-only 팔레트 깨기 (curriculum만의 시그니처) */
+  .pd .curri-wk {
+    font-family: "Raleway", sans-serif; font-size: clamp(22px, 2.6vw, 28px); font-weight: var(--w-head);
+    letter-spacing: 0.04em; color: #f5b840; line-height: 1;
+  }
+  .pd .curri-stage { font-size: clamp(16px, 1.9vw, 19px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.4; color: #fff; }
+  .pd .curri-desc { font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.7; grid-column: 2 / -1; }
+  @media (min-width: 768px) { .pd .curri-desc { grid-column: auto; } }
+  .pd .curri-foot { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 28px; }
+
+  /* TESTIMONIALS — 출처 명시 강조 */
+  .pd .testi-note {
+    padding: 14px 18px; background: var(--c-paper-tint); border-left: 3px solid var(--c-disclosure);
+    font-size: 13px; color: var(--c-ink-2); line-height: 1.7; max-width: 760px; margin-top: 16px;
+    border-radius: 0 var(--r-chip) var(--r-chip) 0;
+  }
+  .pd .testi-list { display: flex; flex-direction: column; margin-top: 40px; }
+  .pd .testi { padding: 44px 0; border-top: 1px solid var(--c-line); display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 880px) { .pd .testi { grid-template-columns: 220px 1fr; gap: 56px; padding: 56px 0; align-items: start; } }
+  .pd .testi:last-of-type { border-bottom: 1px solid var(--c-line); }
+  .pd .testi__who { display: flex; flex-direction: column; gap: 6px; }
+  .pd .testi__tag { font-size: 11px; color: var(--c-accent); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; }
+  .pd .testi__label { font-size: 14px; font-weight: 700; color: var(--c-ink); }
+  .pd .testi__quote { font-size: clamp(17px, 2vw, 20px); line-height: 1.65; letter-spacing: -0.01em; color: var(--c-ink); font-weight: 500; }
+  .pd .testi__src { display: block; margin-top: 14px; font-size: 12px; color: var(--c-disclosure); letter-spacing: 0.02em; font-style: italic; }
+
+  /* OUTCOMES — 수강 후 변화 4단계 */
+  .pd .outcomes { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 40px; border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line); }
+  @media (min-width: 768px) { .pd .outcomes { grid-template-columns: repeat(4, 1fr); } }
+  .pd .outcome { padding: 32px 0; border-bottom: 1px solid var(--c-line); }
+  @media (min-width: 768px) { .pd .outcome { padding: 36px 28px; border-bottom: 0; border-left: 1px solid var(--c-line); } .pd .outcome:first-child { border-left: 0; padding-left: 0; } .pd .outcome:last-child { padding-right: 0; } }
+  .pd .outcome:last-child { border-bottom: 0; }
+  .pd .outcome__num { font-family: "Raleway", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; color: var(--c-accent); margin-bottom: 14px; }
+  .pd .outcome__title { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; line-height: 1.35; }
+  .pd .outcome__desc { font-size: 14px; color: var(--c-ink-3); line-height: 1.7; }
+
+  /* PRICING */
+  .pd .pricing-card {
+    max-width: 760px; margin: 0 auto;
+    background: var(--c-paper); color: var(--c-ink);
+    padding: clamp(32px, 5vw, 56px);
+    border: 1px solid var(--c-ink); border-radius: var(--r-lg);
+  }
+  .pd .price-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; background: var(--c-accent-soft); color: var(--c-accent);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: var(--r-sm); margin-bottom: 22px;
+  }
+  .pd .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+  .pd .price-tbd {
+    font-family: "Cormorant Garamond", serif; font-size: clamp(36px, 6vw, 56px);
+    font-weight: 500; letter-spacing: -0.02em; color: var(--c-ink); line-height: 1;
+  }
+  .pd .price-unit { font-size: 16px; color: var(--c-ink-3); font-weight: 500; }
+  .pd .price-sub { font-size: 13px; color: var(--c-ink-muted); margin-bottom: 32px; }
+  .pd .info-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
+  @media (min-width: 640px) { .pd .info-grid { grid-template-columns: 1fr 1fr; column-gap: 36px; } }
+  .pd .info-row {
+    padding: 14px 0; border-bottom: 1px solid var(--c-line);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  }
+  .pd .info-lbl { font-size: 11px; color: var(--c-ink-muted); letter-spacing: 0.14em; text-transform: uppercase; flex-shrink: 0; font-weight: 700; }
+  .pd .info-val { font-size: 14px; color: var(--c-ink); text-align: right; font-weight: 600; }
+
+  /* COUNTDOWN */
+  .pd .countdown {
+    margin-bottom: 28px; padding: 18px 20px;
+    background: var(--c-paper-tint); border: 1px dashed var(--c-accent-line);
+    text-align: center; border-radius: var(--r-chip);
+  }
+  .pd .countdown__label { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; color: var(--c-ink-muted); text-transform: uppercase; margin-bottom: 10px; }
+  .pd .countdown__row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .pd .countdown__cell { min-width: 56px; }
+  .pd .countdown__num { font-family: "Raleway", sans-serif; font-size: 26px; font-weight: 700; color: var(--c-accent); line-height: 1; letter-spacing: -0.01em; }
+  .pd .countdown__unit { font-size: 10px; color: var(--c-ink-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; font-weight: 600; }
+  .pd .countdown__tbd { font-size: 14px; color: var(--c-ink-muted); font-style: italic; }
+
+  /* CONSULT BLOCK — 다크 인버전 ("Contact us." 시그니처) */
+  .pd .consult-block { max-width: 640px; margin: 0 auto; text-align: center; }
+  .pd .consult-block h2 { margin-bottom: 14px; }
+  .pd .consult-block .lead { margin: 0 auto 28px; }
+  .pd .consult-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+  .pd .consult-note { margin-top: 22px; font-size: 12px; color: var(--c-ink-muted); letter-spacing: 0.02em; }
+  .pd .sec--dark .consult-note { color: rgba(255, 255, 255, 0.55); }
+
+  /* FAQ */
+  .pd .faq-list { max-width: 880px; margin: 0 auto; }
+  .pd .faq-item { border-bottom: 1px solid var(--c-line); }
+  .pd .faq-item:first-child { border-top: 1px solid var(--c-line); }
+  .pd .faq-q {
+    width: 100%; text-align: left; background: transparent; border: 0;
+    padding: 24px 0; font-size: clamp(15px, 1.7vw, 17px); font-weight: 700;
+    color: var(--c-ink); display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; list-style: none; letter-spacing: -0.01em; cursor: pointer;
+  }
+  .pd .faq-q::-webkit-details-marker { display: none; }
+  .pd .faq-q::marker { display: none; content: ''; }
+  .pd .faq-toggle {
+    width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--c-ink);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 14px;
+    flex-shrink: 0; transition: all .15s; line-height: 1; font-weight: 700;
+  }
+  .pd .faq-item[open] .faq-toggle { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-paper); transform: rotate(45deg); }
+  .pd .faq-a { padding: 0 0 28px; font-size: 15px; color: var(--c-ink-2); line-height: 1.78; max-width: 800px; }
+
+  /* FINAL CTA */
+  .pd .final { padding: clamp(80px, 11vw, 132px) 0; }
+  .pd .final__inner { max-width: 880px; }
+  .pd .final__sub { font-size: clamp(15px, 1.7vw, 18px); color: rgba(255,255,255,0.78); margin: 24px 0 40px; max-width: 620px; line-height: 1.7; }
+  .pd .final__row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* FOOTER */
+  .pd .footer { padding: 44px 0; background: #050608; color: rgba(255,255,255,0.55); border-top: 1px solid var(--c-line); }
+  .pd .footer .container { display: flex; flex-direction: column; gap: 6px; }
+  .pd .footer__brand { font-size: 15px; font-weight: var(--w-head); color: #fff; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .pd .footer__line { font-size: var(--text-xs); }
+
+  /* ═══════════════════════════════════════════════════════════
+     DARK-DEFAULT COMPONENT FIXES (다크 paper에 맞춘 컴포넌트 컬러)
+     ═══════════════════════════════════════════════════════════ */
+  .pd .callout { background: var(--c-paper-2); border-radius: 0 var(--r-card) var(--r-card) 0; }
+  .pd .callout p { color: var(--c-ink); }
+  .pd .callout .muted { color: var(--c-ink-3); }
+  .pd .callout .accent { color: var(--c-accent-2); }
+
+  .pd .heritage { background: var(--c-paper-2); border-color: var(--c-line); }
+  .pd .heritage__title { color: var(--c-accent-2); }
+  .pd .heritage__body { color: var(--c-ink-2); }
+  .pd .disclosure { color: var(--c-disclosure); border-top-color: var(--c-line); }
+
+  .pd .framework-card {
+    background: var(--c-paper-2);
+    border-left-color: var(--c-line); border-right-color: var(--c-line); border-bottom-color: var(--c-line);
+    /* border-top: 3px var(--c-accent) 유지 (다른 색일 경우 :nth-child 오버라이드도 유지) */
+  }
+  .pd .framework__label { color: var(--c-ink-muted); }
+  .pd .framework__title { color: var(--c-ink); }
+  .pd .framework__desc { color: var(--c-ink-3); }
+
+  .pd .face9 { background: #000; border: 1px solid var(--c-line); }
+  .pd .face9__grid { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.06); }
+  .pd .face9__cell { background: #000; }
+
+  .pd .shot { background: var(--c-paper-2); box-shadow: inset 0 0 0 1px var(--c-line); }
+  .pd .shot__ph { color: var(--c-ink-muted); }
+
+  .pd .matrix__lbl { color: var(--c-ink-muted); }
+  .pd .matrix__val { color: var(--c-ink); }
+
+  .pd .pain__title { color: var(--c-ink); }
+  .pd .pain__desc { color: var(--c-ink-3); }
+
+  .pd .cred-list li { color: var(--c-ink); }
+
+  .pd .testi__quote { color: var(--c-ink); }
+  .pd .testi__label { color: var(--c-ink); }
+  .pd .testi__src { color: var(--c-disclosure); }
+
+  .pd .outcome__title { color: var(--c-ink); }
+  .pd .outcome__desc { color: var(--c-ink-3); }
+
+  .pd .testi-note { background: var(--c-paper-2); color: var(--c-ink-2); border-left-color: var(--c-accent); }
+
+  .pd .faq-q { color: var(--c-ink); }
+  .pd .faq-a { color: var(--c-ink-2); }
+  .pd .faq-toggle { border-color: var(--c-ink-2); color: var(--c-ink); }
+
+  /* Pricing — 다크 섹션 위 라이트 카드 (premium 강조) */
+  .pd .pricing-card {
+    background: var(--c-paper-light); color: var(--c-ink-dark);
+    border-color: rgba(10, 10, 14, 0.10);
+    box-shadow: 0 20px 60px rgba(123, 62, 237, 0.18);
+  }
+  .pd .pricing-card .price-tag { background: var(--c-accent-soft); color: var(--c-accent); }
+  .pd .pricing-card .price-tbd { color: var(--c-ink-dark); }
+  .pd .pricing-card .price-sub { color: var(--c-ink-dark-3); }
+  .pd .pricing-card .info-lbl { color: var(--c-ink-dark-3); }
+  .pd .pricing-card .info-val { color: var(--c-ink-dark); }
+  .pd .pricing-card .info-row { border-bottom-color: rgba(10, 10, 14, 0.10); }
+  .pd .pricing-card .countdown {
+    background: rgba(123, 62, 237, 0.10);
+    border: 1px dashed var(--c-accent-line);
+  }
+  .pd .pricing-card .countdown__label { color: var(--c-ink-dark-3); }
+  .pd .pricing-card .countdown__num { color: var(--c-accent); }
+  .pd .pricing-card .countdown__unit { color: var(--c-ink-dark-3); }
+  .pd .pricing-card .countdown__tbd { color: var(--c-ink-dark-3); }
+  .pd .pricing-card .tbd { color: var(--c-ink-dark-3); font-style: italic; }
+
+  /* ═══════════════════════════════════════════════════════════
+     LIGHT INVERSION OVERRIDES — sec--light / sec--tint 내부 컴포넌트
+     ═══════════════════════════════════════════════════════════ */
+  .pd .sec--light h1, .pd .sec--light h2, .pd .sec--light h3, .pd .sec--light h4,
+  .pd .sec--tint  h1, .pd .sec--tint  h2, .pd .sec--tint  h3, .pd .sec--tint  h4 { color: var(--c-ink-dark); }
+
+  .pd .sec--light .pain__title,  .pd .sec--tint .pain__title  { color: var(--c-ink-dark); }
+  .pd .sec--light .pain__desc,   .pd .sec--tint .pain__desc   { color: var(--c-ink-dark-2); }
+  .pd .sec--light .pain,         .pd .sec--tint .pain         { border-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .pain:last-of-type, .pd .sec--tint .pain:last-of-type { border-bottom-color: rgba(10,10,14,0.10); }
+
+  .pd .sec--light .heritage,     .pd .sec--tint .heritage     { background: #fff; border-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .heritage__body, .pd .sec--tint .heritage__body { color: var(--c-ink-dark-2); }
+  .pd .sec--light .disclosure,   .pd .sec--tint .disclosure   { color: rgba(10,10,14,0.50); border-top-color: rgba(10,10,14,0.10); }
+
+  .pd .sec--light .instructor__name,  .pd .sec--tint .instructor__name  { color: var(--c-ink-dark); }
+  .pd .sec--light .instructor__role,  .pd .sec--tint .instructor__role  { color: var(--c-ink-dark-3); }
+  .pd .sec--light .instructor__bio,   .pd .sec--tint .instructor__bio   { color: var(--c-ink-dark-2); }
+  .pd .sec--light .cred-list li,      .pd .sec--tint .cred-list li      { color: var(--c-ink-dark); border-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .cred-list li:first-child, .pd .sec--tint .cred-list li:first-child { border-top-color: rgba(10,10,14,0.10); }
+
+  .pd .sec--light .shot,    .pd .sec--tint .shot    { background: var(--c-paper-tint); box-shadow: inset 0 0 0 1px rgba(10,10,14,0.10); }
+  .pd .sec--light .shot__ph,.pd .sec--tint .shot__ph{ color: rgba(10,10,14,0.40); }
+
+  .pd .sec--light .testi,    .pd .sec--tint .testi    { border-color: rgba(10,10,14,0.10); color: var(--c-ink-dark); }
+  .pd .sec--light .testi:last-of-type, .pd .sec--tint .testi:last-of-type { border-bottom-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .testi__quote, .pd .sec--tint .testi__quote { color: var(--c-ink-dark); }
+  .pd .sec--light .testi__label, .pd .sec--tint .testi__label { color: var(--c-ink-dark); }
+  .pd .sec--light .testi__src,   .pd .sec--tint .testi__src   { color: rgba(10,10,14,0.50); }
+  .pd .sec--light .testi-note,   .pd .sec--tint .testi-note   { background: var(--c-paper-tint); color: var(--c-ink-dark-2); border-left-color: rgba(10,10,14,0.30); }
+
+  .pd .sec--light .outcomes, .pd .sec--tint .outcomes { border-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .outcome,  .pd .sec--tint .outcome  { border-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .outcome__title, .pd .sec--tint .outcome__title { color: var(--c-ink-dark); }
+  .pd .sec--light .outcome__desc,  .pd .sec--tint .outcome__desc  { color: var(--c-ink-dark-2); }
+
+  .pd .sec--light .faq-item, .pd .sec--tint .faq-item { border-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .faq-item:first-child, .pd .sec--tint .faq-item:first-child { border-top-color: rgba(10,10,14,0.10); }
+  .pd .sec--light .faq-q,    .pd .sec--tint .faq-q    { color: var(--c-ink-dark); }
+  .pd .sec--light .faq-a,    .pd .sec--tint .faq-a    { color: var(--c-ink-dark-2); }
+  .pd .sec--light .faq-toggle, .pd .sec--tint .faq-toggle { border-color: var(--c-ink-dark-2); color: var(--c-ink-dark); }
+  .pd .sec--light .faq-item[open] .faq-toggle, .pd .sec--tint .faq-item[open] .faq-toggle { background: var(--c-accent); border-color: var(--c-accent); color: #fff; }
+
+  .pd .sec--light .callout, .pd .sec--tint .callout { background: rgba(10,10,14,0.04); }
+  .pd .sec--light .callout p, .pd .sec--tint .callout p { color: var(--c-ink-dark); }
+  .pd .sec--light .callout .muted, .pd .sec--tint .callout .muted { color: var(--c-ink-dark-3); }
+
+  .pd .sec--light .tbd, .pd .sec--tint .tbd { color: rgba(10,10,14,0.50); font-style: italic; }
+
+  /* ═══════════════════════════════════════════════════════════
+     MOTION — NOBASE atmospheric 모션 (entrance · breathing · float · reveal)
+     ═══════════════════════════════════════════════════════════ */
+
+  /* @keyframes — orb breathing (radial 글로우 호흡) */
+  @keyframes pd-orb-breathe {
+    0%, 100% { opacity: 1;    transform: scale(1); }
+    50%      { opacity: 0.78; transform: scale(1.06); }
+  }
+  .pd .hero::before {
+    animation: pd-orb-breathe 7s ease-in-out infinite;
+    transform-origin: 50% 35%;
+    will-change: transform, opacity;
+  }
+
+  /* @keyframes — chip flag float (각 코너 칩 부드러운 vertical bob) */
+  @keyframes pd-chip-float {
+    0%, 100% { transform: translateY(0)    rotate(0); }
+    50%      { transform: translateY(-6px) rotate(-1deg); }
+  }
+  .pd .hero__flag { animation: pd-chip-float 5s ease-in-out infinite; will-change: transform; }
+  .pd .hero__flag--tl { animation-delay:  0.0s; }
+  .pd .hero__flag--tr { animation-delay:  1.2s; animation-duration: 5.6s; }
+  .pd .hero__flag--bl { animation-delay:  0.6s; animation-duration: 4.4s; }
+  .pd .hero__flag--br { animation-delay:  1.8s; animation-duration: 5.2s; }
+
+  /* @keyframes — hero entrance (page load fade-up + stagger) */
+  @keyframes pd-rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pd-rise-soft {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .pd .hero__pill, .pd .hero h1, .pd .hero__sub, .pd .hero__ctas, .pd .hero .matrix {
+    opacity: 0;
+    animation: pd-rise 700ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .pd .hero__pill  { animation-delay: 0.08s; }
+  .pd .hero h1     { animation-delay: 0.20s; }
+  .pd .hero__sub   { animation-delay: 0.34s; }
+  .pd .hero__ctas  { animation-delay: 0.46s; }
+  .pd .hero .matrix{ animation-delay: 0.62s; }
+  /* chip flags entrance — 페이드+살짝 outward shift */
+  @keyframes pd-flag-in {
+    from { opacity: 0; transform: scale(0.85) translateY(-4px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .pd .hero__flag {
+    /* float 애니메이션은 위에서 정의됨. 진입은 별도로 처음 한 번만 */
+    animation:
+      pd-flag-in 600ms cubic-bezier(0.22, 0.61, 0.36, 1) 0.7s backwards,
+      pd-chip-float 5s ease-in-out 1.3s infinite;
+  }
+  .pd .hero__flag--tr { animation:
+      pd-flag-in 600ms cubic-bezier(0.22, 0.61, 0.36, 1) 0.85s backwards,
+      pd-chip-float 5.6s ease-in-out 1.45s infinite; }
+  .pd .hero__flag--bl { animation:
+      pd-flag-in 600ms cubic-bezier(0.22, 0.61, 0.36, 1) 1.0s backwards,
+      pd-chip-float 4.4s ease-in-out 1.6s infinite; }
+  .pd .hero__flag--br { animation:
+      pd-flag-in 600ms cubic-bezier(0.22, 0.61, 0.36, 1) 1.15s backwards,
+      pd-chip-float 5.2s ease-in-out 1.75s infinite; }
+
+  /* @keyframes — period accent subtle pulse */
+  @keyframes pd-dot-pulse {
+    0%, 100% { opacity: 1;    }
+    50%      { opacity: 0.55; }
+  }
+  .pd .dot-accent::after {
+    animation: pd-dot-pulse 2.4s ease-in-out infinite;
+  }
+
+  /* @keyframes — hero pill dot glow pulse */
+  @keyframes pd-pill-dot-pulse {
+    0%, 100% { box-shadow: 0 0 0   rgba(123, 62, 237, 0.0); }
+    50%      { box-shadow: 0 0 16px rgba(123, 62, 237, 0.85); }
+  }
+  .pd .hero__pill .dot { animation: pd-pill-dot-pulse 2s ease-in-out infinite; }
+
+  /* SCROLL REVEAL — IntersectionObserver가 .is-in 부여하면 fade-up */
+  .pd .reveal {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1),
+                transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .pd .reveal.is-in { opacity: 1; transform: translateY(0); }
+  /* stagger via inline data-delay (JS picks it up) — fallback: nth-child */
+  .pd .reveal-group > .reveal:nth-child(1).is-in { transition-delay: 0ms; }
+  .pd .reveal-group > .reveal:nth-child(2).is-in { transition-delay: 80ms; }
+  .pd .reveal-group > .reveal:nth-child(3).is-in { transition-delay: 160ms; }
+  .pd .reveal-group > .reveal:nth-child(4).is-in { transition-delay: 240ms; }
+  .pd .reveal-group > .reveal:nth-child(5).is-in { transition-delay: 320ms; }
+  .pd .reveal-group > .reveal:nth-child(6).is-in { transition-delay: 400ms; }
+
+  /* matrix__val counter — 진입 시 살짝 pop */
+  @keyframes pd-count-pop {
+    0%   { transform: scale(0.96); }
+    50%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+  .pd .matrix__val.is-counted { animation: pd-count-pop 350ms ease-out; }
+
+  /* ── prefers-reduced-motion: 모든 모션 무효화 또는 단순 페이드 ── */
+  @media (prefers-reduced-motion: reduce) {
+    .pd *, .pd *::before, .pd *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 150ms !important;
+    }
+    .pd .hero__pill, .pd .hero h1, .pd .hero__sub, .pd .hero__ctas, .pd .hero .matrix,
+    .pd .hero__flag {
+      opacity: 1;
+      transform: none;
+    }
+    .pd .reveal { opacity: 1; transform: none; }
+    .pd .hero::before, .pd .hero__pill .dot, .pd .dot-accent::after { animation: none; }
+  }
+</style>
+
+<div class="pd">
+
+  <!-- ══ NOTICE BAR ══ -->
+  <aside class="notice">
+    국내 도입 초기 <strong>1기 모집 안내</strong> · 일본 ICPA 분석 체계 기반 · 정원 <span class="tbd" style="color:#f7e9c8;font-style:normal;">{TBD}명</span>
+  </aside>
+
+  <!-- ══ HERO — 다크 + violet radial orb (NOBASE DNA) ══ -->
+  <section class="hero">
+    <!-- 4 corner chip flags — 페르소나 매트릭스 키워드 -->
+    <span class="hero__flag hero__flag--tl">Curvy</span>
+    <span class="hero__flag hero__flag--tr">Neutral</span>
+    <span class="hero__flag hero__flag--bl">Sharp</span>
+    <span class="hero__flag hero__flag--br">Face&nbsp;9</span>
+
+    <div class="container">
+      <div class="hero__inner">
+        <span class="hero__pill"><span class="dot"></span>국내 도입 초기 1기 모집</span>
+        <h1 class="display dot-accent">
+          감으로 자르던 머리,<br>
+          이제 <span class="serif" style="color:var(--c-accent-2);font-style:italic;">데이터로 설계</span>합니다
+        </h1>
+        <p class="hero__sub">
+          예술은 해석이고, 기술은 재현입니다.<br>
+          얼굴의 <strong>구조·인상·맥락</strong>을 데이터로 읽어내는 페르소나 디자인 매트릭스 —<br>
+          <strong>9가지 페이스 타입 공식</strong>으로, 감이 아닌 근거로 설명하는 디자이너가 됩니다.
+        </p>
+        <div class="hero__ctas">
+          <a href="#pd-consult" class="btn btn--primary" id="pdHeroConsult">무료 상담 신청<span class="arrow">→</span></a>
+          <a href="#pd-pricing" class="btn btn--ghost-dark">1기 수강 안내 받기</a>
+        </div>
+      </div>
+
+      <div class="matrix">
+        <div class="matrix__col">
+          <p class="matrix__lbl">Framework</p>
+          <p class="matrix__val"><em>3D</em> 분석</p>
+        </div>
+        <div class="matrix__col">
+          <p class="matrix__lbl">Face Types</p>
+          <p class="matrix__val"><em>9</em>가지 매트릭스</p>
+        </div>
+        <div class="matrix__col">
+          <p class="matrix__lbl">Heritage</p>
+          <p class="matrix__val">ICPA 분석 체계</p>
+        </div>
+        <div class="matrix__col">
+          <p class="matrix__lbl">Korea Debut</p>
+          <p class="matrix__val">국내 <em>1기</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAIN — 라이트 인버전 (히어로 직후 호흡) ══ -->
+  <section class="sec sec--light">
+    <div class="container">
+      <div class="pain-intro">
+        <p class="eyebrow">Why Persona Design</p>
+        <h2 class="h2-display">"왜 저한테 어울려요?"<br>그 질문에, 매번 답이 막힙니다.</h2>
+      </div>
+      <div class="pain-list">
+        <div class="pain">
+          <p class="pain__num">01</p>
+          <div>
+            <h3 class="pain__title">"왜 저한테 어울려요?" 질문에 답이 막힙니다</h3>
+            <p class="pain__desc">"고객님 분위기에 맞아서요"라는 주관적 대답밖에 못 합니다. 근거가 빠진 설명은 신뢰로 이어지지 않습니다.</p>
+          </div>
+        </div>
+        <div class="pain">
+          <p class="pain__num">02</p>
+          <div>
+            <h3 class="pain__title">시술 후 고객 반응에 전전긍긍합니다</h3>
+            <p class="pain__desc">결과가 컨디션에 따라 흔들립니다. 같은 컷을 했는데 누구에게는 찰떡이고 누구에게는 안 어울리는 이유를 스스로도 모릅니다.</p>
+          </div>
+        </div>
+        <div class="pain">
+          <p class="pain__num">03</p>
+          <div>
+            <h3 class="pain__title">유행 따라가는 법은 배웠는데, 그 얼굴을 읽는 법은 못 배웠습니다</h3>
+            <p class="pain__desc">학원도 유튜브도 결과물을 따라 만드는 법만 알려줍니다. 손님 얼굴을 보고 어디가 어떤 라인인지 짚어내는 방법은 어디서도 가르치지 않았습니다.</p>
+          </div>
+        </div>
+        <div class="pain">
+          <p class="pain__num">04</p>
+          <div>
+            <h3 class="pain__title">"내 실력 문제인가" 자기 의심이 반복됩니다</h3>
+            <p class="pain__desc">손재주는 있는데 객단가가 안 오릅니다. 단순 시술자에서 컨설팅 전문가로 넘어가는 다리가 보이지 않습니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        <p><span class="muted">다른 교육은</span> 유행 형태를 따라하는 법<span class="muted">을 가르칩니다.</span></p>
+        <p>페르소나 디자인은 <span class="accent">그 얼굴에 왜 어울리는지 읽어내는 법</span>을 가르칩니다.</p>
+        <p class="muted" style="font-size:0.78em;margin-top:18px;">어울림은 감각이 아니라, 구조 × 인상 × 맥락으로 설계됩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FRAMEWORK — 3D 분석 + 9 Face Types (다크) ══ -->
+  <section class="sec">
+    <div class="container">
+      <p class="eyebrow">Framework</p>
+      <h2 class="h2-display">어울림은 <span class="serif" style="font-style:italic;color:var(--c-accent);">구조 × 인상 × 맥락</span>의 합입니다</h2>
+      <p class="lead" style="margin-top:18px;">한 사람을 신체적·감성적·사회적 세 축에서 동시에 읽고, 9가지 페이스 타입 좌표에 위치시켜 헤어·메이크업·패션·액세서리를 하나의 설계 도면으로 통합합니다.</p>
+
+      <div class="framework-grid">
+        <div class="framework-card">
+          <p class="framework__label">Axis 01 · Physical</p>
+          <h3 class="framework__title">신체적 분석</h3>
+          <p class="framework__desc">골든 밸런스, 상·하심안, 구·원심안, Curvy / Neutral / Sharp — 세로:가로 비율과 파츠 라인의 성질을 진단 시트로 측정·기록합니다.</p>
+          <div class="framework-card__art" aria-hidden="true">
+            <!-- Physical · Curvy/Neutral/Sharp 세 라인 -->
+            <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M8 24 Q 28 8, 48 24 T 88 24" stroke-linecap="round"/>
+              <path d="M8 48 L 88 48" stroke-linecap="round"/>
+              <path d="M8 80 L 28 64 L 48 80 L 68 64 L 88 80" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="framework-card">
+          <p class="framework__label">Axis 02 · Emotional</p>
+          <h3 class="framework__title">감성적 분석</h3>
+          <p class="framework__desc">9가지 무드 매트릭스 (프리티·페미닌·럭셔리·로맨틱·엘레강트·클래식·어반·쿨·시크) 위에 고객을 좌표화하고, 무드별 기장·웨이브 형태를 매핑합니다.</p>
+          <div class="framework-card__art" aria-hidden="true">
+            <!-- Emotional · 3x3 매트릭스, 한 셀 강조 -->
+            <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="10" y="10" width="76" height="76" rx="2"/>
+              <line x1="35.33" y1="10" x2="35.33" y2="86"/>
+              <line x1="60.66" y1="10" x2="60.66" y2="86"/>
+              <line x1="10" y1="35.33" x2="86" y2="35.33"/>
+              <line x1="10" y1="60.66" x2="86" y2="60.66"/>
+              <rect x="35.33" y="35.33" width="25.33" height="25.33" fill="currentColor" opacity="0.85" stroke="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="framework-card">
+          <p class="framework__label">Axis 03 · Social</p>
+          <h3 class="framework__title">사회적 분석</h3>
+          <p class="framework__desc">직업·일상 관리 시간을 변수로 더한 라이프스타일 다이얼(관리형·편의형) — 실용성과 정교함의 방향을 결정합니다.</p>
+          <div class="framework-card__art" aria-hidden="true">
+            <!-- Social · 반원 다이얼 + 마커 -->
+            <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 72 A 34 34 0 0 1 82 72" stroke-linecap="round"/>
+              <line x1="14" y1="72" x2="20" y2="64" stroke-linecap="round"/>
+              <line x1="82" y1="72" x2="76" y2="64" stroke-linecap="round"/>
+              <line x1="48" y1="38" x2="48" y2="32" stroke-linecap="round"/>
+              <line x1="48" y1="72" x2="64" y2="50" stroke-linecap="round" stroke-width="2.5"/>
+              <circle cx="48" cy="72" r="3" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="face9">
+        <div class="face9__head">
+          <p class="face9__title">Face 9 Types — 감성 좌표 매트릭스</p>
+          <p class="face9__lead">한 사람을 9가지 페이스 타입 중 하나의 좌표로 위치시키고, 그 좌표에서 헤어 기장·웨이브·패션 소재·액세서리까지 통합 설계합니다.</p>
+        </div>
+        <div class="face9__grid">
+          <div class="face9__cell"><em>01</em>프리티</div>
+          <div class="face9__cell"><em>02</em>페미닌</div>
+          <div class="face9__cell"><em>03</em>럭셔리</div>
+          <div class="face9__cell"><em>04</em>로맨틱</div>
+          <div class="face9__cell"><em>05</em>엘레강트</div>
+          <div class="face9__cell"><em>06</em>클래식</div>
+          <div class="face9__cell"><em>07</em>어반</div>
+          <div class="face9__cell"><em>08</em>쿨</div>
+          <div class="face9__cell"><em>09</em>시크</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ INSTRUCTOR — 라이트 인버전 (NOBASE 다크/라이트 리듬) ══ -->
+  <section class="sec sec--light">
+    <div class="container">
+      <p class="eyebrow">Instructor</p>
+      <div class="instructor">
+        <div class="instructor__photo shot">
+          <span class="shot__ph">강사 사진<small>진단표를 펼친 컨설팅 장면<br>세로형(4:5) 권장</small></span>
+          <!-- 이미지 교체: <span>을 지우고 <img src="{이미지URL}/instructor.jpg" alt="강사 — 페르소나 디자인">로 교체 -->
+        </div>
+        <div class="instructor__body">
+          <h2 class="instructor__name"><span class="tbd">{TBD: 강사명}</span></h2>
+          <p class="instructor__role"><span class="tbd">{TBD: 직함 · 소속}</span></p>
+          <p class="instructor__bio"><span class="tbd">{TBD: 강사 한 줄 소개 — ICPA 자격·국내 도입 경위 포함 예정.}</span></p>
+          <ul class="cred-list">
+            <li><span class="yr">Edu</span><span class="tbd">{TBD: 학력·전공 또는 소속 기관}</span></li>
+            <li><span class="yr">Cert</span><span class="tbd">{TBD: ICPA 관련 자격 또는 일본 연수 이력}</span></li>
+            <li><span class="yr">Career</span><span class="tbd">{TBD: 진단·컨설팅 실무 경력 연수 및 대표 성과}</span></li>
+            <li><span class="yr">Proof</span><span class="tbd">{TBD: 자격증·수상·강연·미디어 노출 등}</span></li>
+          </ul>
+
+          <div class="heritage">
+            <p class="heritage__title">Heritage · 이론적 뼈대</p>
+            <p class="heritage__body">
+              본 강좌는 일본 <strong>ICPA(일반사단법인 국제컬러프로페셔널협회)</strong>의 얼굴 파츠 분석 체계를 뼈대로 삼습니다. ICPA는 일본 내 기업·관공서·호텔 등에서 누적 세미나 1만 5천 회, 수강생 5만 명을 배출한 진단 전문 기관입니다.
+            </p>
+            <em class="disclosure">※ ICPA의 누적 실적이며, 소옴크리에이티브·본 강좌·강사 개인의 실적이 아닙니다.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CURRICULUM — amber 액센트 + 우상단 soft orb ══ -->
+  <section class="sec sec--dark sec--orb-tr">
+    <div class="container">
+      <div class="curri-head">
+        <p class="eyebrow">Curriculum</p>
+        <h2 class="h2-display">진단 시트에서 종합 처방까지<br><span class="serif" style="font-style:italic;">한 명의 고객, 한 장의 설계 도면</span></h2>
+        <p class="curri-meta">매 회차 실습 + 모듈 조합 레시피 + 컨설팅 시나리오 연습 / 회차 수·시간 <span class="tbd" style="color:rgba(255,255,255,0.55);">{TBD: 최종 확정 시 갱신}</span></p>
+      </div>
+      <div class="curri-list">
+        <div class="curri-row">
+          <span class="curri-wk">SESS 01</span>
+          <h3 class="curri-stage">페르소나 디자인 매트릭스 개요</h3>
+          <p class="curri-desc">신체적·감성적·사회적 3D 분석으로 어울림을 '감각'에서 <strong>구조 × 인상 × 맥락</strong>의 합으로 재정의합니다. 진단 시트 구성과 사용법을 익힙니다.</p>
+        </div>
+        <div class="curri-row">
+          <span class="curri-wk">SESS 02</span>
+          <h3 class="curri-stage">신체적 분석</h3>
+          <p class="curri-desc">골든 밸런스, 상·하심안, 구·원심안, Curvy / Neutral / Sharp — 얼굴 세로:가로 비율, 이목구비 중심 위치, 파츠 라인 성질을 진단 시트로 측정·기록합니다.</p>
+        </div>
+        <div class="curri-row">
+          <span class="curri-wk">SESS 03</span>
+          <h3 class="curri-stage">감성적 분석 — Face 9 Types</h3>
+          <p class="curri-desc">프리티·페미닌·럭셔리·로맨틱·엘레강트·클래식·어반·쿨·시크 — 9가지 무드 매트릭스 위에 고객을 좌표화하고, 무드별 헤어 기장·웨이브 형태를 매핑합니다.</p>
+        </div>
+        <div class="curri-row">
+          <span class="curri-wk">SESS 04</span>
+          <h3 class="curri-stage">사회적 분석 — 라이프스타일 다이얼</h3>
+          <p class="curri-desc">관리형·편의형 두 축으로 직업·일상 관리 시간을 변수에 더해, 실용성과 정교함의 방향을 결정합니다.</p>
+        </div>
+        <div class="curri-row">
+          <span class="curri-wk">SESS 05</span>
+          <h3 class="curri-stage">종합 처방 · 컨설팅 시나리오</h3>
+          <p class="curri-desc">진단 시트 → 헤어·메이크업·패션·액세서리를 하나의 설계 도면으로 통합하고, 컨설팅 시나리오로 고객에게 설명하는 연습을 합니다.</p>
+        </div>
+        <div class="curri-row">
+          <span class="curri-wk">SESS <span class="tbd" style="color:rgba(255,255,255,0.55);">{TBD}</span></span>
+          <h3 class="curri-stage"><span class="tbd" style="color:rgba(255,255,255,0.55);">{TBD: 강사 확정 회차}</span></h3>
+          <p class="curri-desc"><span class="tbd" style="color:rgba(255,255,255,0.55);">{TBD: 최종 회차 구성 확정 후 갱신}</span></p>
+        </div>
+      </div>
+      <p class="curri-foot">※ 회차 수·시간·세부 주제는 강사 컨펌 후 최종 확정되며, 모집 안내에서 동기화됩니다.</p>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS — ICPA 사례 · 기대효과 시나리오 (라이트 인버전) ══ -->
+  <section class="sec sec--light">
+    <div class="container">
+      <p class="eyebrow">Cases &amp; Scenarios</p>
+      <h2 class="h2-display">국내 1기 — <span class="serif" style="font-style:italic;color:var(--c-accent);">검증된 분석 체계의 한국 도입</span></h2>
+      <div class="testi-note">
+        <strong>본 강좌는 국내 도입 초기 1기로, 실제 소옴 수강생 후기는 아직 존재하지 않습니다.</strong> 아래 인용은 ① 일본 ICPA의 기업 연수 사례, ② 본 강좌 수강 후 기대효과 시나리오로 구성되어 있으며, 실제 수강생 후기로 표기하지 않습니다.
+      </div>
+
+      <div class="testi-list">
+        <div class="testi">
+          <div class="testi__who">
+            <p class="testi__tag">Scenario</p>
+            <p class="testi__label">수강 후 기대효과</p>
+          </div>
+          <div>
+            <p class="testi__quote">"진단표로 고객님이 '하심안(얼굴 중심이 아래쪽)'이라는 걸 짚어드렸어요. 이목구비 중심을 위로 끌어올리는 레이어드 형태와 짧은 단발이 왜 어울리는지 구조로 설명했더니, '내 얼굴을 이렇게 정확히 아는 디자이너는 처음'이라며 평생 단골을 약속하셨습니다."</p>
+            <em class="testi__src">— 수강 후 기대효과 시나리오 (일본 ICPA 사례 기반 · 실제 소옴 수강생 후기 아님)</em>
+          </div>
+        </div>
+        <div class="testi">
+          <div class="testi__who">
+            <p class="testi__tag">External Case</p>
+            <p class="testi__label">일본 ICPA 기업 연수</p>
+          </div>
+          <div>
+            <p class="testi__quote">"일본 FAITH사(미용업계)·근철리테일링(유통업계) 등 다수 기업 연수에서 '사람의 시선 동선·비율·색채 심리를 활용한 시각적 효과가 실제 매출 향상에 영향을 줬다'는 평가를 받았습니다. 본 강좌가 뼈대로 삼은 분석 체계의 실용성을 보여주는 사례입니다."</p>
+            <em class="testi__src">— 일본 ICPA 기업 연수 사례 (ICPA의 실적이며, 소옴크리에이티브·본 강좌의 실적이 아님)</em>
+          </div>
+        </div>
+        <div class="testi">
+          <div class="testi__who">
+            <p class="testi__tag">Authority</p>
+            <p class="testi__label">일본 ICPA 누적 성과</p>
+          </div>
+          <div>
+            <p class="testi__quote">"본 강좌가 뼈대로 삼은 일본 ICPA(일반사단법인 국제컬러프로페셔널협회)는 퍼스널 컬러·골격 진단·얼굴 파츠 진단 전문 기관입니다. 일본 내 기업·관공서·호텔 등에서 누적 1만 5천 회 이상의 세미나를 진행하고 5만 명 이상의 수강생을 배출했습니다."</p>
+            <em class="testi__src">— 일본 ICPA 누적 실적 (ICPA의 실적이며, 소옴크리에이티브·본 강좌의 실적이 아님)</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OUTCOMES — 옅은 tint로 Cases와 미세 분리 ══ -->
+  <section class="sec sec--tint">
+    <div class="container">
+      <p class="eyebrow">Outcomes</p>
+      <h2 class="h2-display">수강 후, 디자이너의 4단계 변화 <span class="serif" style="font-style:italic;color:var(--c-accent);">(기대효과 모델)</span></h2>
+      <p class="lead" style="margin-top:16px;">감각이 흔들릴 때마다 다시 펼쳐볼 수 있는 진단표·공식·시나리오를 손에 쥡니다.</p>
+
+      <div class="outcomes">
+        <div class="outcome">
+          <p class="outcome__num">01 · Perspective</p>
+          <h3 class="outcome__title">관점 전환</h3>
+          <p class="outcome__desc">"예쁘다·잘 어울린다"는 느낌이 아니라 "상심안 구조에 턱 라인이 직선적"이라는 데이터로 얼굴을 읽습니다.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome__num">02 · Articulation</p>
+          <h3 class="outcome__title">설명 능력</h3>
+          <p class="outcome__desc">"왜 저한테 어울려요?"라는 고객 질문에, 진단표 근거로 논리적으로 답할 수 있게 됩니다.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome__num">03 · Trust</p>
+          <h3 class="outcome__title">고객 신뢰</h3>
+          <p class="outcome__desc">"내 얼굴을 이렇게 정확히 아는 디자이너는 처음"이라는 반응을 끌어내, 재방문·단골 전환을 만듭니다.</p>
+        </div>
+        <div class="outcome">
+          <p class="outcome__num">04 · Expansion</p>
+          <h3 class="outcome__title">비즈니스 확장</h3>
+          <p class="outcome__desc">단순 미용 시술에서 '이미지 컨설팅' 서비스로 영역이 넓어지며, 객단가·전문가 권위가 함께 상승합니다.</p>
+        </div>
+      </div>
+
+      <em class="disclosure" style="display:block;max-width:760px;margin:28px 0 0;">※ 위 4단계는 일본 ICPA 사례 기반의 기대효과 모델이며, 국내 1기 운영 후 실측 수치로 갱신할 예정입니다.</em>
+    </div>
+  </section>
+
+  <!-- ══ PRICING — 좌하단 magenta-ish soft orb ══ -->
+  <section id="pd-pricing" class="sec sec--orb-br">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">Pricing</p>
+      <h2 class="h2-display" style="text-align:center;margin-bottom:14px;">1기 수강 정보</h2>
+      <p class="lead" style="text-align:center;margin:0 auto 40px;">국내 도입 초기 1기 · 먼저 시작하는 사람이 선점합니다.</p>
+
+      <div class="pricing-card">
+        <span class="price-tag">국내 도입 초기 1기</span>
+        <div class="price-row">
+          <span class="price-tbd tbd">{TBD: 수강료}</span>
+          <span class="price-unit">만원</span>
+        </div>
+        <p class="price-sub"><span class="tbd">{TBD: 분납·얼리버드 안내 — 강사 확정 후 갱신}</span></p>
+
+        <div class="info-grid">
+          <div class="info-row"><span class="info-lbl">기수</span><span class="info-val">국내 도입 1기</span></div>
+          <div class="info-row"><span class="info-lbl">회차</span><span class="info-val tbd">{TBD}</span></div>
+          <div class="info-row"><span class="info-lbl">정원</span><span class="info-val tbd">{TBD}명</span></div>
+          <div class="info-row"><span class="info-lbl">개강</span><span class="info-val tbd">{TBD: YYYY-MM-DD}</span></div>
+          <div class="info-row"><span class="info-lbl">진행</span><span class="info-val">진단 시트 실습 중심</span></div>
+          <div class="info-row"><span class="info-lbl">보너스</span><span class="info-val tbd">{TBD: 진단 시트·교재·툴킷}</span></div>
+        </div>
+
+        <div class="countdown" id="pdCountdown">
+          <p class="countdown__label">개강까지</p>
+          <div class="countdown__row" id="pdCountdownRow">
+            <p class="countdown__tbd">개강일 확정 후 카운트다운이 표시됩니다.</p>
+          </div>
+        </div>
+
+        <a href="#pd-consult" class="btn btn--primary btn--block" id="pdPricingCta">1기 자리 확인하기<span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONSULT BLOCK — 다크 인버전 (NOBASE "Contact us." 시그니처 차용) ══ -->
+  <section id="pd-consult" class="sec sec--dark">
+    <div class="container">
+      <div class="consult-block">
+        <p class="eyebrow">Consult</p>
+        <h2 class="h2-display dot-accent">지금, 1기 자리를 확인하세요</h2>
+        <p class="lead">국내 도입 초기 1기 — 회차·정원·일정 안내를 받아보세요. 강사가 직접 적합도를 확인하고 1:1로 답변드립니다.</p>
+
+        <div class="consult-cta-row">
+          <a href="http://pf.kakao.com/_IhzBb/chat" class="btn btn--kakao" target="_blank" rel="noopener">카카오톡으로 바로 문의</a>
+          <a href="#pd-form-anchor" class="btn btn--ghost-dark" id="pdConsultScroll">1:1 상담 신청서 작성</a>
+        </div>
+        <p class="consult-note">상담 신청 후 24시간 내 회신 · 평일 10:00 – 19:00</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 아임웹 폼 위젯 앵커: 이 마커 다음에 아임웹 네이티브 폼 위젯이 위치합니다. -->
+  <!-- 폼 위젯의 앵커 id를 "pd-form-anchor"로 맞추면 위 CTA들이 정확히 점프합니다. -->
+  <!-- 폼 위젯에서 제출 완료 시 fbq('track','Lead', {content_name:'persona-design-1기-consult'}) 발화 권장. -->
+  <div id="pd-form-anchor" aria-hidden="true" style="height:1px;"></div>
+
+  <!-- ══ FAQ — 라이트 인버전 ══ -->
+  <section class="sec sec--light">
+    <div class="container">
+      <p class="eyebrow" style="text-align:center;">FAQ</p>
+      <h2 class="h2-display" style="text-align:center;margin-bottom:40px;">자주 묻는 질문</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-q">디자인은 결국 디자이너의 예술적 감각 아닌가요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">예술은 해석이고 기술은 재현입니다. 본 과정은 재현을 넘어, 이미 고객이 가지고 온 데이터를 읽는 '분석 능력'을 길러줍니다. 감은 컨디션에 따라 흔들리지만, 공식은 언제나 같은 기준으로 작동합니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">국내에 처음 들어온 강좌라 검증이 안 된 것 아닌가요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">본 강좌의 뼈대는 일본 ICPA의 검증된 얼굴 파츠 분석 체계입니다. ICPA는 일본 내 누적 세미나 1만 5천 회·수강생 5만 명의 실적을 가진 진단 전문 기관이며, 그 분석 방법론을 소옴크리에이티브의 페르소나 디자인 매트릭스로 재구성했습니다. <em style="color:var(--c-disclosure);font-style:italic;">(※ ICPA의 실적이며 소옴·본 강좌 실적이 아닙니다.)</em></p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">경력이 짧은데(또는 오래됐는데) 들어도 되나요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">기본 테크닉이 어느 정도 갖춰진 실무 경력 3~7년차에 가장 효과가 큽니다. 다만 분석 체계는 경력과 무관하게 적용 가능하며, 신입은 잘못된 눈대중이 굳기 전에 시작할수록 좋습니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">헤어 디자이너가 아닌데 도움이 되나요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">메이크업 아티스트, 이미지 컨설턴트, 퍼스널 컬러 애널리스트, 패션 스타일리스트 모두 적용 가능합니다. 얼굴 데이터를 읽는 진단 체계는 헤어·메이크업·패션·액세서리에 공통으로 쓰입니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">이론 위주라 현장에서 못 쓰는 것 아닌가요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">모든 모듈이 진단 시트 실습과 모듈 조합 레시피로 이어집니다. 9가지 페이스 타입별 헤어 기장·웨이브·패션 소재·액세서리까지 즉시 적용 가능한 원스톱 처방을 다룹니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">수강료가 부담됩니다.<span class="faq-toggle">+</span></summary>
+          <p class="faq-a"><span class="tbd">{TBD: 분납·할인 정책 확인 후 작성.}</span> 단순 시술에서 이미지 컨설팅으로 서비스가 확장되면 컨설팅 단가를 더할 수 있어, ROI 관점에서 회수 가능한 투자로 설계됩니다.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">일정이 안 맞으면 어떻게 하나요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a"><span class="tbd">{TBD: 보강·재수강 정책 확인 후 작성. 1기 운영 정책이 확정되는 대로 갱신합니다.}</span></p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">수강 후 실제로 매출이 오르나요?<span class="faq-toggle">+</span></summary>
+          <p class="faq-a">단순 시술에서 '이미지 컨설팅'으로 서비스가 확장되면 컨설팅 단가를 더할 수 있고, '내 얼굴을 가장 정확히 아는 디자이너'라는 신뢰가 재방문을 만듭니다. <em style="color:var(--c-disclosure);font-style:italic;">(※ 구체 수치는 일본 ICPA 사례 기반 기대효과이며, 국내 1기 결과는 운영 후 갱신 예정.)</em></p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FINAL CTA — 좌상단 강한 orb (히어로 bookend) ══ -->
+  <section class="final sec--dark sec--orb-tl">
+    <div class="container">
+      <div class="final__inner">
+        <p class="eyebrow" style="color:rgba(255,255,255,0.65);">국내 도입 초기 1기 · 정원 <span class="tbd" style="color:rgba(255,255,255,0.65);font-style:normal;">{TBD}명</span> · 먼저 시작하는 사람이 선점합니다</p>
+        <h2 class="display dot-accent">감이 아닌 <span class="serif" style="font-style:italic;color:var(--c-accent-2);">데이터로 설계</span>하는<br>디자이너로</h2>
+        <p class="final__sub">9가지 페이스 타입 공식 · 페르소나 디자인 매트릭스로 컨설팅 무기를 장착하세요.</p>
+        <div class="final__row">
+          <a href="#pd-consult" class="btn btn--primary" id="pdFinalConsult">무료 상담 신청<span class="arrow">→</span></a>
+          <a href="#pd-pricing" class="btn btn--ghost-dark">1기 수강 안내 받기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__brand">소옴크리에이티브 — 페르소나 디자인</p>
+      <p class="footer__line">얼굴파츠분석 과정 · 일본 ICPA 분석 체계 기반</p>
+      <p class="footer__line">© 2026 소옴크리에이티브. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    "use strict";
+
+    // CTA Meta Pixel tracking — InitiateCheckout on CTA click
+    ['pdHeroConsult', 'pdPricingCta', 'pdFinalConsult', 'pdConsultScroll'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', function(){
+          if (typeof fbq !== 'undefined') {
+            fbq('track', 'InitiateCheckout', { content_name: 'persona-design-' + id });
+          }
+        });
+      }
+    });
+
+    // Countdown — 개강일 확정 시 아래 target 변수에 'YYYY-MM-DDTHH:mm:00+09:00' 형식으로 설정
+    // 미확정 상태에서는 자리표시 문구만 노출.
+    var target = null; // 예: '2026-09-01T10:00:00+09:00'
+    var row = document.getElementById('pdCountdownRow');
+    if (target && row) {
+      var pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+      var render = function(){
+        var diff = new Date(target).getTime() - Date.now();
+        if (isNaN(diff)) return;
+        if (diff <= 0) {
+          row.innerHTML = '<p class="countdown__tbd">모집이 마감되었거나 개강일이 지났습니다.</p>';
+          return;
+        }
+        var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        var m = Math.floor((diff / (1000 * 60)) % 60);
+        var s = Math.floor((diff / 1000) % 60);
+        row.innerHTML =
+          '<div class="countdown__cell"><p class="countdown__num">' + pad(d) + '</p><p class="countdown__unit">Days</p></div>' +
+          '<div class="countdown__cell"><p class="countdown__num">' + pad(h) + '</p><p class="countdown__unit">Hrs</p></div>' +
+          '<div class="countdown__cell"><p class="countdown__num">' + pad(m) + '</p><p class="countdown__unit">Min</p></div>' +
+          '<div class="countdown__cell"><p class="countdown__num">' + pad(s) + '</p><p class="countdown__unit">Sec</p></div>';
+      };
+      render();
+      setInterval(render, 1000);
+    }
+
+    // ── SCROLL REVEAL — IntersectionObserver로 fade-up trigger ──
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealTargets = [
+      // 그룹 단위로 stagger를 원하는 경우 부모에 .reveal-group 추가 (CSS nth-child가 stagger)
+      '.pd .pain',
+      '.pd .framework-card',
+      '.pd .heritage',
+      '.pd .face9',
+      '.pd .curri-row',
+      '.pd .testi',
+      '.pd .testi-note',
+      '.pd .outcome',
+      '.pd .pricing-card',
+      '.pd .faq-item',
+      '.pd .callout',
+      '.pd .matrix'
+    ];
+    var nodes = [];
+    revealTargets.forEach(function(sel){
+      document.querySelectorAll(sel).forEach(function(el){
+        el.classList.add('reveal');
+        nodes.push(el);
+      });
+    });
+    // group containers for stagger
+    [
+      '.pd .pain-list', '.pd .framework-grid', '.pd .cred-list',
+      '.pd .curri-list', '.pd .testi-list', '.pd .outcomes',
+      '.pd .faq-list'
+    ].forEach(function(sel){
+      var el = document.querySelector(sel);
+      if (el) el.classList.add('reveal-group');
+    });
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      nodes.forEach(function(n){ n.classList.add('is-in'); });
+    } else {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+      nodes.forEach(function(n){ io.observe(n); });
+
+      // matrix__val 개별 pop 애니메이션 (matrix가 진입할 때 한 번)
+      var matrixEl = document.querySelector('.pd .matrix');
+      if (matrixEl) {
+        var mio = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if (e.isIntersecting) {
+              var vals = matrixEl.querySelectorAll('.matrix__val');
+              vals.forEach(function(v, i){
+                setTimeout(function(){ v.classList.add('is-counted'); }, 200 + i * 120);
+              });
+              mio.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.4 });
+        mio.observe(matrixEl);
+      }
+    }
+  })();
+</script>
+<!-- hallmark:end course=persona-design -->
