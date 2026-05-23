@@ -1,7 +1,7 @@
 {
 	"id": "intern10000-2기-story",
 	"accent": "#fc1c49",
-	"music": "audio/dance-playful-night-intern10000bgm.mp3",
+	"music": "audio/fassounds-escape-your-love-upbeat-fashion-pop-dance-412230.mp3",
 	"outro": "brand/somss-outro.mp4",
 	"outroSeconds": 8.94,
 	"scenes": [
@@ -26,7 +26,7 @@
 			"brief": "오프화이트 솔리드 배경 위 클린 타이포 카드 — 자산 없음",
 			"eyebrow": "두려움을 끝내려면",
 			"lead": "초급 디자이너의 완벽한 스타트",
-			"headline": "소옴 '인턴 만분의 기적'\n으로 준비하세요",
+			"headline": "'인턴 만분의 기적'\n으로 시작하세요",
 			"body": "",
 			"cta": "",
 			"textPosition": "center",
@@ -57,7 +57,12 @@
 			"brief": "심일보 강사의 수업 영상 또는 강사가 직접 커트하는 영상",
 			"eyebrow": "인턴 만분의 기적 코스",
 			"headline": "심일보 강사가\n1:1로 직접 지도합니다",
-			"body": "런던 사순 강사 과정 수료 · 클래식과정 62기 300여명 배출.",
+			"body": "",
+			"bullets": [
+				"소옴크리에이티브 수석강사",
+				"런던 사순 강사 과정 수료",
+				"클래식과정 62기 300여명 배출"
+			],
 			"cta": "",
 			"textPosition": "center",
 			"headlineAnim": { "preset": "fade-up", "unit": "line" },

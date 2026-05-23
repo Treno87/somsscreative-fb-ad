@@ -125,7 +125,7 @@ const Placeholder: React.FC<{
 			<div
 				style={{
 					fontFamily: BRAND_FONTS.mono,
-					fontSize: width * 0.028,
+					fontSize: width * 0.035,
 					letterSpacing: "0.2em",
 					textTransform: "uppercase",
 					color: accent,
@@ -137,7 +137,7 @@ const Placeholder: React.FC<{
 			<div
 				style={{
 					fontFamily: BRAND_FONTS.body,
-					fontSize: width * 0.034,
+					fontSize: width * 0.0425,
 					color: "rgba(255,255,255,0.5)",
 					maxWidth: "74%",
 					textAlign: "center",
@@ -289,18 +289,18 @@ const BulletList: React.FC<{
 					>
 						<div
 							style={{
-								width: width * 0.02,
-								height: width * 0.02,
+								width: width * 0.025,
+								height: width * 0.025,
 								borderRadius: 5,
 								backgroundColor: accent,
-								marginRight: width * 0.03,
+								marginRight: width * 0.0375,
 								flexShrink: 0,
 							}}
 						/>
 						<div
 							style={{
 								fontFamily: BRAND_FONTS.body,
-								fontSize: width * 0.04,
+								fontSize: width * 0.05,
 								fontWeight: 500,
 								lineHeight: 1.3,
 								color: textColor,
@@ -322,21 +322,24 @@ const StackScene: React.FC<{ scene: StoryScene }> = ({ scene }) => {
 	const frame = useCurrentFrame();
 	const { fps, width, height } = useVideoConfig();
 
-	const introFont = width * 0.058;
-	const headlineFont = width * 0.062;
+	const introFont = width * 0.0725;
+	const headlineFont = width * 0.0775;
 	const illusSize = width * 0.46; // 고정 크기 — 켄 번스/줌 없음
 	const gap = height * 0.032;
 	// 헤드라인 2줄 가정 — 인트로 텍스트의 초기 중앙 정렬 오프셋 계산용
 	const headlineH = headlineFont * 1.16 * 2;
 	const moveUp = (gap * 2 + illusSize + headlineH) / 2;
 
+	// 첫 프레임에 [인트로 텍스트 + 일러스트]가 정적으로 fully visible해야 한다 —
+	// Meta는 영상 첫 프레임을 자동 썸네일로 쓰므로, 빈 오프화이트로 시작하면 광고가 식별되지 않는다.
+	// 인트로 텍스트의 "중앙 등장 → 위로" 모션은 의도적으로 포기했다(첫 프레임 의미 전달 우선).
 	const introAppear = spring({
-		frame: frame - 3,
+		frame: frame + 20,
 		fps,
 		config: { damping: 18, mass: 0.6 },
 	});
 	const introMove = spring({
-		frame: frame - 20,
+		frame: frame + 15,
 		fps,
 		config: { damping: 20, mass: 0.85 },
 	});
@@ -345,7 +348,7 @@ const StackScene: React.FC<{ scene: StoryScene }> = ({ scene }) => {
 		extrapolateRight: "clamp",
 	});
 	const illus = spring({
-		frame: frame - 42,
+		frame: frame + 20,
 		fps,
 		config: { damping: 20, mass: 0.75 },
 	});
@@ -474,7 +477,7 @@ const SceneView: React.FC<{
 	// eyebrow — 사진·영상 배경에선 다크 칩으로 감싸 배경과 분리한다.
 	const eyebrowStyle: React.CSSProperties = {
 		fontFamily: BRAND_FONTS.mono,
-		fontSize: width * 0.032,
+		fontSize: width * 0.04,
 		letterSpacing: "0.14em",
 		textTransform: "uppercase",
 		color: accent,
@@ -483,7 +486,7 @@ const SceneView: React.FC<{
 			? {
 					alignSelf: "flex-start",
 					backgroundColor: "rgba(10,10,12,0.62)",
-					padding: `${height * 0.0095}px ${width * 0.034}px`,
+					padding: `${height * 0.0095}px ${width * 0.0425}px`,
 					borderRadius: 999,
 				}
 			: {}),
@@ -539,7 +542,7 @@ const SceneView: React.FC<{
 						delayInFrames={12}
 						style={{
 							fontFamily: BRAND_FONTS.display,
-							fontSize: width * 0.052,
+							fontSize: width * 0.065,
 							fontWeight: 600,
 							lineHeight: 1.3,
 							letterSpacing: "-0.005em",
@@ -557,7 +560,7 @@ const SceneView: React.FC<{
 					staggerInFrames={4}
 					style={{
 						fontFamily: BRAND_FONTS.display,
-						fontSize: width * (isCta ? 0.072 : 0.078),
+						fontSize: width * (isCta ? 0.09 : 0.0975),
 						fontWeight: 700,
 						lineHeight: 1.12,
 						letterSpacing: "-0.01em",
@@ -581,7 +584,7 @@ const SceneView: React.FC<{
 						emphasisColor={accent}
 						style={{
 							fontFamily: BRAND_FONTS.body,
-							fontSize: width * 0.042,
+							fontSize: width * 0.0525,
 							fontWeight: 500,
 							lineHeight: 1.4,
 							color: bodyColor,
@@ -601,12 +604,12 @@ const SceneView: React.FC<{
 							marginTop: height * 0.032,
 							display: "flex",
 							alignItems: "center",
-							height: width * 0.115,
-							padding: `0 ${width * 0.06}px`,
+							height: width * 0.144,
+							padding: `0 ${width * 0.075}px`,
 							borderRadius: 999,
 							backgroundColor: accent,
 							fontFamily: BRAND_FONTS.mono,
-							fontSize: width * 0.032,
+							fontSize: width * 0.04,
 							fontWeight: 600,
 							color: "#ffffff",
 						}}
@@ -664,7 +667,10 @@ export const StorytellingAd: React.FC<StorytellingAdProps> = ({
 							/>,
 						];
 					}),
-					// 로고 아웃트로 — 검정 배경 위 contain(레터박스). 자체 오디오 유지.
+					// 로고 아웃트로 — 검정 배경 위 contain(레터박스).
+					// 자체 오디오는 OffthreadVideo가 아닌 별도 <Audio>로 합성한다.
+					// (OffthreadVideo + TransitionSeries 조합에서 마지막 sequence audio가
+					//  누락되는 케이스가 있어, video=muted + Audio 분리로 보강.)
 					...(outro && outroSeconds
 						? [
 								<TransitionSeries.Sequence
@@ -674,6 +680,7 @@ export const StorytellingAd: React.FC<StorytellingAdProps> = ({
 									<AbsoluteFill style={{ backgroundColor: "#000000" }}>
 										<OffthreadVideo
 											src={staticFile(outro)}
+											muted
 											style={{
 												width: "100%",
 												height: "100%",
@@ -681,6 +688,7 @@ export const StorytellingAd: React.FC<StorytellingAdProps> = ({
 												transform: `scale(${OUTRO_SCALE})`,
 											}}
 										/>
+										<Audio src={staticFile(outro)} />
 									</AbsoluteFill>
 								</TransitionSeries.Sequence>,
 							]
@@ -688,7 +696,8 @@ export const StorytellingAd: React.FC<StorytellingAdProps> = ({
 				]}
 			</TransitionSeries>
 
-			{/* 배경음악 — 앞 0.6초 페이드 인, 씬 구간 끝에서 페이드 아웃(아웃트로엔 안 깔린다) */}
+			{/* 배경음악 — 앞 0.6초 페이드 인, 씬 구간 끝에서 페이드 아웃(아웃트로엔 안 깔린다).
+			    volume 0.75 — 1.0이면 BGM이 내레이션 위로 튀어 시끄럽고, 0.55면 거의 안 들린다. */}
 			{music ? (
 				<Audio
 					src={staticFile(music)}
@@ -696,7 +705,7 @@ export const StorytellingAd: React.FC<StorytellingAdProps> = ({
 						interpolate(
 							f,
 							[0, 18, scenesEnd - 45, scenesEnd - 12],
-							[0, 0.55, 0.55, 0],
+							[0, 0.75, 0.75, 0],
 							{ extrapolateLeft: "clamp", extrapolateRight: "clamp" },
 						)
 					}
