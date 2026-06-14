@@ -74,6 +74,15 @@ docs/video-ad-process.md → 광고 동영상 생성 프로세스 (Remotion · �
 
 ---
 
+## 트리거 키워드
+
+- **`ship`** (또는 `/ship`) → 테스트를 돌리고 **전부 통과하면** 한 번에 `git add` + `commit` + `push` 한다.
+  - 사용자가 채팅에 `ship` 이라고만 입력해도 `.claude/commands/ship.md` 플로우를 그대로 실행한다.
+  - 커밋 제목을 함께 주려면: `ship USP 카피 변형 추가` 처럼 키워드 뒤에 붙인다.
+  - `npm test` 가 하나라도 실패하면 commit·push 하지 않고 중단한다.
+
+---
+
 ## 코드 규칙
 
 - `any` 타입 금지 — 명시적 타입 정의 (`lib/dashboard/types.ts` 참조)
