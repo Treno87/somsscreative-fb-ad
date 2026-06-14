@@ -46,9 +46,24 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# ad data (sensitive)
-audit-workspace/input/*.xlsx
-audit-workspace/input/*.csv
-audit-workspace/input/*.json
-audit-workspace/output/*.md
-audit-workspace/output/*.json
+# ad data (sensitive) — Meta 원본 export. analytics/input 은 데이터만 무시, .gitkeep 유지.
+# (구 경로 audit-workspace 는 analytics 로 이름 변경됨)
+analytics/input/*
+!analytics/input/.gitkeep
+
+# claude code worktrees (런타임 git worktree 내부 디렉터리 — 커밋 대상 아님) & 로컬 bin
+.claude/worktrees/
+.localbin/
+
+# 원본 사진 (raw)
+*.HEIC
+*.heic
+
+# 이미지 바이너리는 버전관리하지 않는 컨벤션 (public/courses·public/ads·courses 작업 이미지).
+# remotion/public 은 렌더에 필요한 에셋이 추적되므로 제외하지 않는다.
+public/courses/
+public/ads/
+courses/**/*.png
+courses/**/*.jpg
+courses/**/*.jpeg
+courses/**/*.pdf
