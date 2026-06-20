@@ -1,0 +1,387 @@
+/* Hallmark · macrostructure: Ad-Card Set (fixed-frame) · tone: technical-luxury (분석가의 책상) · anchor hue: cool (indigo 250°)
+ * theme: brand-locked (persona-design video + landing) — not a catalog theme
+ * pre-emit critique: P5 H5 E4 S5 R5 V4
+ * 정적 광고 카드 공유 토큰. 단일 이미지 4종 + 9타입 교육 카루셀 8장.
+ * 색·폰트는 영상(remotion accent #517cd2)·랜딩 토큰과 통일. 인라인 raw 값 금지 — 전부 토큰 참조.
+ */
+
+:root {
+	/* 컬러 — '분석가의 책상' */
+	--ink: #14161a;
+	--ink-soft: rgba(20, 22, 26, 0.74);
+	--paper: #f7f6f2;
+	--paper-2: #efece4; /* 진단 시트 톤 */
+	--indigo: #517cd2; /* 영상 accent와 동일 */
+	--indigo-deep: #2f3e8c;
+	--sub: #b04a2a; /* 서브 마커 (절제 사용) */
+	--white: #ffffff;
+	--white-78: rgba(255, 255, 255, 0.8);
+	--white-60: rgba(255, 255, 255, 0.62);
+
+	/* 사진 위 스크림 */
+	--scrim-bottom: linear-gradient(
+		180deg,
+		rgba(10, 11, 13, 0) 0%,
+		rgba(10, 11, 13, 0.12) 38%,
+		rgba(10, 11, 13, 0.82) 100%
+	);
+	--scrim-cover: linear-gradient(
+		180deg,
+		rgba(10, 11, 13, 0.5) 0%,
+		rgba(10, 11, 13, 0.42) 45%,
+		rgba(10, 11, 13, 0.78) 100%
+	);
+
+	/* 타이포 — 한글 Pretendard (랜딩과 통일) */
+	--font: "Pretendard Variable", Pretendard, -apple-system, system-ui, sans-serif;
+	--fw-display: 800;
+	--fw-mid: 600;
+	--fw-body: 500;
+
+	--radius-chip: 999px;
+	--pad: 88px;
+}
+
+/* ── 카드 프레임 ──────────────────────────────────────── */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	background: #2a2c30;
+	font-family: var(--font);
+	-webkit-font-smoothing: antialiased;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 40px;
+	padding: 40px;
+	align-items: flex-start;
+}
+.card {
+	width: 1080px;
+	height: 1080px;
+	position: relative;
+	overflow: hidden;
+	background: var(--paper);
+	color: var(--ink);
+	flex: 0 0 auto;
+}
+.card--45 {
+	height: 1350px;
+}
+
+/* 배경 이미지 */
+.bg {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.scrim {
+	position: absolute;
+	inset: 0;
+	background: var(--scrim-bottom);
+}
+.scrim--cover {
+	background: var(--scrim-cover);
+}
+
+/* 콘텐츠 박스 */
+.box {
+	position: absolute;
+	inset: 0;
+	padding: var(--pad);
+	display: flex;
+	flex-direction: column;
+	z-index: 2;
+}
+.box--bottom {
+	justify-content: flex-end;
+}
+.box--center {
+	justify-content: center;
+}
+/* 상단정렬 박스가 워드마크(.mark)와 겹치지 않도록 본문을 마크 아래로 밀어냄 */
+.box--clearmark {
+	padding-top: 176px;
+}
+
+/* 워드마크 */
+.mark {
+	position: absolute;
+	top: var(--pad);
+	left: var(--pad);
+	z-index: 3;
+	font-size: 24px;
+	font-weight: var(--fw-mid);
+	letter-spacing: 0.04em;
+	color: var(--white-78);
+}
+.card--paper .mark,
+.card--split .mark {
+	color: var(--ink-soft);
+}
+
+/* eyebrow */
+.eyebrow {
+	display: inline-block;
+	align-self: flex-start;
+	font-size: 28px;
+	font-weight: var(--fw-mid);
+	letter-spacing: 0.02em;
+	color: var(--indigo);
+	margin-bottom: 28px;
+}
+.eyebrow--chip {
+	background: rgba(20, 22, 26, 0.6);
+	padding: 14px 30px;
+	border-radius: var(--radius-chip);
+}
+.eyebrow--onindigo {
+	color: var(--white);
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	padding: 12px 28px;
+	border-radius: var(--radius-chip);
+}
+
+/* 헤드라인 */
+.h {
+	font-size: 78px;
+	font-weight: var(--fw-display);
+	line-height: 1.16;
+	letter-spacing: -0.015em;
+	color: var(--white);
+}
+.h--ink {
+	color: var(--ink);
+}
+.h--sm {
+	font-size: 64px;
+}
+.h em {
+	font-style: normal;
+	color: var(--indigo);
+}
+.on-photo .h {
+	text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 보조문 */
+.sub {
+	font-size: 37px;
+	font-weight: var(--fw-body);
+	line-height: 1.5;
+	color: var(--white-78);
+	margin-top: 30px;
+	max-width: 90%;
+}
+.sub--ink {
+	color: var(--ink-soft);
+}
+.sub strong {
+	font-weight: var(--fw-mid);
+	color: var(--indigo);
+}
+.on-photo .sub {
+	text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+}
+
+/* 불릿 */
+.bullets {
+	list-style: none;
+	margin-top: 44px;
+}
+.bullets li {
+	display: flex;
+	align-items: center;
+	font-size: 39px;
+	font-weight: var(--fw-body);
+	line-height: 1.3;
+	margin-bottom: 26px;
+	color: var(--white);
+}
+.bullets li::before {
+	content: "";
+	width: 18px;
+	height: 18px;
+	border-radius: 5px;
+	background: var(--white);
+	margin-right: 30px;
+	flex: 0 0 auto;
+}
+.note {
+	margin-top: 12px;
+	font-size: 28px;
+	color: var(--white-60);
+}
+
+/* CTA 칩 */
+.cta {
+	align-self: flex-start;
+	margin-top: 52px;
+	display: inline-flex;
+	align-items: center;
+	height: 96px;
+	padding: 0 56px;
+	border-radius: var(--radius-chip);
+	background: var(--white);
+	color: var(--indigo-deep);
+	font-size: 36px;
+	font-weight: 700;
+}
+
+/* 인디고 솔리드 카드 */
+.card--indigo {
+	background: var(--indigo);
+	color: var(--white);
+}
+.card--indigo .eyebrow {
+	color: var(--white);
+}
+
+/* 페이퍼 카드 */
+.card--paper {
+	background: var(--paper);
+}
+
+/* 스와이프 힌트 */
+.swipe {
+	position: absolute;
+	right: var(--pad);
+	bottom: var(--pad);
+	z-index: 3;
+	font-size: 30px;
+	font-weight: var(--fw-mid);
+	color: var(--white);
+	letter-spacing: 0.02em;
+}
+
+/* 페이지 번호 (카루셀) */
+.pageno {
+	position: absolute;
+	top: var(--pad);
+	right: var(--pad);
+	z-index: 3;
+	font-size: 26px;
+	font-weight: var(--fw-mid);
+	color: var(--white-60);
+}
+.card--paper .pageno {
+	color: var(--ink-soft);
+}
+
+/* ── 분할 레이아웃 (강사 카드) ── */
+.card--split {
+	display: flex;
+	background: var(--paper);
+}
+.card--split .half-img {
+	flex: 0 0 46%;
+	position: relative;
+	overflow: hidden;
+}
+.card--split .half-img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.card--split .half-txt {
+	flex: 1;
+	padding: var(--pad) 72px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+/* ── 2축 다이어그램 (카루셀 C4/C5) ── */
+.axis {
+	position: relative;
+	margin-top: 56px;
+	flex: 1;
+	border: 2px solid rgba(20, 22, 26, 0.12);
+	border-radius: 24px;
+	background: var(--paper-2);
+}
+.axis__line {
+	position: absolute;
+	background: var(--indigo);
+}
+.axis--h .axis__line {
+	top: 50%;
+	left: 8%;
+	right: 8%;
+	height: 4px;
+	transform: translateY(-50%);
+}
+.axis--v .axis__line {
+	left: 50%;
+	top: 12%;
+	bottom: 12%;
+	width: 4px;
+	transform: translateX(-50%);
+}
+.axis__cap {
+	position: absolute;
+	font-size: 40px;
+	font-weight: 700;
+	color: var(--indigo-deep);
+}
+.axis__cap small {
+	display: block;
+	font-size: 26px;
+	font-weight: var(--fw-body);
+	color: var(--ink-soft);
+	margin-top: 6px;
+}
+.axis--h .axis__cap.start {
+	left: 56px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.axis--h .axis__cap.end {
+	right: 56px;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: right;
+}
+.axis--v .axis__cap.start {
+	top: 44px;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+}
+.axis--v .axis__cap.end {
+	bottom: 44px;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+}
+.axis__eg {
+	position: absolute;
+	font-size: 26px;
+	color: var(--ink-soft);
+}
+
+/* 매트릭스 카드 (C6) */
+.card--matrix {
+	background: var(--ink);
+	color: var(--white);
+}
+.matrix-wrap {
+	position: absolute;
+	inset: 0;
+	padding: 120px 80px 96px;
+	display: flex;
+	flex-direction: column;
+	z-index: 2;
+}
+.matrix-wrap img {
+	width: 100%;
+	flex: 1;
+	object-fit: contain;
+	border-radius: 16px;
+	background: var(--white);
+	padding: 24px;
+}

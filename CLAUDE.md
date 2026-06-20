@@ -24,10 +24,13 @@ courses/              → 코스별 자료 (USP·콘텐츠·아임웹·광고 �
     ├── USP.md
     ├── content.md
     ├── visual-brief.md
-    ├── imweb.html        → 아임웹 코드블록 랜딩 (단일 정본)
+    ├── imweb.html        → 아임웹 코드블록 랜딩 (단일 정본 · 항상 이 경로)
+    ├── landing/          → 랜딩 부속 (디자인 변형·미리보기·빌드 스크립트·thankyou·THEMES)
+    ├── ads/{기수}/        → 단일·캐러셀 광고 카드 소스 (HTML/CSS)
     └── campaigns/
         ├── {기수}.md            → Meta 광고 제안서
-        └── {기수}-story-plan.md  → 동영상 광고 씬 기획
+        ├── {기수}-story-plan.md  → 동영상 광고 씬 기획
+        └── {기수}-assets.md      → 캠페인 소재 인덱스 (소스·출력 경로 매니페스트)
 
 lib/dashboard/
 ├── analytics.ts      → KPI 계산, 인사이트 생성, A/B 감지
@@ -41,13 +44,16 @@ analytics/            → 광고 성과 분석 워크스페이스
 
 public/
 ├── courses/{course}/ → 랜딩 이미지
-└── ads/{course}-{기수}/ → 광고 소재 이미지
+└── ads/{course}/{기수}/v{NN}/{video|image|carousel}/ → 광고 소재 배달 트리 (전 포맷·버전)
+
+ad-projects/{course}-{기수}-hf/ → Hyperframe(HTML) 동영상 작업 프로젝트 (self-contained)
 
 reference/imweb-samples/ → 아임웹 샘플 HTML·Pixel 가이드
 .claude/agents/       → Claude 서브에이전트 정의
 .claude/brand-context.md → 브랜드 컨텍스트
 docs/PROCESS.md       → 7단계 워크플로우 마스터 문서
 docs/video-ad-process.md → 광고 동영상 생성 프로세스 (Remotion · 영상 작업 시 반드시 참고)
+docs/ad-asset-organization.md → 광고 소재 폴더·네이밍·버전 규약 (소재 생성·저장 시 반드시 참고)
 ```
 
 ---

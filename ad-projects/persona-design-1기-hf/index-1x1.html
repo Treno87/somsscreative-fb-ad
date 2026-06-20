@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ko" data-resolution="square">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family:"NotoKR"; font-weight:400; src:url("fonts/NotoKR-Regular.woff2") format("woff2"); font-display:block; }
+      @font-face { font-family:"NotoKR"; font-weight:700; src:url("fonts/NotoKR-Bold.woff2") format("woff2"); font-display:block; }
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body { width:1080px; height:1080px; overflow:hidden; background:#000;
+        font-family:"NotoKR", sans-serif; -webkit-font-smoothing:antialiased; }
+      .scene { position:absolute; top:0; left:0; width:1080px; height:1080px; overflow:hidden; }
+      :root { --paper:#efeae2; --paper2:#e6e0d6; --paper3:#f4f1ec; --ink:#17181c; --ink2:#4a4d55; --accent:#517cd2; --accent2:#84a3e6; }
+      .card { position:absolute; overflow:hidden; background:#fff; border-radius:10px;
+        box-shadow:0 30px 70px -28px rgba(20,22,28,0.55); }
+      .card img { display:block; width:100%; height:100%; object-fit:cover; }
+
+      /* ============ Scene 1 · HOOK ============ */
+      #s1 { z-index:1; background:radial-gradient(120% 90% at 50% 32%, #f4f0e9 0%, var(--paper) 55%, var(--paper2) 100%); }
+      #s1-pill-wrap { position:absolute; top:80px; left:0; width:1080px; text-align:center; }
+      #s1-pill { display:inline-block; background:var(--accent); color:#fff; font-size:36px; font-weight:700;
+        letter-spacing:0.04em; padding:18px 48px; border-radius:999px; white-space:nowrap;
+        box-shadow:0 18px 40px -16px rgba(81,124,210,0.8); }
+      #s1-cards { position:absolute; top:208px; left:140px; width:800px; height:290px; display:flex; gap:20px; }
+      #s1-cards .c { flex:1; height:290px; border:6px solid #fff; border-radius:12px; overflow:hidden;
+        box-shadow:0 30px 60px -26px rgba(20,22,28,0.5); background:#fff; }
+      #s1-cards .c img { display:block; width:100%; height:100%; object-fit:cover; }
+      #s1 .dot { position:absolute; left:50%; margin-left:-30px; top:565px; width:60px; height:6px; background:var(--accent); transform-origin:center; }
+      #s1-head { position:absolute; left:0; top:605px; width:1080px; text-align:center; }
+      #s1-head .l { font-size:54px; font-weight:700; color:var(--ink); line-height:1.2; letter-spacing:-0.03em; white-space:nowrap; }
+      #s1-head .l b { color:var(--accent); font-weight:700; }
+      #s1-head .l2 { font-size:82px; color:var(--accent); white-space:normal; }
+
+      /* ============ Scene 2 · PROBLEM → SOLUTION ============ */
+      #s2 { opacity:0; z-index:2; background:var(--paper3); }
+      #s2 .qmark { position:absolute; top:170px; left:0; width:1080px; text-align:center; font-size:220px; font-weight:700;
+        color:var(--accent); line-height:1; }
+      #s2-prob { position:absolute; left:60px; top:560px; width:960px; text-align:center; }
+      #s2-prob .l { font-size:60px; font-weight:700; color:var(--ink); line-height:1.32; letter-spacing:-0.03em; }
+      #s2-prob .l b { color:var(--accent); font-size:96px; line-height:1; }
+      #s2-sol { position:absolute; left:60px; top:520px; width:960px; text-align:center; }
+      #s2-sol .l { font-size:56px; font-weight:700; color:var(--ink); line-height:1.32; letter-spacing:-0.03em; }
+      #s2-sol .l b { color:var(--accent); }
+      #s2-sol .big { font-size:78px; color:var(--accent); }
+
+      /* ============ Scene 3 · INSTRUCTOR ============ */
+      #s3 { opacity:0; z-index:3; background:linear-gradient(180deg,#16181d 0%,#1c1f27 60%,#212530 100%); }
+      #s3 .eyebrow { position:absolute; top:85px; left:0; width:1080px; text-align:center; font-size:28px; font-weight:700;
+        letter-spacing:0.2em; text-transform:uppercase; color:var(--accent2); }
+      #s3-photo { top:140px; left:360px; width:360px; height:360px; border:6px solid rgba(255,255,255,0.9); border-radius:16px; }
+      #s3-c1, #s3-c2 { display:none; }
+      #s3-head { position:absolute; left:0; top:560px; width:1080px; text-align:center; }
+      #s3-head .l { font-size:56px; font-weight:700; color:#fff; line-height:1.18; letter-spacing:-0.03em; }
+      #s3-head .a { color:#aac3f2; }
+      #s3 .rule { position:absolute; left:50%; margin-left:-110px; top:715px; width:220px; height:5px; background:var(--accent); transform-origin:center; }
+      #s3-body { position:absolute; left:90px; top:755px; width:900px; text-align:center; font-size:34px; color:#c7cbd4; line-height:1.45; }
+      #s3-body b { color:#fff; font-weight:700; }
+
+      /* ============ Scenes 4–8 · ANALYSIS MONTAGE (shared) ============ */
+      .ana { opacity:0; background:radial-gradient(110% 75% at 50% 36%, #f5f1ea 0%, var(--paper) 58%, var(--paper2) 100%); }
+      .ana .prog { position:absolute; top:80px; left:0; width:1080px; text-align:center; }
+      .ana .prog .lab { font-size:24px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--ink2); }
+      .ana .prog .lab b { color:var(--accent); }
+      .ana .prog .bars { margin-top:14px; display:flex; gap:10px; justify-content:center; }
+      .ana .prog .bars i { width:48px; height:7px; border-radius:4px; background:#d8d0c4; }
+      .ana .prog .bars i.on { background:var(--accent); }
+      .ana .ana-eb-wrap { position:absolute; top:163px; left:0; width:1080px; text-align:center; }
+      .ana .ana-eb { display:inline-block; background:var(--accent); color:#fff; font-size:34px; font-weight:700;
+        letter-spacing:0.03em; padding:16px 44px; border-radius:999px; white-space:nowrap;
+        box-shadow:0 18px 38px -16px rgba(81,124,210,0.8); }
+      .ana-head { position:absolute; top:276px; left:40px; width:1000px; text-align:center; }
+      .ana-head .l { font-size:46px; font-weight:700; color:var(--ink); line-height:1.28; letter-spacing:-0.03em; white-space:nowrap; }
+      .ana-head .l b { color:var(--accent); }
+      .ana-card { position:absolute; overflow:hidden; background:#fff; border-radius:14px;
+        border:6px solid #fff; box-shadow:0 34px 70px -28px rgba(20,22,28,0.5); }
+      .ana-card img { display:block; width:100%; height:100%; object-fit:contain; background:#fff; }
+      #s4-card { top:430px; left:130px; width:820px; height:460px; }
+      #s5-card { top:415px; left:355px; width:370px; height:490px; }
+      #s5-card img { object-fit:cover; }
+      #s6-card { top:430px; left:130px; width:820px; height:460px; }
+      #s7-card { top:415px; left:362px; width:356px; height:490px; }
+      #s7-card img { object-fit:cover; }
+      #s8-card { top:430px; left:130px; width:820px; height:460px; }
+      #s4 { z-index:4; } #s5 { z-index:5; } #s6 { z-index:6; } #s7 { z-index:7; } #s8 { z-index:8; }
+
+      /* ============ Scene 9 · CONCLUSION ============ */
+      #s9 { opacity:0; z-index:9; background:radial-gradient(110% 75% at 50% 34%, #f5f1ea 0%, var(--paper) 58%, var(--paper2) 100%); }
+      #s9 .eyebrow { position:absolute; top:80px; left:0; width:1080px; text-align:center; font-size:28px; font-weight:700;
+        letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); }
+      #s9-head { position:absolute; top:128px; left:40px; width:1000px; text-align:center; }
+      #s9-head .l { font-size:48px; font-weight:700; color:var(--ink); line-height:1.24; letter-spacing:-0.03em; }
+      #s9-head .l b { color:var(--accent); }
+      #s9-stage { position:absolute; top:330px; left:96px; width:888px; height:514px; }
+      .s9-tile { position:absolute; width:285px; height:160px; border-radius:10px; overflow:hidden; border:4px solid #fff;
+        box-shadow:0 18px 40px -20px rgba(20,22,28,0.5); background:#fff; }
+      .s9-tile img { width:100%; height:100%; object-fit:cover; display:block; }
+      #t-pretty   { left:0px;   top:0px; }
+      #t-urban    { left:603px; top:0px; }
+      #t-feminine { left:0px;   top:177px; }
+      #t-elegant  { left:301px; top:177px; }
+      #t-cool     { left:603px; top:177px; }
+      #t-luxury   { left:0px;   top:354px; }
+      #t-classic  { left:301px; top:354px; }
+      #t-chic     { left:603px; top:354px; }
+      #s9-hero { position:absolute; top:416px; left:240px; width:600px; height:338px; border-radius:14px; overflow:hidden;
+        border:6px solid #fff; box-shadow:0 44px 90px -28px rgba(20,22,28,0.65); background:#fff; z-index:20; }
+      #s9-hero img { width:100%; height:100%; object-fit:cover; display:block; }
+      #s9-hero .tag { position:absolute; left:0; bottom:0; width:100%; padding:12px 0; text-align:center;
+        background:linear-gradient(0deg, rgba(20,22,28,0.62), rgba(20,22,28,0)); color:#fff; font-size:26px; font-weight:700; letter-spacing:0.12em; }
+      #s9-body { position:absolute; left:90px; top:892px; width:900px; text-align:center; font-size:30px; color:var(--ink2); line-height:1.4; }
+      #s9-body b { color:var(--ink); font-weight:700; }
+
+      /* ============ Scene 10 · CTA ============ */
+      #s10 { opacity:0; z-index:10; background:radial-gradient(120% 80% at 50% 36%, #5d86db 0%, #517cd2 55%, #3f63ad 100%); }
+      #s10-eb { position:absolute; top:80px; left:0; width:1080px; text-align:center; font-size:30px; font-weight:700;
+        letter-spacing:0.2em; text-transform:uppercase; color:#d7e1f7; }
+      #s10-head { position:absolute; top:130px; left:0; width:1080px; text-align:center; }
+      #s10-head .l { font-size:54px; font-weight:700; color:#fff; line-height:1.22; letter-spacing:-0.03em; }
+      #s10-list { position:absolute; top:340px; left:0; width:1080px; display:flex; flex-direction:column; align-items:center; gap:20px; }
+      #s10-list .li { font-size:36px; color:#eaf0fc; letter-spacing:-0.01em; font-variant-numeric:tabular-nums; text-align:center; }
+      #s10-list .li b { font-weight:700; color:#fff; }
+      #s10-cta-wrap { position:absolute; top:758px; left:0; width:1080px; text-align:center; }
+      #s10-cta { display:inline-block; padding:26px 72px; background:#fff; color:#2c4f9e; border-radius:999px;
+        font-size:46px; font-weight:700; white-space:nowrap; box-shadow:0 22px 50px -20px rgba(0,0,0,0.45); }
+      #s10-sub { position:absolute; top:890px; left:0; width:1080px; text-align:center; font-size:32px; color:#eaf0fc; }
+      #s10-brand { position:absolute; top:966px; left:0; width:1080px; text-align:center; font-size:28px; font-weight:700;
+        letter-spacing:0.18em; color:rgba(255,255,255,0.82); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1080">
+
+      <!-- Scene 1 · HOOK (0–3) -->
+      <div id="s1" class="scene">
+        <div id="s1-pill-wrap"><span id="s1-pill">헤어 디자이너의 고민</span></div>
+        <div id="s1-cards">
+          <div class="c"><img src="images/09-model-a.jpg" alt="" /></div>
+          <div class="c"><img src="images/09-model-b.jpg" alt="" /></div>
+          <div class="c"><img src="images/09-model-c.jpg" alt="" /></div>
+        </div>
+        <div class="dot"></div>
+        <div id="s1-head"><div class="l">고객에게 <b>헤어 스타일</b> 제안할 때</div><div class="l l2">망설여지시나요?</div></div>
+      </div>
+
+      <!-- Scene 2 · PROBLEM → SOLUTION (3–6) -->
+      <div id="s2" class="scene">
+        <div class="qmark">?</div>
+        <div id="s2-prob"><div class="l">그건 헤어스타일을 선택하는</div><div class="l"><b>기준</b>이 없기 때문입니다.</div></div>
+        <div id="s2-sol"><div class="l"><b>페르소나 컨설팅</b>이</div><div class="l"><span class="big">명확한 기준</span>을 제시합니다.</div></div>
+      </div>
+
+      <!-- Scene 3 · INSTRUCTOR (6–10) -->
+      <div id="s3" class="scene">
+        <div class="eyebrow">국내 최고의 커트 마스터</div>
+        <div id="s3-photo" class="card"><img src="images/07b-instructor.png" alt="" /></div>
+        <div id="s3-c1"><img src="images/02-color.jpg" alt="" /></div>
+        <div id="s3-c2"><img src="images/03-accessory.jpg" alt="" /></div>
+        <div id="s3-head"><div class="l">38년 교육 경력의</div><div class="l"><span class="a">원용중 대표</span>가 직강합니다</div></div>
+        <div class="rule"></div>
+        <div id="s3-body">페르소나 컨설팅 분석은 일본 ICPA 얼굴파츠 분석을 <b>헤어 스타일에 최적화</b> 시킨 분석법입니다.</div>
+      </div>
+
+      <!-- Scene 4 · 분석① 얼굴형 (10–12.2) -->
+      <div id="s4" class="scene ana">
+        <div class="prog"><div class="lab">분석 <b>1</b> / 5</div><div class="bars"><i class="on"></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="ana-eb-wrap"><span class="ana-eb">얼굴형 분석</span></div>
+        <div class="ana-head"><div class="l">먼저 <b>9가지 얼굴형</b>을 좌표화합니다</div></div>
+        <div id="s4-card" class="ana-card" data-layout-allow-overflow><img src="images/10-faceshape.png" alt="" /></div>
+      </div>
+
+      <!-- Scene 5 · 분석② 라인 (12.2–14.4) -->
+      <div id="s5" class="scene ana">
+        <div class="prog"><div class="lab">분석 <b>2</b> / 5</div><div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+        <div class="ana-eb-wrap"><span class="ana-eb">얼굴파츠(라인) 분석</span></div>
+        <div class="ana-head"><div class="l">얼굴 파츠의 <b>라인·이미지</b>를 분석합니다</div></div>
+        <div id="s5-card" class="ana-card"><img src="images/11-line.png" alt="" /></div>
+      </div>
+
+      <!-- Scene 6 · 분석③ 감성 (14.4–16.6) -->
+      <div id="s6" class="scene ana">
+        <div class="prog"><div class="lab">분석 <b>3</b> / 5</div><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+        <div class="ana-eb-wrap"><span class="ana-eb">감성(이미지) 분석</span></div>
+        <div class="ana-head"><div class="l">형태·라인에 따른 <b>스타일</b>을 분석합니다</div></div>
+        <div id="s6-card" class="ana-card"><img src="images/12-styling9.png" alt="" /></div>
+      </div>
+
+      <!-- Scene 7 · 분석④ 패션 (16.6–18.8) -->
+      <div id="s7" class="scene ana">
+        <div class="prog"><div class="lab">분석 <b>4</b> / 5</div><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+        <div class="ana-eb-wrap"><span class="ana-eb">패션스타일 분석</span></div>
+        <div class="ana-head"><div class="l">이미지에 어울리는 <b>패션스타일</b>을 분석합니다</div></div>
+        <div id="s7-card" class="ana-card" data-layout-allow-overflow><img src="images/13-fashion.png" alt="" /></div>
+      </div>
+
+      <!-- Scene 8 · 분석⑤ 사회 (18.8–21) -->
+      <div id="s8" class="scene ana">
+        <div class="prog"><div class="lab">분석 <b>5</b> / 5</div><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+        <div class="ana-eb-wrap"><span class="ana-eb">사회적 분석</span></div>
+        <div class="ana-head"><div class="l">직업, 라이프스타일까지</div><div class="l">고객의 <b>사회적 맥락</b>을 읽습니다</div></div>
+        <div id="s8-card" class="ana-card"><img src="images/14-imagescale.png" alt="" /></div>
+      </div>
+
+      <!-- Scene 9 · CONCLUSION (21–24) -->
+      <div id="s9" class="scene">
+        <div class="eyebrow">5단계 과학적 분석</div>
+        <div id="s9-head"><div class="l"><b>과학적 분석</b>을 바탕으로</div><div class="l">최적의 <b>헤어스타일</b>을 찾아드립니다</div></div>
+        <div id="s9-stage" data-layout-allow-overflow>
+          <div class="s9-tile" id="t-pretty"><img src="images/type-pretty.jpg" alt="" /></div>
+          <div class="s9-tile" id="t-urban"><img src="images/type-urban.jpg" alt="" /></div>
+          <div class="s9-tile" id="t-feminine"><img src="images/type-feminine.jpg" alt="" /></div>
+          <div class="s9-tile" id="t-elegant"><img src="images/type-elegant.jpg" alt="" /></div>
+          <div class="s9-tile" id="t-cool"><img src="images/type-cool.jpg" alt="" /></div>
+          <div class="s9-tile" id="t-luxury"><img src="images/type-luxury.jpg" alt="" /></div>
+          <div class="s9-tile" id="t-classic"><img src="images/type-classic.jpg" alt="" /></div>
+          <div class="s9-tile" id="t-chic"><img src="images/type-chic.jpg" alt="" /></div>
+        </div>
+        <div id="s9-hero" data-layout-allow-overflow><img src="images/type-romantic.jpg" alt="" /><div class="tag">ROMANTIC</div></div>
+        <div id="s9-body">느낌이 아니라 <b>얼굴형 × 라인 × 감성 × 패션 × 맥락</b>으로 설계됩니다.</div>
+      </div>
+
+      <!-- Scene 10 · CTA (24–30) -->
+      <div id="s10" class="scene">
+        <div id="s10-eb">국내 도입 1기</div>
+        <div id="s10-head"><div class="l">페르소나 디자인(얼굴파츠)과정</div><div class="l">일본 ICPA 자격증 발급</div></div>
+        <div id="s10-list">
+          <div class="li"><b>수강료 220만원</b> · 총 4회차</div>
+          <div class="li">정원 16명 선착순</div>
+          <div class="li">2026년 7월 개강 · 매주 월요일</div>
+          <div class="li">일본 ICPA 자격증 부여</div>
+          <div class="li">20% 선납 시 기수 확정</div>
+        </div>
+        <div id="s10-cta-wrap"><span id="s10-cta">지금 신청하세요</span></div>
+        <div id="s10-sub">프로필 링크에서 자세히 보기 →</div>
+        <div id="s10-brand">SOMSS CREATIVE</div>
+      </div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ===== Scene 1 · HOOK (0.0–3.0) — 자동재생 OFF 대비: 모든 요소 t=0부터 완전 노출(페이드인 금지). 미세 모션만 ===== */
+      tl.fromTo("#s1-cards .c", { scale:1.0 }, { scale:1.05, duration:3.0, ease:"none" }, 0);
+      tl.fromTo("#s1 .dot", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power2.out" }, 0.4);
+
+      /* ===== Scene 2 · PROBLEM → SOLUTION reveal @3.0 ===== */
+      tl.fromTo("#s2", { opacity:0 }, { opacity:1, duration:0.5, ease:"power2.inOut" }, 3.0);
+      tl.fromTo("#s2 .qmark", { opacity:0, scale:0.6, rotation:-16 }, { opacity:1, scale:1, rotation:0, duration:0.7, ease:"back.out(2)" }, 3.2);
+      tl.fromTo("#s2-prob .l:nth-child(1)", { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55, ease:"power3.out" }, 3.4);
+      tl.fromTo("#s2-prob .l:nth-child(2)", { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55, ease:"power3.out" }, 3.55);
+      tl.to("#s2-prob", { opacity:0, y:-26, duration:0.45, ease:"power2.in" }, 4.5);
+      tl.to("#s2 .qmark", { opacity:0, scale:0.7, duration:0.45, ease:"power2.in" }, 4.5);
+      tl.to("#s2", { backgroundColor:"#efeae2", duration:0.6, ease:"sine.inOut" }, 4.5);
+      tl.fromTo("#s2-sol .l:nth-child(1)", { opacity:0, y:30, filter:"blur(12px)" }, { opacity:1, y:0, filter:"blur(0px)", duration:0.6, ease:"power2.out" }, 4.95);
+      tl.fromTo("#s2-sol .l:nth-child(2)", { opacity:0, scale:0.9 }, { opacity:1, scale:1, duration:0.6, ease:"back.out(1.7)" }, 5.2);
+
+      /* ===== Scene 3 · INSTRUCTOR reveal @6.0 ===== */
+      tl.fromTo("#s3", { opacity:0 }, { opacity:1, duration:0.5, ease:"power2.inOut" }, 6.0);
+      tl.fromTo("#s3 .eyebrow", { opacity:0, y:-22 }, { opacity:1, y:0, duration:0.5, ease:"back.out(1.8)" }, 6.3);
+      tl.fromTo("#s3-photo", { opacity:0, scale:0.9, y:40 }, { opacity:1, scale:1, y:0, duration:0.85, ease:"expo.out" }, 6.35);
+      tl.fromTo("#s3-head .l:nth-child(1)", { opacity:0, x:-44 }, { opacity:1, x:0, duration:0.6, ease:"expo.out" }, 7.1);
+      tl.fromTo("#s3-head .l:nth-child(2)", { opacity:0, x:-44 }, { opacity:1, x:0, duration:0.6, ease:"expo.out" }, 7.3);
+      tl.fromTo("#s3 .rule", { opacity:0, scaleX:0 }, { opacity:1, scaleX:1, duration:0.5, ease:"power2.out" }, 7.55);
+      tl.fromTo("#s3-body", { opacity:0, y:24 }, { opacity:1, y:0, duration:0.7, ease:"sine.out" }, 7.7);
+      tl.to("#s3-photo", { scale:1.05, duration:3.2, ease:"none" }, 7.3);
+
+      /* ===== Analysis montage S4–S8 ===== */
+      tl.fromTo("#s4", { opacity:0 }, { opacity:1, duration:0.45, ease:"power2.inOut" }, 10.0);
+      tl.fromTo("#s4 .prog", { opacity:0, y:-18 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 10.2);
+      tl.fromTo("#s4 .ana-eb-wrap", { opacity:0, y:-14 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 10.3);
+      tl.fromTo("#s4 .ana-head .l", { opacity:0, y:24 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 10.35);
+      tl.fromTo("#s4-card", { opacity:0, scale:0.9 }, { opacity:1, scale:1, duration:0.6, ease:"expo.out" }, 10.5);
+      tl.to("#s4-card img", { scale:1.05, duration:1.7, ease:"none" }, 10.5);
+
+      tl.fromTo("#s5", { opacity:0 }, { opacity:1, duration:0.45, ease:"power2.inOut" }, 12.2);
+      tl.fromTo("#s5 .prog", { opacity:0, y:-18 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 12.35);
+      tl.fromTo("#s5 .ana-eb-wrap", { opacity:0, y:-14 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 12.45);
+      tl.fromTo("#s5 .ana-head .l", { opacity:0, y:24 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 12.5);
+      tl.fromTo("#s5-card", { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.6, ease:"power4.out" }, 12.6);
+
+      tl.fromTo("#s6", { opacity:0 }, { opacity:1, duration:0.45, ease:"power2.inOut" }, 14.4);
+      tl.fromTo("#s6 .prog", { opacity:0, y:-18 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 14.55);
+      tl.fromTo("#s6 .ana-eb-wrap", { opacity:0, y:-14 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 14.65);
+      tl.fromTo("#s6 .ana-head .l", { opacity:0, y:24 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 14.7);
+      tl.fromTo("#s6-card", { opacity:0, x:90 }, { opacity:1, x:0, duration:0.6, ease:"power4.out" }, 14.8);
+
+      tl.fromTo("#s7", { opacity:0 }, { opacity:1, duration:0.45, ease:"power2.inOut" }, 16.6);
+      tl.fromTo("#s7 .prog", { opacity:0, y:-18 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 16.75);
+      tl.fromTo("#s7 .ana-eb-wrap", { opacity:0, y:-14 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 16.85);
+      tl.fromTo("#s7 .ana-head .l", { opacity:0, y:24 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 16.9);
+      tl.fromTo("#s7-card", { opacity:0, scale:0.92 }, { opacity:1, scale:1, duration:0.6, ease:"expo.out" }, 17.0);
+      tl.to("#s7-card img", { scale:1.06, duration:1.7, ease:"none" }, 17.0);
+
+      tl.fromTo("#s8", { opacity:0 }, { opacity:1, duration:0.45, ease:"power2.inOut" }, 18.8);
+      tl.fromTo("#s8 .prog", { opacity:0, y:-18 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 18.95);
+      tl.fromTo("#s8 .ana-eb-wrap", { opacity:0, y:-14 }, { opacity:1, y:0, duration:0.4, ease:"power2.out" }, 19.05);
+      tl.fromTo("#s8 .ana-head .l", { opacity:0, y:24 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 19.1);
+      tl.fromTo("#s8-card", { opacity:0, y:80 }, { opacity:1, y:0, duration:0.6, ease:"power4.out" }, 19.2);
+
+      /* ===== Scene 9 · CONCLUSION reveal @21.0 — 타일이 중앙에서 크게 등장→슬롯으로 축소·스택 ===== */
+      tl.fromTo("#s9", { opacity:0 }, { opacity:1, duration:0.5, ease:"power2.inOut" }, 21.0);
+      tl.fromTo("#s9 .eyebrow", { opacity:0, y:-18 }, { opacity:1, y:0, duration:0.45, ease:"back.out(1.8)" }, 21.25);
+      tl.fromTo("#s9-head .l:nth-child(1)", { opacity:0, y:26 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 21.2);
+      tl.fromTo("#s9-head .l:nth-child(2)", { opacity:0, y:26 }, { opacity:1, y:0, duration:0.5, ease:"power3.out" }, 21.32);
+      var CX = window.innerWidth / 2, CY = window.innerHeight / 2;
+      [["t-pretty",21.45],["t-urban",21.66],["t-feminine",21.87],["t-elegant",22.08],["t-cool",22.29],["t-luxury",22.5],["t-classic",22.71],["t-chic",22.92]].forEach(function(p){
+        var el = document.getElementById(p[0]); var r = el.getBoundingClientRect();
+        var dx = CX - (r.left + r.width/2), dy = CY - (r.top + r.height/2);
+        tl.fromTo("#"+p[0], { opacity:0, scale:3, x:dx, y:dy }, { opacity:1, scale:1, x:0, y:0, duration:0.42, ease:"power3.out" }, p[1]);
+      });
+      tl.fromTo("#s9-hero", { opacity:0, scale:0.55, y:60 }, { opacity:1, scale:1, y:0, duration:0.7, ease:"back.out(1.5)" }, 23.15);
+      tl.fromTo("#s9-body", { opacity:0, y:22 }, { opacity:1, y:0, duration:0.55, ease:"sine.out" }, 23.5);
+
+      /* ===== Scene 10 · CTA reveal @24.0 ===== */
+      tl.fromTo("#s10", { opacity:0 }, { opacity:1, duration:0.5, ease:"power2.inOut" }, 24.0);
+      tl.fromTo("#s10-eb", { opacity:0, y:-20 }, { opacity:1, y:0, duration:0.5, ease:"back.out(1.8)" }, 24.3);
+      tl.fromTo("#s10-head .l:nth-child(1)", { opacity:0, scale:0.92, y:30 }, { opacity:1, scale:1, y:0, duration:0.6, ease:"expo.out" }, 24.45);
+      tl.fromTo("#s10-head .l:nth-child(2)", { opacity:0, scale:0.92, y:30 }, { opacity:1, scale:1, y:0, duration:0.6, ease:"expo.out" }, 24.6);
+      tl.fromTo("#s10-list .li", { opacity:0, x:-40 }, { opacity:1, x:0, duration:0.5, ease:"power3.out", stagger:0.12 }, 24.95);
+      tl.fromTo("#s10-cta", { opacity:0, scale:0.7 }, { opacity:1, scale:1, duration:0.6, ease:"back.out(2.2)" }, 25.9);
+      tl.fromTo("#s10-sub", { opacity:0, y:18 }, { opacity:1, y:0, duration:0.5, ease:"sine.out" }, 26.3);
+      tl.fromTo("#s10-brand", { opacity:0 }, { opacity:1, duration:0.6, ease:"sine.out" }, 26.6);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

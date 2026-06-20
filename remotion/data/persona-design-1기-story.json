@@ -1,0 +1,116 @@
+{
+  "id": "persona-design-1기-story",
+  "accent": "#517cd2",
+  "music": "",
+  "outro": "brand/somss-outro.mp4",
+  "outroSeconds": 8.94,
+  "scenes": [
+    {
+      "id": "s1-hook",
+      "kind": "hook",
+      "media": "images/persona-design-1기/00-hero-face.jpg",
+      "brief": "여성 얼굴 위 3:2 측정라인 + PHYSICAL 라벨 + 스타일 가이드 시트가 겹친 시그니처 컷. 데이터로 얼굴을 읽는다는 정체성.",
+      "eyebrow": "얼굴파츠분석",
+      "headline": "감으로 자르던 머리\n이제 데이터로 설계합니다",
+      "body": "",
+      "cta": "",
+      "textPosition": "bottom",
+      "headlineAnim": {
+        "preset": "pop",
+        "unit": "word"
+      },
+      "durationInSeconds": 3
+    },
+    {
+      "id": "s2-problem",
+      "kind": "problem",
+      "media": "#f4f1ec",
+      "brief": "웜 페이퍼톤 솔리드 위 클린 타이포 — 자산 없이 여백으로 호흡.",
+      "eyebrow": "7년차의 고민",
+      "headline": "추천은 했지만\n늘 한 번 망설입니다",
+      "body": "이 스타일이 왜 어울리는지,\n**감각**으로는 설명되지 않습니다.",
+      "cta": "",
+      "textPosition": "center",
+      "headlineAnim": {
+        "preset": "slide-left",
+        "unit": "line"
+      },
+      "durationInSeconds": 5
+    },
+    {
+      "id": "s3-turn",
+      "kind": "turn",
+      "media": "images/persona-design-1기/01-form.jpg",
+      "brief": "ICPA 얼굴 분석 진단지에 손으로 기입하는 장면 — '추측하지 말고 측정한다'의 전환점.",
+      "eyebrow": "페르소나 디자인",
+      "headline": "따라 하는 게 아니라\n왜 어울리는지 읽습니다",
+      "body": "어울림은 감각이 아니라\n**구조 × 인상 × 맥락**으로 설계됩니다.",
+      "cta": "",
+      "textPosition": "center",
+      "headlineAnim": {
+        "preset": "blur-in",
+        "unit": "word"
+      },
+      "durationInSeconds": 5
+    },
+    {
+      "id": "s4-proof",
+      "kind": "proof",
+      "media": "images/persona-design-1기/06-facetype.jpg",
+      "brief": "Soft/Neutral/Hard × Curvy/Neutral 9타입 매트릭스 + 6장 스타일 가이드 + 캘리퍼·가위. 가장 풍부한 시스템 샷.",
+      "eyebrow": "9가지 페이스타입",
+      "headline": "신체·감성·사회\n세 축으로 읽어\n좌표에 위치시킵니다",
+      "body": "한 사람을 **9가지 페이스 타입 공식**으로,\n감이 아닌 근거로 설명합니다.",
+      "cta": "",
+      "textPosition": "bottom",
+      "headlineAnim": {
+        "preset": "fade-up",
+        "unit": "line"
+      },
+      "durationInSeconds": 6
+    },
+    {
+      "id": "s5-proof",
+      "kind": "proof",
+      "media": [
+        "images/persona-design-1기/02-color.jpg",
+        "images/persona-design-1기/03-accessory.jpg",
+        "images/persona-design-1기/04-neckline.jpg",
+        "images/persona-design-1기/05-fashion.jpg"
+      ],
+      "brief": "색상분석(실제 컨설팅 현장)→악세사리→넥라인→패션스타일 차트 4종 크로스페이드 몽타주. 분석 체계의 두께.",
+      "eyebrow": "분석가의 책상",
+      "headline": "색상·악세서리\n넥라인·패션까지\n전부 측정합니다",
+      "body": "감이 아니라 **근거로 설명하는 디자이너**가 됩니다.",
+      "cta": "",
+      "textPosition": "bottom",
+      "headlineAnim": {
+        "preset": "rise",
+        "unit": "word"
+      },
+      "durationInSeconds": 5
+    },
+    {
+      "id": "s6-cta",
+      "kind": "cta",
+      "media": "#517cd2",
+      "brief": "인디고 솔리드 위 화이트 타이포 + 오퍼 불릿 4종. 결정의 색.",
+      "eyebrow": "국내 도입 1기",
+      "headline": "먼저 시작하는 사람이\n선점합니다",
+      "body": "",
+      "bullets": [
+        "수강료 220만원 · 정원 16명 선착순",
+        "2026년 7월 개강 · 매주 월요일",
+        "일본 ICPA 자격증 부여",
+        "20% 선납 시 1기 확정"
+      ],
+      "cta": "1기 수강 신청",
+      "textPosition": "center",
+      "headlineAnim": {
+        "preset": "expand",
+        "unit": "word"
+      },
+      "durationInSeconds": 6
+    }
+  ]
+}

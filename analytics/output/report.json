@@ -1,125 +1,171 @@
 {
-  "generatedAt": "2026-05-16T07:05:24.156Z",
-  "period": "2026-04-27 ~ 2026-05-17",
-  "healthScore": 68,
-  "grade": "C",
-  "summary": "클래식 55기 캠페인은 리드 확보는 진행 중이나, 3주차에 들어 CTR 27% 하락·CPL 45% 상승의 피로도 신호가 명확합니다. hero_b 소재가 A/B 승자로 확정 — 즉시 예산 이동 권장.",
+  "generatedAt": "2026-05-27T17:10:00+09:00",
+  "period": "2026-05-26 ~ 2026-05-27 (2026-W22)",
+  "healthScore": 58,
+  "grade": "D",
+  "summary": "인턴만분v2 동영상 캠페인이 CTR 29.7%·CPL 1,401원으로 압도적 성과를 내며 전체 리드 21건 중 18건(86%)을 견인. 반면 클래식 모집 캠페인은 CPL 32,365원(인턴 대비 23배)으로 예산 64,730원이 대부분 비효율 지출. 상시채용은 링크 클릭 0건으로 추적·후킹 점검 필요.",
   "categories": {
-    "creative": {
-      "score": 55,
-      "label": "주의"
-    },
-    "budget": {
-      "score": 78,
-      "label": "양호"
-    },
-    "structure": {
-      "score": 72,
-      "label": "양호"
-    },
-    "audience": {
-      "score": 65,
-      "label": "주의"
-    }
+    "creative": { "score": 55, "label": "주의" },
+    "budget":   { "score": 40, "label": "위험" },
+    "structure":{ "score": 70, "label": "주의" },
+    "audience": { "score": 65, "label": "주의" }
   },
   "findings": [
     {
       "category": "creative",
+      "level": "pass",
+      "title": "인턴만분v2 동영상이 슈퍼 위너",
+      "detail": "CTR 29.64% (3,178 노출 → 942 클릭), CPL 1,421원, 리드 18건. 업계 평균(1~2%) 대비 15~30배 수준으로 즉시 확장 대상."
+    },
+    {
+      "category": "creative",
       "level": "critical",
-      "title": "testimonial_control CTR 56% 하락",
-      "detail": "W18 1.8% → W20 0.8%. MIN_IMPRESSIONS_FOR_FATIGUE 통과. 즉시 교체 권장."
+      "title": "클래식 v2 광고가 예산을 잠식",
+      "detail": "v2 단독 지출 50,825원·리드 1건·CPL 50,825원. 동일 광고세트의 v3는 CPL 14,546원으로 3.5배 효율 차이. v2 즉시 OFF 필요."
     },
     {
       "category": "creative",
       "level": "warning",
-      "title": "전체 평균 CTR 27% 하락",
-      "detail": "W18 1.8% → W20 1.3%. 소재 다양성 부족 가능성."
+      "title": "클래식 캠페인 CTR 3.17%로 평이",
+      "detail": "인턴 동영상(29.6%) 대비 9배 낮은 클릭률. 정적 이미지 소재 한계로 보이며 인턴 영상 포맷을 클래식으로 이식 검토."
+    },
+    {
+      "category": "creative",
+      "level": "warning",
+      "title": "상시채용 후킹B 링크 클릭 0건",
+      "detail": "노출 551, 지출 4,581원에서 linkClicks=0. 리드 1건은 추적되었으나 CTA·UTM 또는 Pixel 매핑 점검 필요."
     },
     {
       "category": "budget",
-      "level": "pass",
-      "title": "예산 소진율 92%",
-      "detail": "목표 85% 초과 달성. 학습 단계 종료."
+      "level": "critical",
+      "title": "예산 배분 심각한 역전",
+      "detail": "클래식(일 4만원·CPL 3.2만원)과 인턴(일 4만원·CPL 1,401원)이 동일 예산. 인턴이 23배 효율적인데 같은 자원을 받는 중. 즉시 인턴 80,000원 / 클래식 10,000원으로 재배분 권장."
+    },
+    {
+      "category": "budget",
+      "level": "critical",
+      "title": "CPL 2배 초과 광고세트 1개",
+      "detail": "전체 평균 CPL 4,549원 대비 클래식 광고세트 CPL 32,569원(7.2배). 가이드라인 2배 임계치를 크게 초과."
+    },
+    {
+      "category": "budget",
+      "level": "warning",
+      "title": "인턴 캠페인 예산 캡 도달 임박",
+      "detail": "인턴 캠페인 일예산 40,000원에 25,215원(63%) 소진. CTR이 폭발적이라 곧 캡에 막혀 노출 정체될 우려, 일예산 상향 권장."
     },
     {
       "category": "structure",
       "level": "warning",
-      "title": "광고세트당 광고 수 부족",
-      "detail": "AST-002에 광고 3개. 권장 2~4개 범위지만 신규 소재 추가 권장."
+      "title": "inactive 캠페인 5개 잔존",
+      "detail": "2026년 3월 클래식, 0304잠재고객, 20260518 클래식 등 inactive 캠페인이 5개 누적. 보고서 노이즈 발생 — 아카이브 정리 권장."
+    },
+    {
+      "category": "structure",
+      "level": "pass",
+      "title": "A/B 테스트 네이밍 일관성 양호",
+      "detail": "v1/v2/v3, 후킹A/B 패턴 사용. 클래식 광고세트 내 v2 vs v3는 명확한 비교 가능 구조."
+    },
+    {
+      "category": "structure",
+      "level": "warning",
+      "title": "캠페인 목표(objective) 필드 비어있음",
+      "detail": "모든 행에서 objective=\"\". Leads 캠페인으로 설정되었는지 Meta 광고관리자에서 직접 확인 필요."
     },
     {
       "category": "audience",
       "level": "warning",
-      "title": "LAL 광고세트 빈도 2.1 진입",
-      "detail": "빈도 3 초과 시 소진. 신규 오디언스 확장 검토."
+      "title": "오디언스 유형 메타데이터 누락",
+      "detail": "audienceType 필드가 전 행 공란. 리타겟팅/유사 오디언스 사용 여부를 데이터로 검증 불가 — 오디언스 매니저에서 직접 확인 필요."
+    },
+    {
+      "category": "audience",
+      "level": "pass",
+      "title": "빈도 양호 (1.2~1.7회)",
+      "detail": "활성 광고세트 최대 frequency 1.68. 3회 임계치 미달로 피로도 OK. 단 인턴은 확장 시 빠르게 상승할 가능성 있어 모니터링 필요."
     }
   ],
   "quickWins": [
     {
       "priority": 1,
-      "action": "testimonial_control 중단 → 예산 hero_b로 이동",
-      "impact": "예상 CPL 35% 개선"
+      "action": "클래식 v2 광고(CPL 50,825원) 즉시 OFF",
+      "impact": "일 50,000원 절감, 동일 광고세트 v3로 트래픽 이전 시 CPL 70% 개선"
     },
     {
       "priority": 2,
-      "action": "hero_b 변형 2~3개 추가 제작",
-      "impact": "소재 피로도 완화, CTR 회복"
+      "action": "인턴만분v2 캠페인 일예산 40,000원 → 80,000원 상향",
+      "impact": "현재 CPL 1,401원 유지 시 일 리드 18 → 35건+ 도달 가능"
     },
     {
       "priority": 3,
-      "action": "리타겟팅(랜딩 30일) 광고세트 신설",
-      "impact": "주차당 리드 +15% 예상"
+      "action": "클래식 모집 캠페인 일예산 4만원 → 1만원 축소 또는 일시중지",
+      "impact": "비효율 일 지출 5만원+ 절감, 인턴 캠페인으로 재배분"
+    },
+    {
+      "priority": 4,
+      "action": "상시채용 후킹B 링크/Pixel/UTM 추적 점검",
+      "impact": "linkClicks=0 미스터리 해결, 정확한 CPL 산정 가능"
+    },
+    {
+      "priority": 5,
+      "action": "inactive 캠페인 5개 아카이브 정리",
+      "impact": "리포트 노이즈 제거, 분석 가속화"
     }
   ],
   "killList": [
     {
-      "name": "testimonial_control",
-      "reason": "CTR 56% 하락, CPL 목표 대비 +180%",
-      "wastedSpend": 280000
+      "name": "v2_20260525_classic-landing_헤어타겟20260505",
+      "reason": "CPL 50,825원 (리드 1건). 동일 광고세트 v3 대비 3.5배 비효율, 클래식 캠페인 지출의 78% 잠식",
+      "wastedSpend": 50825
     },
     {
-      "name": "offer_control",
-      "reason": "CTR 0.8% 미만, 결과 없음",
-      "wastedSpend": 95000
+      "name": "20260525_클래식_모집 캠페인",
+      "reason": "캠페인 CPL 32,365원, 평균 대비 7배. 인턴 동영상 포맷 검증 전까지 예산 75% 축소 권장",
+      "wastedSpend": 64730
     }
   ],
   "scalingOpportunities": [
     {
-      "name": "hero_b",
-      "recommendation": "일 예산 2배로 확장 (3만 → 6만)",
-      "expectedImpact": "주당 리드 +12명 예상"
+      "name": "인턴만분v2_동영상",
+      "recommendation": "일예산 25,215원 → 80,000원 단계적 상향 (1차 +50%, 빈도 2.0 미만 유지되면 +100%). 9:16/1:1/4:5 비율 분리 발행로 노출 면적 확대.",
+      "expectedImpact": "현 CPL 1,401원 유지 시 주간 리드 126 → 250건+, 빈도 1.68 → 2.5 안전 구간"
     },
     {
-      "name": "pain_point_control",
-      "recommendation": "LAL 오디언스 확장 (1-3% → 1-5%)",
-      "expectedImpact": "도달 1.6배, CPL 안정"
+      "name": "인턴 동영상 포맷 → 클래식 코스로 이식",
+      "recommendation": "클래식용 동영상 광고를 인턴 v2 동일 톤/구조로 신규 제작. 정적 이미지 대비 CTR 5~10배 상승 가능성.",
+      "expectedImpact": "클래식 CPL 32,365원 → 8,000원대 진입 시도 가능, 캠페인 살리기"
     }
   ],
   "abConclusion": {
-    "winner": "hero_b",
-    "winnerCpl": 21500,
-    "loserCpl": 38200,
-    "cplReduction": 43.7,
-    "recommendation": "hero_b 변형으로 전체 예산 이동. hero_control 즉시 중단."
+    "winner": "v3_20260525_classic-landing_헤어타겟20260505",
+    "winnerCpl": 14546,
+    "loserCpl": 50825,
+    "cplReduction": 71.4,
+    "recommendation": "v2 즉시 OFF, v3로 트래픽 집중. 동시에 인턴 v2 동영상 포맷을 클래식에 이식한 v4 신규 변형 발행."
   },
   "topCreatives": [
     {
-      "name": "hero_b",
-      "cpl": 21500,
-      "leads": 24,
-      "ctr": 0.025
+      "name": "인턴만분v2_동영상",
+      "cpl": 1421,
+      "leads": 18,
+      "ctr": 0.2964
     },
     {
-      "name": "pain_point_control",
-      "cpl": 27000,
-      "leads": 16,
-      "ctr": 0.019
+      "name": "2026_상시채용_후킹B",
+      "cpl": 4714,
+      "leads": 1,
+      "ctr": 0
     },
     {
-      "name": "hero_control",
-      "cpl": 38200,
-      "leads": 11,
-      "ctr": 0.016
+      "name": "v3_20260525_classic-landing_헤어타겟20260505",
+      "cpl": 14546,
+      "leads": 1,
+      "ctr": 0.0399
+    },
+    {
+      "name": "v2_20260525_classic-landing_헤어타겟20260505",
+      "cpl": 50825,
+      "leads": 1,
+      "ctr": 0.0293
     }
   ]
 }

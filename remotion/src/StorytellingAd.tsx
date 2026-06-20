@@ -24,6 +24,13 @@ const OUTRO_SCALE = 2;
 
 const clamp01 = (n: number): number => Math.max(0, Math.min(1, n));
 
+// 짧은 가로 프레임(1.91:1 등)은 높이가 낮아 폭 기준 사이즈가 세로로 잘린다.
+// base = min(폭, 높이·1.15) — 세로·정사각·4:5 비율에선 base=폭(기존과 동일),
+// 1.91:1처럼 높이가 낮은 프레임에서만 폰트·요소가 비례 축소된다.
+const scaleBase = (w: number, h: number): number => Math.min(w, h * 1.15);
+// 가로형 여부 — 세로 여백·일러스트 크기를 따로 조이기 위한 플래그.
+const isShortFrame = (w: number, h: number): boolean => h < w * 0.9;
+
 export type StoryScene = {
 	id: string;
 	kind: "hook" | "problem" | "turn" | "proof" | "cta";
@@ -112,7 +119,8 @@ const Placeholder: React.FC<{
 	accent: string;
 	zoom: number;
 }> = ({ scene, accent, zoom }) => {
-	const { width } = useVideoConfig();
+	const { width, height } = useVideoConfig();
+	const base = scaleBase(width, height);
 	return (
 		<AbsoluteFill
 			style={{
@@ -125,11 +133,11 @@ const Placeholder: React.FC<{
 			<div
 				style={{
 					fontFamily: BRAND_FONTS.mono,
-					fontSize: width * 0.035,
+					fontSize: base * 0.035,
 					letterSpacing: "0.2em",
 					textTransform: "uppercase",
 					color: accent,
-					marginBottom: width * 0.035,
+					marginBottom: base * 0.035,
 				}}
 			>
 				{scene.kind} · 자산 자리
@@ -137,7 +145,7 @@ const Placeholder: React.FC<{
 			<div
 				style={{
 					fontFamily: BRAND_FONTS.body,
-					fontSize: width * 0.0425,
+					fontSize: base * 0.0425,
 					color: "rgba(255,255,255,0.5)",
 					maxWidth: "74%",
 					textAlign: "center",
@@ -267,6 +275,7 @@ const BulletList: React.FC<{
 }> = ({ items, accent, dark, startDelay }) => {
 	const frame = useCurrentFrame();
 	const { fps, width, height } = useVideoConfig();
+	const base = scaleBase(width, height);
 	const textColor = dark ? "rgba(22,22,22,0.86)" : "rgba(255,255,255,0.9)";
 	return (
 		<div style={{ marginTop: height * 0.032 }}>
@@ -289,18 +298,18 @@ const BulletList: React.FC<{
 					>
 						<div
 							style={{
-								width: width * 0.025,
-								height: width * 0.025,
+								width: base * 0.025,
+								height: base * 0.025,
 								borderRadius: 5,
 								backgroundColor: accent,
-								marginRight: width * 0.0375,
+								marginRight: base * 0.0375,
 								flexShrink: 0,
 							}}
 						/>
 						<div
 							style={{
 								fontFamily: BRAND_FONTS.body,
-								fontSize: width * 0.05,
+								fontSize: base * 0.05,
 								fontWeight: 500,
 								lineHeight: 1.3,
 								color: textColor,
@@ -321,10 +330,13 @@ const BulletList: React.FC<{
 const StackScene: React.FC<{ scene: StoryScene }> = ({ scene }) => {
 	const frame = useCurrentFrame();
 	const { fps, width, height } = useVideoConfig();
+	const base = scaleBase(width, height);
+	const short = isShortFrame(width, height);
 
-	const introFont = width * 0.0725;
-	const headlineFont = width * 0.0775;
-	const illusSize = width * 0.46; // 고정 크기 — 켄 번스/줌 없음
+	const introFont = base * 0.0725;
+	const headlineFont = base * 0.0775;
+	// 짧은 가로 프레임에선 일러스트를 높이 기준으로 줄여 텍스트와 함께 한 화면에 담는다.
+	const illusSize = short ? height * 0.4 : width * 0.46; // 켄 번스/줌 없음
 	const gap = height * 0.032;
 	// 헤드라인 2줄 가정 — 인트로 텍스트의 초기 중앙 정렬 오프셋 계산용
 	const headlineH = headlineFont * 1.16 * 2;
@@ -361,7 +373,7 @@ const StackScene: React.FC<{ scene: StoryScene }> = ({ scene }) => {
 				backgroundColor: "#faf8f6",
 				alignItems: "center",
 				justifyContent: "center",
-				padding: width * 0.08,
+				padding: `${short ? height * 0.06 : width * 0.08}px ${width * 0.08}px`,
 			}}
 		>
 			<div
@@ -445,6 +457,10 @@ const SceneView: React.FC<{
 }> = ({ scene, accent, index, durationInFrames }) => {
 	const frame = useCurrentFrame();
 	const { fps, width, height } = useVideoConfig();
+	const base = scaleBase(width, height);
+	const short = isShortFrame(width, height);
+	// 짧은 가로 프레임에선 세로 여백을 높이 기준으로 조여 텍스트가 잘리지 않게 한다.
+	const vPad = short ? height * 0.07 : width * 0.08;
 
 	// 스택 레이아웃(hook) — 자체 배경·연출을 가지므로 별도 렌더한다.
 	if (scene.layout === "stack") {
@@ -477,7 +493,7 @@ const SceneView: React.FC<{
 	// eyebrow — 사진·영상 배경에선 다크 칩으로 감싸 배경과 분리한다.
 	const eyebrowStyle: React.CSSProperties = {
 		fontFamily: BRAND_FONTS.mono,
-		fontSize: width * 0.04,
+		fontSize: base * 0.04,
 		letterSpacing: "0.14em",
 		textTransform: "uppercase",
 		color: accent,
@@ -486,7 +502,7 @@ const SceneView: React.FC<{
 			? {
 					alignSelf: "flex-start",
 					backgroundColor: "rgba(10,10,12,0.62)",
-					padding: `${height * 0.0095}px ${width * 0.0425}px`,
+					padding: `${base * 0.0095}px ${base * 0.0425}px`,
 					borderRadius: 999,
 				}
 			: {}),
@@ -523,8 +539,10 @@ const SceneView: React.FC<{
 			<AbsoluteFill
 				style={{
 					justifyContent: isCenter ? "center" : "flex-end",
-					padding: width * 0.08,
-					paddingBottom: isCenter ? width * 0.08 : height * 0.1,
+					paddingLeft: width * 0.08,
+					paddingRight: width * 0.08,
+					paddingTop: vPad,
+					paddingBottom: isCenter ? vPad : height * 0.1,
 				}}
 			>
 				<AnimatedText
@@ -542,7 +560,7 @@ const SceneView: React.FC<{
 						delayInFrames={12}
 						style={{
 							fontFamily: BRAND_FONTS.display,
-							fontSize: width * 0.065,
+							fontSize: base * 0.065,
 							fontWeight: 600,
 							lineHeight: 1.3,
 							letterSpacing: "-0.005em",
@@ -560,7 +578,7 @@ const SceneView: React.FC<{
 					staggerInFrames={4}
 					style={{
 						fontFamily: BRAND_FONTS.display,
-						fontSize: width * (isCta ? 0.09 : 0.0975),
+						fontSize: base * (isCta ? 0.09 : 0.0975),
 						fontWeight: 700,
 						lineHeight: 1.12,
 						letterSpacing: "-0.01em",
@@ -584,7 +602,7 @@ const SceneView: React.FC<{
 						emphasisColor={accent}
 						style={{
 							fontFamily: BRAND_FONTS.body,
-							fontSize: width * 0.0525,
+							fontSize: base * 0.0525,
 							fontWeight: 500,
 							lineHeight: 1.4,
 							color: bodyColor,
@@ -604,12 +622,12 @@ const SceneView: React.FC<{
 							marginTop: height * 0.032,
 							display: "flex",
 							alignItems: "center",
-							height: width * 0.144,
-							padding: `0 ${width * 0.075}px`,
+							height: base * 0.144,
+							padding: `0 ${base * 0.075}px`,
 							borderRadius: 999,
 							backgroundColor: accent,
 							fontFamily: BRAND_FONTS.mono,
-							fontSize: width * 0.04,
+							fontSize: base * 0.04,
 							fontWeight: 600,
 							color: "#ffffff",
 						}}

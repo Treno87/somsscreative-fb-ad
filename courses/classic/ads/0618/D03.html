@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><style>
+@font-face{font-family:'Pretendard';src:url('file:///home/ken/project/somsscreative-fb-ad/remotion/public/fonts/PretendardVariable.woff2') format('woff2');font-weight:100 900;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+html,body{width:1080px;height:1350px;}
+.stage{width:1080px;height:1350px;position:relative;overflow:hidden;font-family:'Pretendard',sans-serif;
+  background:radial-gradient(130% 90% at 28% 8%,#26221f,#15120f 70%);color:#f5f1ea;}
+.glow{position:absolute;width:1200px;height:760px;left:-160px;bottom:-260px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,59,255,.55),rgba(255,212,0,.28) 55%,transparent 72%);
+  filter:blur(8px);}
+/* 상단 브랜드 */
+.top{position:absolute;top:64px;left:72px;right:72px;display:flex;align-items:center;justify-content:space-between;z-index:3;}
+.brand{display:flex;align-items:center;gap:13px;}
+.brand .mk{font-weight:800;font-size:24px;letter-spacing:.14em;color:#f5f1ea;}
+.brand .dot{width:6px;height:6px;border-radius:50%;background:#ff3bff;}
+.brand .course{font-weight:800;font-size:24px;letter-spacing:.01em;color:#171310;background:#ff3bff;border-radius:8px;padding:5px 13px;}
+/* 헤드라인 */
+.hero{position:absolute;left:72px;top:262px;z-index:3;}
+.eyebrow{font-weight:600;font-size:33px;color:#b8afa4;letter-spacing:-.01em;margin-bottom:18px;}
+.hero h1{font-weight:800;font-size:104px;line-height:1.14;letter-spacing:-.04em;}
+.hero h1 .em{color:#ff3bff;}
+.hero .sub{font-weight:800;font-size:90px;line-height:1.16;letter-spacing:-.04em;margin-top:6px;}
+.hero .sub .y{color:#ffd400;}
+/* 노란 배지 블록 */
+.badge{position:absolute;left:72px;top:792px;background:#ffd400;border-radius:22px;padding:34px 44px;z-index:3;
+  box-shadow:0 18px 60px rgba(120,60,0,.35);}
+.badge .num{font-weight:800;font-size:34px;color:#7a5a00;letter-spacing:-.01em;}
+.badge .date{font-weight:800;font-size:54px;color:#171310;letter-spacing:-.03em;margin-top:6px;}
+/* CTA */
+.cta{position:absolute;left:72px;bottom:120px;display:inline-flex;align-items:center;gap:18px;z-index:3;
+  background:#f5f1ea;color:#171310;font-weight:800;font-size:36px;padding:30px 46px;border-radius:999px;
+  box-shadow:0 16px 50px rgba(0,0,0,.45);}
+.cta .ar{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:#ff3bff;color:#fff;font-size:26px;}
+.tap{position:absolute;left:560px;bottom:150px;font-size:80px;z-index:3;transform:rotate(-8deg);filter:drop-shadow(0 8px 20px rgba(0,0,0,.5));}
+</style></head><body>
+<div class="stage">
+  <div class="glow"></div>
+  <div class="top">
+    <div class="brand"><span class="mk">SOMSSCREATIVE</span><span class="dot"></span><span class="course">클래식과정</span></div>
+  </div>
+  <div class="hero">
+    <div class="eyebrow">소움크리에이티브의</div>
+    <h1><span class="em">클래식과정</span></h1>
+    <div class="sub">지금 <span class="y">확인해 보세요!</span></div>
+  </div>
+  <div class="badge">
+    <div class="num">클래식과정 64기</div>
+    <div class="date">7월 20일 개강반 모집중!</div>
+  </div>
+  <div class="cta">무료 상담 신청<span class="ar">→</span></div>
+</div>
+</body></html>

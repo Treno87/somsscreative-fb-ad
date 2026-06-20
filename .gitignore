@@ -67,3 +67,11 @@ courses/**/*.png
 courses/**/*.jpg
 courses/**/*.jpeg
 courses/**/*.pdf
+
+# 광고 작업 프로젝트(ad-projects/{course}-{기수}-hf) 렌더 바이너리 — 소스(html·sh·json·fonts)만 추적.
+# 규약: docs/ad-asset-organization.md
+ad-projects/**/renders/
+ad-projects/**/.ffbin/
+ad-projects/**/_hold/
+ad-projects/**/*.mp4
+ad-projects/**/*.mp3

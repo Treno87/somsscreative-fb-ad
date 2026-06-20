@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><style>
+@font-face{font-family:'Pretendard';src:url('file:///home/ken/project/somsscreative-fb-ad/remotion/public/fonts/PretendardVariable.woff2') format('woff2');font-weight:100 900;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+html,body{width:1080px;height:1350px;}
+.stage{width:1080px;height:1350px;position:relative;overflow:hidden;font-family:'Pretendard',sans-serif;}
+/* 상단: 정체 (다크) */
+.before{position:absolute;top:0;left:0;right:0;height:62%;
+  background:radial-gradient(130% 90% at 30% 10%,#26221f,#15120f 70%);color:#f5f1ea;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 70px),0 100%);}
+/* 하단: 변화 (마젠타→옐로 약속) */
+.after{position:absolute;bottom:0;left:0;right:0;height:42%;
+  background:linear-gradient(120deg,#ff3bff,#ffd400);color:#171310;
+  display:flex;flex-direction:column;justify-content:center;padding:0 72px;}
+.top{position:absolute;top:64px;left:72px;right:72px;display:flex;align-items:center;justify-content:space-between;z-index:3;}
+.brand{display:flex;align-items:center;gap:13px;}
+.brand .mk{font-weight:800;font-size:24px;letter-spacing:.14em;color:#f5f1ea;}
+.brand .dot{width:6px;height:6px;border-radius:50%;background:#ff3bff;}
+.brand .course{font-weight:800;font-size:24px;letter-spacing:.01em;color:#171310;background:#ff3bff;border-radius:8px;padding:5px 13px;}
+.badge{font-weight:800;font-size:28px;color:#171310;background:#ffd400;border-radius:999px;padding:14px 26px;letter-spacing:-.01em;}
+.head{position:absolute;left:72px;top:268px;z-index:3;}
+.tag{font-weight:700;font-size:24px;letter-spacing:.18em;color:#ff3bff;margin-bottom:22px;}
+.head h1{font-weight:800;font-size:96px;line-height:1.17;letter-spacing:-.035em;color:#f5f1ea;}
+.head h1 .em{color:#ff3bff;}
+.after .tag2{font-weight:800;font-size:24px;letter-spacing:.18em;color:#5a2a00;margin-bottom:14px;}
+.after .pre{font-weight:600;font-size:32px;color:#3a1f02;}
+.after .pre b{font-weight:800;color:#171310;}
+.after .big{font-weight:800;font-size:80px;letter-spacing:-.035em;margin-top:6px;}
+.after .btn{display:inline-flex;align-items:center;gap:14px;margin-top:30px;
+  background:#171310;color:#ffd400;font-weight:800;font-size:32px;padding:25px 40px;border-radius:999px;
+  box-shadow:0 12px 40px rgba(80,20,10,.3);}
+.wm{position:absolute;left:72px;top:calc(62% - 116px);font-weight:700;font-size:18px;letter-spacing:.28em;color:rgba(245,241,234,.32);z-index:3;}
+.arrow{position:absolute;right:72px;top:calc(62% - 52px);transform:translateY(-50%);z-index:4;
+  width:92px;height:92px;border-radius:50%;background:#ffd400;color:#171310;display:flex;align-items:center;justify-content:center;font-size:46px;font-weight:800;box-shadow:0 12px 40px rgba(0,0,0,.4);}
+</style></head><body>
+<div class="stage">
+  <div class="before"></div>
+  <div class="after">
+    <div class="tag2">AFTER · 8주 뒤</div>
+    <div class="pre"><b>클래식과정</b>을 마치면</div>
+    <div class="big">완전히 달라집니다</div>
+    <div class="btn">무료 상담 신청<span>→</span></div>
+  </div>
+  <div class="top">
+    <div class="brand"><span class="mk">SOMSSCREATIVE</span><span class="dot"></span><span class="course">클래식과정</span></div>
+    <div class="badge">7월 20일 개강반 모집중</div>
+  </div>
+  <div class="head">
+    <div class="tag">BEFORE · 지금</div>
+    <h1>분명히 배웠는데<br>커트실력은 왜<br><span class="em">제자리</span>일까요?</h1>
+  </div>
+  <div class="arrow">↓</div>
+</div>
+</body></html>

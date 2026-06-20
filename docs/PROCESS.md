@@ -34,7 +34,7 @@
 | 2 | content.md | `landing-builder` | `courses/{course}/imweb.html` (단일 정본) + `imweb-preview.html` + `visual-brief.md` | `imweb-preview.html`로 브라우저 확인 |
 | 3 | visual-brief.md | `image-prompt-brand` + 외부 도구 (Midjourney/Sora) | `public/courses/{course}/*.jpg` | 페이지에 이미지 반영 확인 |
 | 4 | content.md + 랜딩 URL + (선택) `analytics/output/*` | `ad-proposal` | `courses/{course}/campaigns/{기수}.md` | 예산·기간·오디언스·소재 카피 |
-| 5 | 제안서의 소재별 시각 디렉션 | `image-prompt-brand` + 외부 도구 | `public/ads/{course}-{기수}/*.jpg` | Meta 광고 미리보기 |
+| 5 | 제안서의 소재별 시각 디렉션 | `image-prompt-brand` + 외부 도구 | `public/ads/{course}/{기수}/v{NN}/...` (규약: `docs/ad-asset-organization.md`) | Meta 광고 미리보기 |
 | 6 | 모든 산출물 | Meta Ads Manager (수동) | 운영 중인 캠페인 | — |
 | 7 | 운영 후 CSV | `fb-ad-audit` / `dashboard-analyst` / `landing-optimizer` | 진단 보고서 + 페이지 개선 PR | Phase 0~2로 회귀 |
 
@@ -227,13 +227,13 @@ public/courses/{course}/
 
 ### 저장 경로
 
+> 전체 규약은 `docs/ad-asset-organization.md` 참조 (포맷·버전 네이밍 포함).
+
 ```
-public/ads/{course}-{기수}/
-├── creative-1-square.jpg   # 1080×1080 (피드)
-├── creative-1-story.jpg    # 1080×1920 (스토리)
-├── creative-2-square.jpg
-├── creative-2-story.jpg
-└── creative-3-square.jpg
+public/ads/{course}/{기수}/v{NN}/
+├── image/     {course}-{기수}-{variant}-{ratio}-v{NN}.png   # 1x1·4x5
+├── video/     {course}-{기수}-{variant}-{ratio}-v{NN}.mp4   # reels·1x1·191
+└── carousel/{set}/  {II}-v{NN}.png
 ```
 
 ### 검토 게이트
