@@ -12,6 +12,7 @@ import {
 	toIsoWeek,
 } from "@/lib/dashboard/csvParser";
 import { saveWeekSnapshot } from "@/lib/dashboard/storage";
+import type { WeekSnapshot } from "@/lib/dashboard/types";
 
 // 파일 첫 행에서 보고 시작일 + 헤더 추출
 async function peekFile(
@@ -112,6 +113,9 @@ export default function UploadPage() {
 	const [reportDate, setReportDate] = useState(""); // YYYY-MM-DD
 	const [weekError, setWeekError] = useState("");
 	const [campaignHeaders, setCampaignHeaders] = useState<string[]>([]);
+	const [syncDays, setSyncDays] = useState(7);
+	const [isSyncing, setIsSyncing] = useState(false);
+	const [syncError, setSyncError] = useState("");
 
 	const isoWeek = reportDate ? toIsoWeek(reportDate) : "";
 	const allSelected = !!(files.campaign && files.adset && files.ad);
@@ -123,6 +127,41 @@ export default function UploadPage() {
 		const { reportStart, headers } = await peekFile(file);
 		setCampaignHeaders(headers);
 		if (!reportDate && reportStart) setReportDate(reportStart);
+	}
+
+	async function handleMetaSync() {
+		setIsSyncing(true);
+		setSyncError("");
+		try {
+			const res = await fetch("/api/meta/sync", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ days: syncDays }),
+			});
+			const data = await res.json();
+			if (!res.ok || data.ok === false) {
+				setSyncError(data.error ?? "동기화 실패");
+				return;
+			}
+			const snapshots = (data.snapshots ?? []) as WeekSnapshot[];
+			if (snapshots.length === 0) {
+				setSyncError("해당 기간에 데이터가 없습니다.");
+				return;
+			}
+			for (const snap of snapshots) {
+				saveWeekSnapshot(snap.isoWeek, {
+					uploadedAt: snap.uploadedAt,
+					campaigns: snap.campaigns,
+					adSets: snap.adSets,
+					ads: snap.ads,
+				});
+			}
+			router.push("/dashboard/overview");
+		} catch (e) {
+			setSyncError(e instanceof Error ? e.message : String(e));
+		} finally {
+			setIsSyncing(false);
+		}
 	}
 
 	async function handleSubmit() {
@@ -189,6 +228,57 @@ export default function UploadPage() {
 				Facebook 광고 관리자에서 내보낸 파일 3종을 업로드하세요. (CSV 또는 xlsx
 				모두 가능)
 			</p>
+
+			{/* Meta API 자동 동기화 — CSV 없이 광고 계정에서 바로 가져오기 */}
+			<div className="mb-8 p-5 rounded-xl border border-gold/30 bg-gold/5">
+				<div className="flex items-center justify-between mb-1">
+					<h2 className="text-base font-semibold text-gold">
+						Meta에서 자동 동기화
+					</h2>
+					<span className="text-[10px] text-gray-500 font-mono">
+						Marketing API
+					</span>
+				</div>
+				<p className="text-xs text-gray-400 mb-4">
+					광고 계정에 연결해 캠페인·광고세트·광고 성과를 바로 불러옵니다. (CSV
+					다운로드 불필요)
+				</p>
+				<div className="flex items-center gap-3">
+					<select
+						value={syncDays}
+						onChange={(e) => setSyncDays(Number(e.target.value))}
+						disabled={isSyncing}
+						className="bg-[#1a1a1a] border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-gold"
+					>
+						<option value={7}>최근 7일</option>
+						<option value={14}>최근 14일</option>
+						<option value={28}>최근 28일</option>
+						<option value={30}>최근 30일</option>
+					</select>
+					<button
+						onClick={handleMetaSync}
+						disabled={isSyncing}
+						className="flex-1 py-2 rounded-lg font-semibold text-sm transition-colors
+              disabled:opacity-40 disabled:cursor-not-allowed
+              bg-gold text-brand-black hover:bg-gold-light"
+					>
+						{isSyncing ? "동기화 중..." : "Meta에서 동기화"}
+					</button>
+				</div>
+				{syncError && (
+					<p className="text-xs text-critical mt-2">{syncError}</p>
+				)}
+				<p className="text-[11px] text-gray-500 mt-3">
+					연동 설정: <code className="text-gray-400">.env.local</code> 에
+					META_ACCESS_TOKEN · META_AD_ACCOUNT_ID 입력 후 서버 재시작.
+				</p>
+			</div>
+
+			<div className="flex items-center gap-3 mb-6">
+				<div className="h-px flex-1 bg-gray-800" />
+				<span className="text-xs text-gray-600">또는 CSV 수동 업로드</span>
+				<div className="h-px flex-1 bg-gray-800" />
+			</div>
 
 			{/* Date picker → ISO week 자동 계산 */}
 			<div className="mb-6">

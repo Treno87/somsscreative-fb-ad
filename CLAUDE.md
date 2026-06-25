@@ -104,7 +104,22 @@ docs/ad-asset-organization.md → 광고 소재 폴더·네이밍·버전 규약
 # .env.local
 NEXT_PUBLIC_FB_PIXEL_ID=
 NEXT_PUBLIC_GA4_ID=
+
+# Meta Marketing API 자동 수집 (docs/meta-api-sync.md 참고)
+META_ACCESS_TOKEN=      # 시스템 유저 장기 토큰 (ads_read)
+META_AD_ACCOUNT_ID=     # act_XXXX
+META_API_VERSION=       # 선택, 기본 v23.0
+META_CURRENCY_OFFSET=1  # 선택, KRW=1
+CRON_SECRET=            # /api/meta/cron 보호용
 ```
+
+## Meta API 자동 동기화
+
+CSV 수동 업로드 대신 광고 계정에서 직접 성과를 가져온다. (`lib/dashboard/meta/`)
+
+- **수동**: `/dashboard/upload` → "Meta에서 동기화" 버튼 → `POST /api/meta/sync`
+- **자동(cron)**: `GET /api/meta/cron` (CRON_SECRET 보호) → 직전 ISO 주차 수집 → `analytics/store/dashboard.json` 영구 저장. `scripts/meta-sync.mjs` 를 crontab 에 등록.
+- 매퍼는 순수 함수라 목 데이터로 단위 테스트됨 (`__tests__/dashboard/metaMappers.test.ts`, `metaSync.test.ts`).
 
 ---
 

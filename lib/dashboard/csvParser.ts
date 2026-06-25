@@ -8,7 +8,11 @@ import {
 	CAMPAIGN_COLUMN_MAP,
 	CAMPAIGN_REQUIRED_COLUMNS,
 } from "./constants";
+import { toIsoWeek } from "./isoWeek";
 import type { AdRow, AdSetRow, CampaignRow, CsvFileType } from "./types";
+
+// 기존 import 경로 호환: `import { toIsoWeek } from "./csvParser"` 유지
+export { toIsoWeek };
 
 // ---- ParseError ----
 
@@ -46,23 +50,6 @@ export function parsePct(raw: string): number {
 	if (hasPct && n > 100) return n / 10000;
 	// Standard: "3.94" or "3.94%" both mean 3.94% → divide by 100
 	return n / 100;
-}
-
-// ---- ISO week calculation ----
-
-export function toIsoWeek(dateStr: string): string {
-	const date = new Date(dateStr + "T00:00:00Z");
-	// Set to nearest Thursday: current date + 4 - current day number (Mon=1)
-	const dayOfWeek = date.getUTCDay() || 7; // Sunday=7
-	const nearestThursday = new Date(date);
-	nearestThursday.setUTCDate(date.getUTCDate() + 4 - dayOfWeek);
-
-	const yearStart = new Date(Date.UTC(nearestThursday.getUTCFullYear(), 0, 1));
-	const weekNum = Math.ceil(
-		((nearestThursday.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
-	);
-	const year = nearestThursday.getUTCFullYear();
-	return `${year}-W${String(weekNum).padStart(2, "0")}`;
 }
 
 // ---- Header validation ----
