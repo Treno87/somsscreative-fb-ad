@@ -121,6 +121,14 @@ CSV 수동 업로드 대신 광고 계정에서 직접 성과를 가져온다. (
 - **자동(cron)**: `GET /api/meta/cron` (CRON_SECRET 보호) → 직전 ISO 주차 수집 → `analytics/store/dashboard.json` 영구 저장. `scripts/meta-sync.mjs` 를 crontab 에 등록.
 - 매퍼는 순수 함수라 목 데이터로 단위 테스트됨 (`__tests__/dashboard/metaMappers.test.ts`, `metaSync.test.ts`).
 
+## Meta API 광고 생성(쓰기)
+
+구조화 스펙(`courses/{course}/campaigns/{기수}-adspec.mjs`) 하나로 캠페인→광고세트→크리에이티브→광고를 생성한다. (`lib/dashboard/meta/write/`, `docs/meta-ad-create.md` 참고)
+
+- 단계형 CLI: `node scripts/meta-create.mjs --spec=<경로> --phase=plan|structure|creative|ad` → `POST /api/meta/create` (CRON_SECRET 보호).
+- **안전**: 모든 생성물 PAUSED(하드코딩), `plan`=dry-run, 크리에이티브는 실미리보기 확인 후 광고 생성(휴먼인더루프). `ads_management` 권한·`META_PAGE_ID` 필요.
+- 빌더/클라이언트는 목 데이터로 단위 테스트됨 (`metaWritePayloads.test.ts`, `metaWriteClient.test.ts`).
+
 ---
 
 ## 개발 서버

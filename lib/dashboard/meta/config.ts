@@ -14,6 +14,8 @@ export interface MetaConfig {
 	accountId: string; // act_ 접두사 포함
 	apiVersion: string;
 	currencyOffset: number; // Meta 예산값(최소 단위) → 통화 단위 변환 제수
+	pageId?: string; // 광고 노출 주체 페이지 (creative object_story_spec.page_id) — 쓰기 전용
+	instagramActorId?: string; // 선택: IG 노출용 actor — 쓰기 전용
 }
 
 export class MetaConfigError extends Error {
@@ -55,10 +57,20 @@ export function loadMetaConfig(
 		accountId: normaliseAccountId(rawAccountId),
 		apiVersion: env.META_API_VERSION?.trim() || DEFAULT_API_VERSION,
 		currencyOffset,
+		pageId: env.META_PAGE_ID?.trim() || undefined,
+		instagramActorId: env.META_INSTAGRAM_ACTOR_ID?.trim() || undefined,
 	};
 }
 
 /** 설정이 존재하는지(토큰+계정ID) 여부만 — UI에서 토큰 노출 없이 확인용. */
 export function hasMetaConfig(env: NodeJS.ProcessEnv = process.env): boolean {
 	return !!(env.META_ACCESS_TOKEN?.trim() && env.META_AD_ACCOUNT_ID?.trim());
+}
+
+/**
+ * 쓰기(캠페인/소재 생성) 경로 전용 검증.
+ * 크리에이티브는 page_id 가 반드시 필요하므로 누락 시 MetaConfigError.
+ */
+export function assertWriteConfig(config: MetaConfig): void {
+	if (!config.pageId) throw new MetaConfigError(["META_PAGE_ID"]);
 }
