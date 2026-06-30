@@ -202,26 +202,32 @@ describe("buildAuditReport", () => {
 		).toBe(true);
 	});
 
-	it("A/B 페어 승자를 abConclusion 으로 요약한다", () => {
-		const control = makeCampaign({
-			campaignId: "c",
+	it("동일 광고세트 소재 승자를 abConclusion 으로 요약한다 (소재 단위)", () => {
+		const campaign = makeCampaign({ campaignName: "promo", spend: 130000, leads: 12 });
+		// 같은 광고세트(set1)의 두 소재 — CPL 차이 명확
+		const loser = makeAd({
+			adId: "a1",
+			adName: "소재A",
+			adSetId: "set1",
 			campaignName: "promo",
 			spend: 100000,
 			leads: 2, // CPL 50,000
 		});
-		const variant = makeCampaign({
-			campaignId: "v",
-			campaignName: "promo_v2",
+		const winner = makeAd({
+			adId: "a2",
+			adName: "소재B",
+			adSetId: "set1",
+			campaignName: "promo",
 			spend: 30000,
 			leads: 10, // CPL 3,000
 		});
 		const report = buildAuditReport(
-			makeSnapshot("2026-W26", [control, variant]),
+			makeSnapshot("2026-W26", [campaign], [loser, winner]),
 			null,
 			NOW,
 		);
 		expect(report.abConclusion).not.toBeNull();
-		expect(report.abConclusion?.winner).toBe("promo_v2");
+		expect(report.abConclusion?.winner).toBe("소재B");
 		expect(report.abConclusion?.winnerCpl).toBeLessThan(
 			report.abConclusion?.loserCpl ?? Infinity,
 		);

@@ -9,7 +9,7 @@
 import {
 	computeKpiSummary,
 	computeWeekDelta,
-	detectAbPairs,
+	detectCreativeAbPairs,
 	detectCreativeFatigue,
 } from "./analytics";
 import {
@@ -121,7 +121,8 @@ export function buildAuditReport(
 		? detectCreativeFatigue(snapshot.ads, previous.ads)
 		: [];
 	const criticalFatigue = fatigue.filter((f) => f.status === "critical");
-	const pairs = detectAbPairs(campaigns);
+	// A/B는 소재(크리에이티브) 단위 — 동일 광고세트 내 소재끼리 비교
+	const pairs = detectCreativeAbPairs(snapshot.ads);
 
 	// ---- findings (카테고리별) ----
 	const creative: AuditFinding[] = [];
@@ -416,7 +417,7 @@ export function buildAuditReport(
 				loserCpl > 0
 					? Math.round(((loserCpl - winnerCpl) / loserCpl) * 1000) / 10
 					: 0,
-			recommendation: `"${winnerName}"로 트래픽 집중, 패자 변형 정지.`,
+			recommendation: `${decided.group ? `[${decided.group}] ` : ""}소재 "${winnerName}"로 예산 집중, 패자 소재 정지.`,
 		};
 	}
 
