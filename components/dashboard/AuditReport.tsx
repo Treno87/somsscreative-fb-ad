@@ -59,10 +59,16 @@ function FindingRow({ f }: { f: AuditFinding }) {
 
 interface Props {
 	report: AuditReportType;
+	/** 현재 표에서 선택된 주차. 보고서 기간과 다르면 신선도 경고를 띄운다. */
+	selectedWeek?: string;
 }
 
-export default function AuditReport({ report }: Props) {
+export default function AuditReport({ report, selectedWeek }: Props) {
 	const generatedDate = report.generatedAt.slice(0, 10);
+	// 보고서 period 문자열에 선택 주차가 없으면 = 표와 다른 기간의 낡은 보고서
+	const stale = Boolean(
+		selectedWeek && !report.period.includes(selectedWeek),
+	);
 
 	return (
 		<section className="mt-10 border-t border-[#2a2a2a] pt-8">
@@ -75,6 +81,19 @@ export default function AuditReport({ report }: Props) {
 					</p>
 				</div>
 			</div>
+
+			{stale && (
+				<div className="mb-6 rounded-lg border border-critical/40 bg-critical/10 px-4 py-3">
+					<p className="text-sm font-semibold text-critical">
+						⚠ 이 보고서는 현재 선택한 주차({selectedWeek})가 아닌{" "}
+						{report.period} 기준입니다.
+					</p>
+					<p className="text-xs text-gray-400 mt-1">
+						표 데이터와 분석이 다른 기간을 가리킵니다. 업로드 화면에서 “Meta에서
+						동기화”를 실행하면 보고서가 현재 데이터로 재생성됩니다.
+					</p>
+				</div>
+			)}
 
 			{/* Health Score + Categories */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">

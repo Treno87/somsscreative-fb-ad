@@ -5,6 +5,7 @@
 // 기간: 기본 = 직전 완료 ISO 주차(월~일). ?days=N 으로 최근 N일 대체 가능.
 
 import { type NextRequest, NextResponse } from "next/server";
+import { regenerateAuditReport } from "@/lib/dashboard/auditStore";
 import { MetaApiError } from "@/lib/dashboard/meta/client";
 import { MetaConfigError } from "@/lib/dashboard/meta/config";
 import { lastNDays, previousIsoWeek } from "@/lib/dashboard/meta/dateRange";
@@ -39,6 +40,8 @@ export async function GET(req: NextRequest) {
 	try {
 		const result = await syncFromMeta({ range });
 		await saveServerWeekSnapshots(result.snapshots);
+		// AI 진단 보고서를 같은 데이터로 즉시 재생성
+		await regenerateAuditReport();
 		return NextResponse.json({
 			ok: true,
 			range: result.range,

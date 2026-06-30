@@ -9,6 +9,7 @@
 import fs from "fs/promises";
 import { type NextRequest, NextResponse } from "next/server";
 import path from "path";
+import { regenerateAuditReport } from "@/lib/dashboard/auditStore";
 import { hasMetaConfig } from "@/lib/dashboard/meta/config";
 import { lastNDays } from "@/lib/dashboard/meta/dateRange";
 import { syncFromMeta } from "@/lib/dashboard/meta/sync";
@@ -47,7 +48,7 @@ export async function POST(req: NextRequest) {
 		const result = await syncFromMeta({ range });
 		await saveServerWeekSnapshots(result.snapshots);
 
-		// 최신 스냅샷을 analytics/input 에 기록 → fb-ad-audit 에이전트가 활용
+		// 최신 스냅샷을 analytics/input 에 기록 → 온디맨드 fb-ad-audit(LLM) 에이전트가 최신 데이터 활용
 		const latest = result.snapshots[result.snapshots.length - 1];
 		if (latest) {
 			await fs.mkdir(INPUT_DIR, { recursive: true });
@@ -66,6 +67,9 @@ export async function POST(req: NextRequest) {
 				),
 			]);
 		}
+
+		// AI 진단 보고서를 같은 데이터로 즉시 재생성 → 표·진단이 절대 어긋나지 않음
+		await regenerateAuditReport();
 
 		return NextResponse.json({ ok: true, ...result });
 	} catch (err) {

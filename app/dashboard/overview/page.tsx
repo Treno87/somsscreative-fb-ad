@@ -581,7 +581,7 @@ export default function OverviewPage() {
 
 			{/* AI 분석 보고서 */}
 			{auditReport ? (
-				<AuditReport report={auditReport} />
+				<AuditReport report={auditReport} selectedWeek={selectedWeek} />
 			) : (
 				<div className="mt-10 border-t border-[#2a2a2a] pt-8">
 					<p className="text-sm text-gray-600">
