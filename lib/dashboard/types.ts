@@ -104,6 +104,19 @@ export interface AbPair {
 	control: KpiSummary;
 	variant: KpiSummary;
 	winner: AbWinner;
+	/** 비교 맥락(소재 A/B는 "캠페인 ▸ 광고세트"). 캠페인 단위 비교는 미설정. */
+	group?: string;
+}
+
+// KPI 계산 입력 — 캠페인·광고 행 모두 수용(소재 단위 A/B 비교용).
+export interface KpiInputRow {
+	spend: number;
+	leads: number;
+	impressions: number;
+	reach: number;
+	linkCtr: number;
+	linkClicks: number;
+	landingPageViews?: number;
 }
 
 export type FatigueStatus = "ok" | "warning" | "critical";

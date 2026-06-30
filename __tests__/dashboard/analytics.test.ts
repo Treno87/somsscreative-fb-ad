@@ -3,6 +3,7 @@ import {
 	computeTrendPoints,
 	computeWeekDelta,
 	detectAbPairs,
+	detectCreativeAbPairs,
 	detectCreativeFatigue,
 	generateInsights,
 } from "@/lib/dashboard/analytics";
@@ -386,5 +387,69 @@ describe("computeTrendPoints", () => {
 
 	it("빈 배열 → []", () => {
 		expect(computeTrendPoints([])).toHaveLength(0);
+	});
+});
+
+// ---- detectCreativeAbPairs (소재 단위) ----
+
+describe("detectCreativeAbPairs", () => {
+	it("동일 광고세트 내 소재 2개를 1쌍으로 비교한다", () => {
+		const ads = [
+			makeAd({
+				adId: "a1",
+				adName: "동영상",
+				adSetId: "set1",
+				campaignName: "페르소나",
+				spend: 100000,
+				leads: 10, // CPL 10,000
+			}),
+			makeAd({
+				adId: "a2",
+				adName: "인스타",
+				adSetId: "set1",
+				campaignName: "페르소나",
+				spend: 50000,
+				leads: 2, // CPL 25,000
+			}),
+		];
+		const pairs = detectCreativeAbPairs(ads);
+		expect(pairs).toHaveLength(1);
+		// 지출 큰 동영상이 control
+		expect(pairs[0].controlName).toBe("동영상");
+		expect(pairs[0].variantName).toBe("인스타");
+		// 동영상 CPL이 더 낮음 → control 승
+		expect(pairs[0].winner).toBe("control");
+		expect(pairs[0].group).toContain("페르소나");
+	});
+
+	it("소재 3개면 control(최대지출) 대 나머지로 2쌍을 만든다", () => {
+		const ads = [
+			makeAd({ adId: "b1", adName: "후킹A", adSetId: "set2", spend: 18000, leads: 1 }),
+			makeAd({ adId: "b2", adName: "후킹B", adSetId: "set2", spend: 43000, leads: 2 }),
+			makeAd({ adId: "b3", adName: "게시물", adSetId: "set2", spend: 4000, leads: 0 }),
+		];
+		const pairs = detectCreativeAbPairs(ads);
+		expect(pairs).toHaveLength(2);
+		// 지출 최대 후킹B 가 control
+		expect(pairs.every((p) => p.controlName === "후킹B")).toBe(true);
+		expect(pairs.map((p) => p.variantName).sort()).toEqual(["게시물", "후킹A"]);
+	});
+
+	it("서로 다른 광고세트의 소재는 짝짓지 않는다", () => {
+		const ads = [
+			makeAd({ adId: "c1", adName: "광고1", adSetId: "setA" }),
+			makeAd({ adId: "c2", adName: "광고2", adSetId: "setB" }),
+		];
+		expect(detectCreativeAbPairs(ads)).toHaveLength(0);
+	});
+
+	it("양쪽 리드 0이면 승자 판정 불가(inconclusive)", () => {
+		const ads = [
+			makeAd({ adId: "d1", adName: "A", adSetId: "set3", spend: 40000, leads: 0 }),
+			makeAd({ adId: "d2", adName: "B", adSetId: "set3", spend: 20000, leads: 0 }),
+		];
+		const pairs = detectCreativeAbPairs(ads);
+		expect(pairs).toHaveLength(1);
+		expect(pairs[0].winner).toBe("inconclusive");
 	});
 });

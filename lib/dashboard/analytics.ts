@@ -14,6 +14,7 @@ import type {
 	CreativeFatigue,
 	FatigueStatus,
 	InsightMessage,
+	KpiInputRow,
 	KpiSummary,
 	TrendPoint,
 	WeekDelta,
@@ -21,8 +22,9 @@ import type {
 } from "./types";
 
 // ---- KPI Summary ----
+// CampaignRow·AdRow 모두 수용 (KpiInputRow). 소재 단위 A/B 비교에서 단일 광고도 집계 가능.
 
-export function computeKpiSummary(campaigns: CampaignRow[]): KpiSummary {
+export function computeKpiSummary(campaigns: KpiInputRow[]): KpiSummary {
 	if (campaigns.length === 0) {
 		return {
 			totalSpend: 0,
@@ -142,6 +144,52 @@ export function detectAbPairs(campaigns: CampaignRow[]): AbPair[] {
 		});
 	}
 
+	return pairs;
+}
+
+// ---- Creative A/B Pair Detection (소재 단위) ----
+//
+// A/B 테스트의 올바른 단위는 "동일 광고세트 안의 서로 다른 소재"다 (같은 타겟·다른 크리에이티브).
+// 광고세트별로 묶어, 소재가 2개 이상이면 지출 최대 소재를 기준(control)으로 나머지와 짝짓는다.
+
+function pairFromAds(control: AdRow, variant: AdRow): AbPair {
+	const controlKpi = computeKpiSummary([control]);
+	const variantKpi = computeKpiSummary([variant]);
+	let winner: AbPair["winner"] = "inconclusive";
+	if (controlKpi.cpl !== null && variantKpi.cpl !== null) {
+		const delta = Math.abs(controlKpi.cpl - variantKpi.cpl) / controlKpi.cpl;
+		if (delta >= AB_WINNER_MIN_DELTA) {
+			winner = variantKpi.cpl < controlKpi.cpl ? "variant" : "control";
+		}
+	}
+	return {
+		controlName: control.adName,
+		variantName: variant.adName,
+		control: controlKpi,
+		variant: variantKpi,
+		winner,
+		group: `${control.campaignName} ▸ ${control.adSetName}`,
+	};
+}
+
+export function detectCreativeAbPairs(ads: AdRow[]): AbPair[] {
+	const byAdSet = new Map<string, AdRow[]>();
+	for (const ad of ads) {
+		const key = ad.adSetId || ad.adSetName;
+		const list = byAdSet.get(key);
+		if (list) list.push(ad);
+		else byAdSet.set(key, [ad]);
+	}
+
+	const pairs: AbPair[] = [];
+	for (const group of byAdSet.values()) {
+		if (group.length < 2) continue;
+		const sorted = [...group].sort((a, b) => b.spend - a.spend);
+		const control = sorted[0];
+		for (let i = 1; i < sorted.length; i++) {
+			pairs.push(pairFromAds(control, sorted[i]));
+		}
+	}
 	return pairs;
 }
 

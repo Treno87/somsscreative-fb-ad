@@ -11,9 +11,12 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import { computeKpiSummary, detectAbPairs } from "@/lib/dashboard/analytics";
+import {
+	computeKpiSummary,
+	detectCreativeAbPairs,
+} from "@/lib/dashboard/analytics";
 import { getWeekSnapshot, listWeeks } from "@/lib/dashboard/storage";
-import type { AbPair, CampaignRow, KpiSummary } from "@/lib/dashboard/types";
+import type { AbPair, AdRow, KpiSummary } from "@/lib/dashboard/types";
 
 // ── Formatters ──────────────────────────────────────────────────
 
@@ -154,14 +157,19 @@ function PairCard({ pair }: { pair: AbPair }) {
 		<div className="bg-[#1a1a1a] rounded-xl overflow-hidden">
 			{/* ── Header ── */}
 			<div className="flex items-center justify-between px-5 py-4 border-b border-[#2a2a2a]">
-				<div className="flex items-center gap-2 min-w-0">
-					<span className="text-white font-semibold truncate">
-						{pair.controlName}
-					</span>
-					<span className="text-gray-600 shrink-0">vs</span>
-					<span className="text-white font-semibold truncate">
-						{pair.variantName}
-					</span>
+				<div className="min-w-0">
+					{pair.group && (
+						<p className="text-xs text-gray-500 mb-1 truncate">{pair.group}</p>
+					)}
+					<div className="flex items-center gap-2 min-w-0">
+						<span className="text-white font-semibold truncate">
+							{pair.controlName}
+						</span>
+						<span className="text-gray-600 shrink-0">vs</span>
+						<span className="text-white font-semibold truncate">
+							{pair.variantName}
+						</span>
+					</div>
 				</div>
 				<span
 					className={`ml-4 shrink-0 text-xs font-bold px-3 py-1 rounded-full ${winnerBadgeStyle}`}
@@ -359,8 +367,22 @@ function ManualPairCard({ pair }: { pair: AbPair }) {
 
 // ── Main Page ────────────────────────────────────────────────────
 
+// 광고를 캠페인별로 묶어 optgroup 렌더용 구조로 만든다.
+function groupAdsByCampaign(ads: AdRow[]): { campaign: string; ads: AdRow[] }[] {
+	const map = new Map<string, AdRow[]>();
+	for (const ad of ads) {
+		const list = map.get(ad.campaignName);
+		if (list) list.push(ad);
+		else map.set(ad.campaignName, [ad]);
+	}
+	return [...map.entries()].map(([campaign, list]) => ({
+		campaign,
+		ads: list,
+	}));
+}
+
 export default function AbTestPage() {
-	const [campaigns, setCampaigns] = useState<CampaignRow[]>([]);
+	const [ads, setAds] = useState<AdRow[]>([]);
 	const [autoPairs, setAutoPairs] = useState<AbPair[]>([]);
 	const [loaded, setLoaded] = useState(false);
 
@@ -376,16 +398,16 @@ export default function AbTestPage() {
 		}
 		const snap = getWeekSnapshot(weeks[weeks.length - 1]);
 		if (snap) {
-			setCampaigns(snap.campaigns);
-			setAutoPairs(detectAbPairs(snap.campaigns));
+			setAds(snap.ads);
+			setAutoPairs(detectCreativeAbPairs(snap.ads));
 		}
 		setLoaded(true);
 	}, []);
 
 	function buildManualPair(aIdx: number, bIdx: number): AbPair | null {
 		if (aIdx < 0 || bIdx < 0 || aIdx === bIdx) return null;
-		const control = campaigns[aIdx];
-		const variant = campaigns[bIdx];
+		const control = ads[aIdx];
+		const variant = ads[bIdx];
 		const controlKpi: KpiSummary = computeKpiSummary([control]);
 		const variantKpi: KpiSummary = computeKpiSummary([variant]);
 		let winner: AbPair["winner"] = "inconclusive";
@@ -395,38 +417,47 @@ export default function AbTestPage() {
 				winner = variantKpi.cpl < controlKpi.cpl ? "variant" : "control";
 			}
 		}
+		const sameCampaign = control.campaignName === variant.campaignName;
 		return {
-			controlName: control.campaignName,
-			variantName: variant.campaignName,
+			controlName: control.adName,
+			variantName: variant.adName,
 			control: controlKpi,
 			variant: variantKpi,
 			winner,
+			group: sameCampaign
+				? control.campaignName
+				: `${control.campaignName} ↔ ${variant.campaignName} (캠페인 간 비교)`,
 		};
 	}
 
 	if (!loaded) return null;
 
-	if (campaigns.length === 0) {
+	if (ads.length === 0) {
 		return (
 			<div className="text-gray-400">
-				<h1 className="text-2xl font-bold text-white mb-4">A/B 테스트</h1>
-				<p>아직 업로드된 데이터가 없습니다.</p>
+				<h1 className="text-2xl font-bold text-white mb-4">A/B 소재 비교</h1>
+				<p>아직 업로드된 광고 소재 데이터가 없습니다.</p>
 				<p className="text-sm text-gray-600 mt-1">
-					캠페인 CSV를 업로드하면 여기서 성과를 비교할 수 있습니다.
+					광고 CSV를 업로드하면 동일 캠페인 내 소재끼리 비교할 수 있습니다.
 				</p>
 			</div>
 		);
 	}
 
+	const grouped = groupAdsByCampaign(ads);
+
 	return (
 		<div>
-			<h1 className="text-2xl font-bold mb-6">A/B 테스트</h1>
+			<h1 className="text-2xl font-bold mb-1">A/B 소재 비교</h1>
+			<p className="text-sm text-gray-500 mb-6">
+				동일 광고세트 내 소재(크리에이티브)끼리 비교합니다 — 같은 타겟·다른 소재.
+			</p>
 
 			{/* ── Auto-detected ── */}
-			{autoPairs.length > 0 && (
+			{autoPairs.length > 0 ? (
 				<section className="mb-8">
 					<h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-						자동 감지 ({autoPairs.length}쌍)
+						자동 감지 — 광고세트별 소재 비교 ({autoPairs.length}쌍)
 					</h2>
 					<div className="flex flex-col gap-5">
 						{autoPairs.map((pair, i) => (
@@ -434,12 +465,19 @@ export default function AbTestPage() {
 						))}
 					</div>
 				</section>
+			) : (
+				<section className="mb-8">
+					<div className="bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-gray-500">
+						소재가 2개 이상인 광고세트가 없어 자동 비교쌍이 없습니다. 아래에서
+						직접 두 소재를 골라 비교하세요.
+					</div>
+				</section>
 			)}
 
 			{/* ── Manual comparison ── */}
 			<section className="mb-8">
 				<h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-					직접 비교
+					직접 비교 — 소재 선택
 				</h2>
 				<div className="bg-[#1a1a1a] rounded-xl p-4 mb-4">
 					<div className="grid grid-cols-2 gap-3 mb-3">
@@ -455,11 +493,15 @@ export default function AbTestPage() {
 									setManualPair(null);
 								}}
 							>
-								<option value={-1}>— 선택 —</option>
-								{campaigns.map((c, i) => (
-									<option key={i} value={i}>
-										{c.campaignName}
-									</option>
+								<option value={-1}>— 소재 선택 —</option>
+								{grouped.map((g) => (
+									<optgroup key={g.campaign} label={g.campaign}>
+										{g.ads.map((a) => (
+											<option key={a.adId || a.adName} value={ads.indexOf(a)}>
+												{a.adName}
+											</option>
+										))}
+									</optgroup>
 								))}
 							</select>
 						</div>
@@ -475,11 +517,15 @@ export default function AbTestPage() {
 									setManualPair(null);
 								}}
 							>
-								<option value={-1}>— 선택 —</option>
-								{campaigns.map((c, i) => (
-									<option key={i} value={i}>
-										{c.campaignName}
-									</option>
+								<option value={-1}>— 소재 선택 —</option>
+								{grouped.map((g) => (
+									<optgroup key={g.campaign} label={g.campaign}>
+										{g.ads.map((a) => (
+											<option key={a.adId || a.adName} value={ads.indexOf(a)}>
+												{a.adName}
+											</option>
+										))}
+									</optgroup>
 								))}
 							</select>
 						</div>
@@ -499,32 +545,39 @@ export default function AbTestPage() {
 				{manualPair && <ManualPairCard pair={manualPair} />}
 			</section>
 
-			{/* ── Campaign list ── */}
+			{/* ── Creative list (캠페인별 소재) ── */}
 			<section>
 				<h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-					로드된 캠페인 ({campaigns.length}개)
+					로드된 소재 ({ads.length}개)
 				</h2>
-				<div className="flex flex-col gap-2">
-					{[...campaigns]
-						.sort((a, b) => {
-							const aCpl = a.leads > 0 ? a.spend / a.leads : Infinity;
-							const bCpl = b.leads > 0 ? b.spend / b.leads : Infinity;
-							return aCpl - bCpl;
-						})
-						.map((c, i) => {
-							const cpl = c.leads > 0 ? c.spend / c.leads : null;
-							return (
-								<div
-									key={i}
-									className="bg-[#1a1a1a] rounded-lg px-4 py-2.5 flex items-center justify-between text-sm"
-								>
-									<span className="text-white">{c.campaignName}</span>
-									<span className="text-gray-500 font-mono">
-										{krw(cpl)} CPL · {c.leads}건 리드
-									</span>
-								</div>
-							);
-						})}
+				<div className="flex flex-col gap-4">
+					{grouped.map((g) => (
+						<div key={g.campaign}>
+							<p className="text-xs text-gray-500 mb-1.5">{g.campaign}</p>
+							<div className="flex flex-col gap-2">
+								{[...g.ads]
+									.sort((a, b) => {
+										const aCpl = a.leads > 0 ? a.spend / a.leads : Infinity;
+										const bCpl = b.leads > 0 ? b.spend / b.leads : Infinity;
+										return aCpl - bCpl;
+									})
+									.map((a) => {
+										const cpl = a.leads > 0 ? a.spend / a.leads : null;
+										return (
+											<div
+												key={a.adId || a.adName}
+												className="bg-[#1a1a1a] rounded-lg px-4 py-2.5 flex items-center justify-between text-sm"
+											>
+												<span className="text-white truncate">{a.adName}</span>
+												<span className="text-gray-500 font-mono shrink-0 ml-3">
+													{krw(cpl)} CPL · {a.leads}건 리드
+												</span>
+											</div>
+										);
+									})}
+							</div>
+						</div>
+					))}
 				</div>
 			</section>
 		</div>
