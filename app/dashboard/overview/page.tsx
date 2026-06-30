@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AuditReport from "@/components/dashboard/AuditReport";
+import DecisionPanel from "@/components/dashboard/DecisionPanel";
 import InsightBanner from "@/components/dashboard/InsightBanner";
 import KpiCard from "@/components/dashboard/KpiCard";
 import {
@@ -330,7 +331,15 @@ export default function OverviewPage() {
 			{/* Insights */}
 			<InsightBanner insights={insights} />
 
+			{/* 의사결정 패널 — 진단·할 일·캠페인별 권장 조치 (최상단 노출) */}
+			{auditReport && (
+				<DecisionPanel report={auditReport} selectedWeek={selectedWeek} />
+			)}
+
 			{/* KPI Summary */}
+			<h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
+				전체 지표
+			</h2>
 			<div className="grid grid-cols-3 md:grid-cols-5 xl:grid-cols-9 gap-2 mb-8">
 				<KpiCard label="총 지출" value={krw(kpi.totalSpend) ?? "-"} />
 				<KpiCard label="리드" value={num(kpi.totalLeads)} unit="건" />
@@ -362,9 +371,9 @@ export default function OverviewPage() {
 			{/* Campaign Drill-down Table */}
 			<section className="mb-8">
 				<h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-					캠페인별 성과 ({campaigns.length}개) — CPL 낮은 순
+					상세 데이터 — 캠페인 {campaigns.length}개 (CPL 낮은 순)
 					<span className="ml-2 text-gray-600 normal-case font-normal">
-						클릭하면 광고세트 펼쳐짐
+						클릭하면 광고세트·광고까지 펼쳐짐
 					</span>
 				</h2>
 				<div className="bg-[#1a1a1a] rounded-xl overflow-hidden">

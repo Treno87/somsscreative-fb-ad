@@ -19,6 +19,7 @@ import {
 } from "./constants";
 import type {
 	AuditAbConclusion,
+	AuditCampaignVerdict,
 	AuditCategoryScore,
 	AuditFinding,
 	AuditGrade,
@@ -27,6 +28,7 @@ import type {
 	AuditReport,
 	AuditScalingItem,
 	AuditTopCreative,
+	CampaignAction,
 	CampaignRow,
 	WeekSnapshot,
 } from "./types";
@@ -355,6 +357,43 @@ export function buildAuditReport(
 			expectedImpact: `현 CPL 유지 시 리드 증가. 비효율 캠페인 예산 재배분 대상.`,
 		}));
 
+	// ---- 캠페인별 권장 조치 (의사결정 카드용) ----
+	// 기준선: 목표 CPL. 0.6배 미만=증액 / 목표 이내=유지 / 1.5배 이내=점검 / 1.5배 초과=축소 / 리드0=중단
+	const campaignVerdicts: AuditCampaignVerdict[] = campaigns
+		.filter((c) => c.spend > 0) // 미집행 캠페인은 판단 대상 아님
+		.map((c) => {
+			const cpl = campaignCpl(c);
+			const cplVsTarget = cpl !== null ? cpl / targetCpl : null;
+			let action: CampaignAction;
+			let reason: string;
+			if (c.leads === 0) {
+				action = "kill";
+				reason = `지출 ${round(c.spend).toLocaleString("ko-KR")}원·리드 0건 — 전환 실패. 중단 후 소재·타겟·랜딩 점검.`;
+			} else if (cplVsTarget !== null && cplVsTarget <= CPL_SCALE_MULTIPLE && c.leads >= 2) {
+				action = "scale";
+				reason = `CPL ${round(cpl ?? 0).toLocaleString("ko-KR")}원 — 목표의 ${(cplVsTarget ?? 0).toFixed(2)}배로 효율적. 일예산 상향 대상.`;
+			} else if (cplVsTarget !== null && cplVsTarget <= 1) {
+				action = "maintain";
+				reason = `CPL ${round(cpl ?? 0).toLocaleString("ko-KR")}원 — 목표 이내. 현 예산 유지.`;
+			} else if (cplVsTarget !== null && cplVsTarget <= 1.5) {
+				action = "watch";
+				reason = `CPL ${round(cpl ?? 0).toLocaleString("ko-KR")}원 — 목표의 ${(cplVsTarget ?? 0).toFixed(2)}배(소폭 초과). 소재·타겟 점검 후 개선 없으면 축소.`;
+			} else {
+				action = "reduce";
+				reason = `CPL ${round(cpl ?? 0).toLocaleString("ko-KR")}원 — 목표의 ${(cplVsTarget ?? 0).toFixed(2)}배. 예산 축소·소재 교체.`;
+			}
+			return {
+				name: c.campaignName,
+				spend: round(c.spend),
+				leads: c.leads,
+				cpl: cpl !== null ? round(cpl) : null,
+				cplVsTarget,
+				action,
+				reason,
+			};
+		})
+		.sort((a, b) => b.spend - a.spend);
+
 	// ---- abConclusion ----
 	let abConclusion: AuditAbConclusion | null = null;
 	const decided = pairs.find((p) => p.winner !== "inconclusive");
@@ -454,7 +493,9 @@ export function buildAuditReport(
 		healthScore,
 		grade,
 		summary,
+		targetCpl,
 		categories,
+		campaignVerdicts,
 		findings: [...creative, ...budget, ...structure, ...audience],
 		quickWins,
 		killList,

@@ -200,18 +200,36 @@ export interface AuditCategoryScore {
 	label: string;
 }
 
+// 캠페인별 권장 조치 — 의사결정 카드용
+export type CampaignAction = "kill" | "reduce" | "watch" | "maintain" | "scale";
+
+export interface AuditCampaignVerdict {
+	name: string;
+	spend: number;
+	leads: number;
+	cpl: number | null;
+	/** cpl / 목표CPL. 리드 없으면 null. 1.0 = 목표선 */
+	cplVsTarget: number | null;
+	action: CampaignAction;
+	reason: string;
+}
+
 export interface AuditReport {
 	generatedAt: string;
 	period: string;
 	healthScore: number;
 	grade: AuditGrade;
 	summary: string;
+	/** 진단에 사용한 목표 CPL(허용 상한). UI 기준선 표기용 */
+	targetCpl: number;
 	categories: {
 		creative: AuditCategoryScore;
 		budget: AuditCategoryScore;
 		structure: AuditCategoryScore;
 		audience: AuditCategoryScore;
 	};
+	/** 캠페인별 권장 조치(지출 큰 순) */
+	campaignVerdicts: AuditCampaignVerdict[];
 	findings: AuditFinding[];
 	quickWins: AuditQuickWin[];
 	killList: AuditKillItem[];

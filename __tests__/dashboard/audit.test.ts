@@ -257,6 +257,64 @@ describe("buildAuditReport", () => {
 		expect(report.summary).toContain("목표 20,000원 이내");
 	});
 
+	it("캠페인별 권장 조치(verdict)를 액션별로 정확히 분류한다", () => {
+		const kill = makeCampaign({
+			campaignName: "킬",
+			spend: 50000,
+			leads: 0, // 리드 0 → kill
+		});
+		const scale = makeCampaign({
+			campaignName: "증액",
+			spend: 24000,
+			leads: 4, // CPL 6,000 = 목표 0.3배 → scale
+		});
+		const maintain = makeCampaign({
+			campaignName: "유지",
+			spend: 30000,
+			leads: 2, // CPL 15,000 < 20,000 → maintain
+		});
+		const watch = makeCampaign({
+			campaignName: "점검",
+			spend: 46000,
+			leads: 2, // CPL 23,000 = 1.15배 → watch
+		});
+		const reduce = makeCampaign({
+			campaignName: "축소",
+			spend: 70000,
+			leads: 2, // CPL 35,000 = 1.75배 → reduce
+		});
+		const report = buildAuditReport(
+			makeSnapshot("2026-W26", [kill, scale, maintain, watch, reduce]),
+			null,
+			NOW,
+			20000,
+		);
+		const byName = Object.fromEntries(
+			report.campaignVerdicts.map((v) => [v.name, v.action]),
+		);
+		expect(byName["킬"]).toBe("kill");
+		expect(byName["증액"]).toBe("scale");
+		expect(byName["유지"]).toBe("maintain");
+		expect(byName["점검"]).toBe("watch");
+		expect(byName["축소"]).toBe("reduce");
+		// 지출 0 캠페인은 판단 대상에서 제외
+		expect(report.targetCpl).toBe(20000);
+	});
+
+	it("미집행(지출 0) 캠페인은 verdict 에서 제외한다", () => {
+		const paused = makeCampaign({ campaignName: "미집행", spend: 0, leads: 0 });
+		const live = makeCampaign({ campaignName: "집행", spend: 40000, leads: 2 });
+		const report = buildAuditReport(
+			makeSnapshot("2026-W26", [paused, live]),
+			null,
+			NOW,
+			20000,
+		);
+		const names = report.campaignVerdicts.map((v) => v.name);
+		expect(names).toContain("집행");
+		expect(names).not.toContain("미집행");
+	});
+
 	it("빈 캠페인이면 안전하게 동작한다", () => {
 		const report = buildAuditReport(makeSnapshot("2026-W26", []), null, NOW);
 		expect(report.healthScore).toBeGreaterThanOrEqual(0);
