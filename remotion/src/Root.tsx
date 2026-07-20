@@ -11,7 +11,7 @@ import {
 	type StorytellingAdProps,
 	totalDurationInFrames,
 } from "./StorytellingAd";
-import internStory from "../data/intern10000-1기-story.json";
+import internStory from "../data/intern10000-2기-story-v3.json";
 
 const FPS = 30;
 const DURATION = 150; // 5초 — KineticHeadlineAd
