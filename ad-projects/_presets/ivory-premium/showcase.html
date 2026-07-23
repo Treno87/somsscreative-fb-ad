@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>ivory-premium · showcase</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+  body{background:#2a2a2a;display:flex;justify-content:center;padding:20px;}
+  /* 프리셋 토큰 (ivory-premium/FRAME.md) */
+  .stage{
+    --bg:#f3ede3; --ink:#231d17; --muted:#a89a82; --hairline:#cdc1ab;
+    --pain:#ff3bff; --promise:#a07b2e; --on-promise:#f3ede3;
+    width:1080px;height:1920px;position:relative;overflow:hidden;
+    background:var(--bg);font-family:'Pretendard Variable',sans-serif;color:var(--ink);
+  }
+  .top{position:absolute;top:110px;left:80px;right:80px;display:flex;align-items:center;justify-content:space-between;}
+  .brand .mark{font-weight:800;font-size:23px;letter-spacing:.22em;}
+  .brand .sub{font-weight:500;font-size:20px;color:var(--muted);letter-spacing:.14em;margin-left:12px;}
+  .badge{font-weight:800;font-size:26px;color:var(--promise);border:2px solid var(--promise);
+    border-radius:999px;padding:12px 24px;letter-spacing:.02em;}
+  .hr{position:absolute;top:184px;left:80px;right:80px;height:1px;background:var(--hairline);}
+  .head{position:absolute;left:80px;right:80px;top:580px;}
+  .head h1{font-weight:800;font-size:100px;line-height:1.18;letter-spacing:-.03em;}
+  .head .em{color:var(--pain);}
+  .head .q{color:var(--muted);font-weight:600;}
+  .wm{position:absolute;left:80px;bottom:360px;font-weight:600;font-size:19px;letter-spacing:.28em;color:rgba(35,29,23,.35);}
+  .cta{position:absolute;left:0;right:0;bottom:0;background:var(--promise);padding:56px 80px 64px;
+    display:flex;align-items:center;justify-content:space-between;gap:28px;color:var(--on-promise);}
+  .cta .pre{font-weight:600;font-size:30px;opacity:.85;}
+  .cta .big{font-weight:800;font-size:60px;letter-spacing:-.03em;margin-top:8px;}
+  .cta .btn{flex:none;background:var(--on-promise);color:var(--ink);font-weight:800;font-size:31px;
+    padding:26px 40px;border-radius:999px;white-space:nowrap;}
+</style></head><body>
+<div class="stage">
+  <div class="top">
+    <div class="brand"><span class="mark">SOMSS·</span><span class="sub">소옴크리에이티브 클래식과정</span></div>
+    <div class="badge">65기 모집중</div>
+  </div>
+  <div class="hr"></div>
+  <div class="head"><h1>커트는<br><span class="em">기술</span><span class="q">이</span><br>아닙니다</h1></div>
+  <div class="wm">SOMSSCREATIVE</div>
+  <div class="cta">
+    <div class="txt">
+      <div class="pre">클래식과정을 마치면</div>
+      <div class="big">완전히 달라집니다</div>
+    </div>
+    <div class="btn">무료 상담 신청 →</div>
+  </div>
+</div>
+</body></html>

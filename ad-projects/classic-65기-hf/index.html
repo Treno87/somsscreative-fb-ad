@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ko" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Pretendard"; font-weight: 100 900; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-display: block; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --bg: #0e0e12;                 /* 다크 베이스 (editorial-dark) */
+        --ink: #f5f1ea;                /* 아이보리 본문 */
+        --white: #f5f1ea;              /* (헤드라인 — 아이보리로 통일) */
+        --muted: #a59d92;              /* 보조 텍스트 */
+        --pain: #ff3bff;               /* 마젠타 — 색=신호: 고통점("기술")에만 */
+        --promise: #ffd400;            /* 옐로 — 약속("기준")·CTA·모집에만 */
+        --on-promise: #171310;         /* 옐로 위 텍스트 */
+        --line: rgba(255, 255, 255, 0.14);
+      }
+      html, body {
+        width: 1080px; height: 1920px; overflow: hidden; background: var(--bg);
+        font-family: "Pretendard", sans-serif;
+        -webkit-font-smoothing: antialiased; color: var(--white);
+      }
+      .scene { position: absolute; top: 0; left: 0; width: 1080px; height: 1920px; overflow: hidden; }
+
+      /* Instagram 안전영역: 핵심 텍스트는 y≈330~1580 안에 둔다 */
+
+      /* 영상 자산 플레이스홀더(실사 클립 삽입 자리) */
+      .media-holder {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(120% 80% at 50% 40%, #17171d 0%, #0e0e12 62%, #08080b 100%);
+        display: flex; align-items: center; justify-content: center;
+      }
+      .media-holder .frame {
+        width: 900px; height: 1200px; border: 3px dashed rgba(245, 241, 234, 0.3);
+        border-radius: 20px; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 22px; text-align: center;
+      }
+      .media-holder .frame .ic { font-size: 84px; color: var(--muted); line-height: 1; }
+      .media-holder .frame .lb { font-size: 40px; font-weight: 700; color: #d7d7de; letter-spacing: -0.01em; }
+      .media-holder .frame .sub { font-size: 30px; color: var(--muted); }
+      /* 텍스트 가독성용 하단 그라데이션 스크림 */
+      .scrim-bottom {
+        position: absolute; left: 0; bottom: 0; width: 1080px; height: 900px;
+        background: linear-gradient(0deg, rgba(8, 8, 11, 0.92) 0%, rgba(8, 8, 11, 0) 100%);
+      }
+
+      /* ===== Scene 1 · HOOK (0–4s) ===== */
+      #s1 { z-index: 1; background: var(--bg); }
+      #s1-eb {
+        position: absolute; top: 380px; left: 0; width: 1080px; text-align: center;
+        font-size: 30px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted);
+      }
+      #s1-head {
+        position: absolute; top: 830px; left: 60px; width: 960px; text-align: center;
+        font-size: 92px; font-weight: 800; line-height: 1.22; letter-spacing: 0.02em; color: var(--white);
+      }
+      #s1-head .strike { color: var(--pain); }
+      #s1-rule {
+        position: absolute; top: 1080px; left: 490px; width: 100px; height: 6px;
+        background: var(--muted); transform-origin: center;
+      }
+
+      /* ===== Scene 2 · REFRAME (4–8s) ===== */
+      #s2 { opacity: 0; z-index: 2; }
+      #s2-head {
+        position: absolute; bottom: 360px; left: 40px; width: 1000px; text-align: center;
+        font-size: 72px; font-weight: 800; line-height: 1.24; letter-spacing: -0.02em; color: var(--white); white-space: nowrap;
+      }
+      #s2-head b { color: var(--ink); font-weight: 800; }
+
+      /* ===== Scene 3 · PROOF (8–16s) ===== */
+      #s3 { opacity: 0; z-index: 3; }
+      #s3-words {
+        position: absolute; top: 470px; left: 0; width: 1080px; text-align: center;
+        display: flex; gap: 26px; justify-content: center; flex-wrap: wrap;
+      }
+      #s3-words .w {
+        font-size: 62px; font-weight: 800; letter-spacing: 0.02em; color: var(--white);
+      }
+      #s3-words .w b { color: var(--ink); }
+      #s3-badge {
+        position: absolute; bottom: 360px; left: 90px; width: 900px; text-align: center;
+      }
+      #s3-badge .cap {
+        display: inline-block; background: rgba(255, 255, 255, 0.06); color: var(--ink);
+        border: 1px solid var(--line);
+        font-size: 38px; font-weight: 800; letter-spacing: 0.01em; padding: 22px 52px; border-radius: 999px;
+      }
+      #s3-badge .who {
+        margin-top: 26px; font-size: 34px; font-weight: 700; color: #d7d7de;
+      }
+
+      /* ===== Scene 4 · DETAIL (16–22s) ===== */
+      #s4 { opacity: 0; z-index: 4; background: radial-gradient(120% 80% at 50% 30%, #17171d 0%, #0e0e12 66%); }
+      #s4-eb {
+        position: absolute; top: 360px; left: 0; width: 1080px; text-align: center;
+        font-size: 30px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted);
+      }
+      #s4-head {
+        position: absolute; top: 452px; left: 70px; width: 940px; text-align: center;
+      }
+      #s4-head .t { font-size: 96px; font-weight: 800; color: var(--white); line-height: 1.1; letter-spacing: -0.02em; }
+      #s4-head .s { margin-top: 26px; font-size: 52px; font-weight: 700; color: #dcdce3; line-height: 1.32; }
+      #s4-card {
+        position: absolute; top: 900px; left: 90px; width: 900px;
+        background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); border-radius: 24px;
+        padding: 56px 60px; display: flex; flex-direction: column; gap: 30px;
+      }
+      #s4-card .row { display: flex; align-items: center; gap: 26px; font-size: 44px; color: #eaeaf0; letter-spacing: -0.01em; }
+      #s4-card .row .k { color: var(--muted); font-weight: 800; min-width: 30px; }
+      #s4-card .row b { color: var(--white); font-weight: 800; }
+      #s4-cred {
+        position: absolute; top: 1450px; left: 90px; width: 900px; text-align: center;
+        font-size: 36px; font-weight: 700; color: var(--muted); letter-spacing: -0.01em; line-height: 1.4;
+      }
+
+      /* ===== Scene 5 · PHILOSOPHY (22–26s) ===== */
+      #s5 { opacity: 0; z-index: 5; background: var(--bg); }
+      #s5-head {
+        position: absolute; top: 820px; left: 60px; width: 960px; text-align: center;
+        font-size: 82px; font-weight: 800; line-height: 1.3; letter-spacing: -0.01em; color: var(--white);
+      }
+      #s5-head b { color: var(--promise); }
+
+      /* ===== Scene 6 · CTA (26–30s) ===== */
+      #s6 { opacity: 0; z-index: 6; background: radial-gradient(120% 70% at 50% 34%, #1a121a 0%, #0e0e12 60%); }
+      #s6-brand {
+        position: absolute; top: 420px; left: 0; width: 1080px; text-align: center;
+        font-size: 40px; font-weight: 800; letter-spacing: 0.24em; color: var(--white);
+      }
+      #s6-head {
+        position: absolute; top: 560px; left: 60px; width: 960px; text-align: center;
+      }
+      #s6-head .l1 { font-size: 74px; font-weight: 800; color: var(--white); line-height: 1.18; letter-spacing: -0.02em; }
+      #s6-head .l2 { margin-top: 22px; font-size: 48px; font-weight: 700; color: var(--ink); }
+      #s6-head .l2 .rem { color: var(--promise); }
+      #s6-list {
+        position: absolute; top: 900px; left: 190px; width: 700px; display: flex; flex-direction: column; gap: 22px;
+      }
+      #s6-list .li { font-size: 40px; color: #e7e7ee; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+      #s6-list .li b { color: var(--white); font-weight: 800; }
+      #s6-cta-wrap { position: absolute; top: 1240px; left: 0; width: 1080px; text-align: center; }
+      #s6-cta {
+        display: inline-block; padding: 34px 88px; background: var(--promise); color: var(--on-promise);
+        border-radius: 999px; font-size: 46px; font-weight: 800; letter-spacing: 0.01em;
+        box-shadow: 0 22px 54px -16px rgba(0, 0, 0, 0.55);
+      }
+      #s6-sub {
+        position: absolute; top: 1400px; left: 0; width: 1080px; text-align: center;
+        font-size: 34px; font-weight: 600; color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage" data-composition-id="root" data-width="1080" data-height="1920" data-start="0" data-duration="30">
+      <!-- ===== Scene 1 · HOOK (0–4s) ===== -->
+      <div id="s1" class="scene">
+        <div id="s1-eb">SOMSSCREATIVE · 클래식과정 65기</div>
+        <div id="s1-head">커트는 <span class="strike">기술</span>이<br />아닙니다.</div>
+        <div id="s1-rule"></div>
+      </div>
+
+      <!-- ===== Scene 2 · REFRAME (4–8s) · 커트 클로즈업 클립 자리 ===== -->
+      <div id="s2" class="scene">
+        <div class="media-holder">
+          <div class="frame">
+            <div class="ic">▶</div>
+            <div class="lb">영상 · 커트 클로즈업</div>
+            <div class="sub">실사 클립 삽입 (섹션·텐션이 보이는 손 클로즈업)</div>
+          </div>
+        </div>
+        <div class="scrim-bottom"></div>
+        <div id="s2-head">원리를 <b>이해하는 일</b>입니다.</div>
+      </div>
+
+      <!-- ===== Scene 3 · PROOF (8–16s) · 시술 몽타주 자리 ===== -->
+      <div id="s3" class="scene">
+        <div class="media-holder">
+          <div class="frame">
+            <div class="ic">▶▶</div>
+            <div class="lb">영상 · 시술 과정 몽타주</div>
+            <div class="sub">상담 → 섹셔닝 → 커팅 → 드라이 → 피니시</div>
+          </div>
+        </div>
+        <div class="scrim-bottom"></div>
+        <div id="s3-words">
+          <span class="w" data-w>원리</span>
+          <span class="w" data-w><b>구조</b></span>
+          <span class="w" data-w>재현</span>
+          <span class="w" data-w><b>분석</b></span>
+        </div>
+        <div id="s3-badge">
+          <span class="cap">런던 비달사순 TTC 수료 · 커트콘테스트 2위</span>
+          <div class="who">심일보 수석강사</div>
+        </div>
+      </div>
+
+      <!-- ===== Scene 4 · DETAIL (16–22s) ===== -->
+      <div id="s4" class="scene">
+        <div id="s4-eb">클래식과정 65기 모집</div>
+        <div id="s4-head">
+          <div class="t">커트의 원리와 구조를</div>
+          <div class="s">8주간, 처음부터</div>
+        </div>
+        <div id="s4-card">
+          <div class="row"><span class="k">·</span>매주 월요일 <b>오후 4시</b> (3시간)</div>
+          <div class="row"><span class="k">·</span>2026.8.17 ~ 10.5 · <b>총 8회</b></div>
+          <div class="row"><span class="k">·</span>선착순 <b>7명</b> 소수정예</div>
+        </div>
+        <div id="s4-cred">심일보 수석강사 · 교육경력 16년 · 클래식 과정 64기 배출</div>
+      </div>
+
+      <!-- ===== Scene 5 · PHILOSOPHY (22–26s) ===== -->
+      <div id="s5" class="scene">
+        <div id="s5-head">기술을 배우는 것이 아니라,<br /><b>기준을 세운다.</b></div>
+      </div>
+
+      <!-- ===== Scene 6 · CTA (26–30s) ===== -->
+      <div id="s6" class="scene">
+        <div id="s6-brand">SOMSSCREATIVE</div>
+        <div id="s6-head">
+          <div class="l1">클래식과정 65기 모집</div>
+          <div class="l2">8월 17일 개강 · <span class="rem">잔여 3자리</span></div>
+        </div>
+        <div id="s6-list">
+          <div class="li"><b>수강료 160만원</b> · 8주 총 8회</div>
+          <div class="li">매주 월요일 오후 4시 · 소수정예 7명</div>
+          <div class="li">20% 선납 시 <b>기수 확정</b></div>
+        </div>
+        <div id="s6-cta-wrap"><span id="s6-cta">지금 신청하세요</span></div>
+        <div id="s6-sub">프로필 링크에서 자세히 보기 →</div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ===== Scene 1 · HOOK (0–4s) — 썸네일 대비: t=0에 완전 노출, 미세 모션만 ===== */
+      tl.fromTo("#s1-head", { letterSpacing: "-0.02em" }, { letterSpacing: "0.04em", duration: 3.4, ease: "sine.out" }, 0);
+      tl.fromTo("#s1-eb", { opacity: 0.6 }, { opacity: 1, duration: 1.0, ease: "sine.out" }, 0);
+      tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.5);
+      tl.to("#s1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 3.6);
+
+      /* ===== Scene 2 · REFRAME reveal @4.0 (blur crossfade) ===== */
+      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 4.0);
+      tl.fromTo("#s2-head", { opacity: 0, y: 30, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, 4.4);
+      tl.to("#s2", { opacity: 0, duration: 0.4, ease: "power2.in" }, 7.6);
+
+      /* ===== Scene 3 · PROOF reveal @8.0 ===== */
+      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 8.0);
+      tl.fromTo("#s3-words [data-w]", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.35 }, 8.4);
+      tl.fromTo("#s3-badge .cap", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.9)" }, 10.6);
+      tl.fromTo("#s3-badge .who", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "sine.out" }, 11.0);
+      tl.to("#s3", { opacity: 0, duration: 0.45, ease: "power2.in" }, 15.55);
+
+      /* ===== Scene 4 · DETAIL reveal @16.0 ===== */
+      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 16.0);
+      tl.fromTo("#s4-eb", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.8)" }, 16.3);
+      tl.fromTo("#s4-head .t", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 16.4);
+      tl.fromTo("#s4-head .s", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 16.6);
+      tl.fromTo("#s4-card .row", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.16 }, 16.9);
+      tl.fromTo("#s4-cred", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "sine.out" }, 17.7);
+      tl.to("#s4", { opacity: 0, duration: 0.45, ease: "power2.in" }, 21.55);
+
+      /* ===== Scene 5 · PHILOSOPHY reveal @22.0 (slow scale-in) ===== */
+      tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 22.0);
+      tl.fromTo("#s5-head", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 22.3);
+      tl.to("#s5", { opacity: 0, duration: 0.4, ease: "power2.in" }, 25.6);
+
+      /* ===== Scene 6 · CTA reveal @26.0 ===== */
+      tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 26.0);
+      tl.fromTo("#s6-brand", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.8)" }, 26.2);
+      tl.fromTo("#s6-head .l1", { opacity: 0, scale: 0.92, y: 26 }, { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "expo.out" }, 26.4);
+      tl.fromTo("#s6-head .l2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 26.65);
+      tl.fromTo("#s6-list .li", { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.14 }, 27.0);
+      tl.fromTo("#s6-cta", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2.2)" }, 28.0);
+      tl.fromTo("#s6-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "sine.out" }, 28.5);
+
+      tl.set({}, {}, 30.0); /* 총 길이 30초 고정 */
+
+      window.__timelines["root"] = tl;
+    </script>
+  </body>
+</html>

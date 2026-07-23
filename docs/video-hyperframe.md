@@ -24,21 +24,21 @@ index.html (HTML+GSAP 컴포지션, 9:16 1080×1920)
 
 ---
 
-## 1. 프로젝트 시작 — persona 원형에서 복사
+## 1. 프로젝트 시작 — 스타터 복사 + 프리셋 선택
 
-새 프로젝트는 `ad-projects/persona-design-1기-hf/`를 원형으로 삼는다.
+새 프로젝트는 **`ad-projects/_template-hf/` 스타터를 복사**한다 (프레임워크 설정·공용 컴포넌트·중앙 자산 배선·GSAP 골격이 이미 들어 있다).
 
-**복사할 파일** (프레임워크·빌드 인프라):
+```bash
+cp -r ad-projects/_template-hf "ad-projects/{course}-{기수}-hf"
+```
 
-| 파일 | 역할 |
-|---|---|
-| `hyperframes.json` | 프로젝트 경로 스키마 |
-| `package.json` | CLI 스크립트 (dev/check/render/publish · hyperframes@0.6.76 고정) |
-| `AGENTS.md` · `CLAUDE.md` | **프레임워크 규칙 — 반드시 복제.** 빠뜨리면 규칙 없이 작업하게 된다 |
-| `fonts/` | 임베드 폰트 (NotoKR woff2) |
-| `build-final.sh` · `build-final-1x1.sh` · `make-feed-sizes.sh` | 후처리 스크립트 (파일명·파라미터를 새 캠페인에 맞게 수정) |
+그다음 **디자인 프리셋을 고른다** (showcase-first):
 
-**새로 작성할 파일**: `meta.json`(id·name), `index.html`(컴포지션 — story-plan의 씬 구성대로), `images/`(자산), `README.md`(입력/출력/씬 요약).
+1. `ad-projects/_presets/`의 `showcase.html`들을 브라우저로 열어 룩을 고른다 — editorial-dark · ivory-premium · magenta-block · split-bold (`_presets/README.md`).
+2. 고른 프리셋 `FRAME.md`의 `colors`·`typography` 값을 새 프로젝트 `index.html`의 `:root` 슬롯에 붙여넣는다.
+3. `meta.json`의 id/name 수정, story-plan 씬대로 씬 작성. 공용 컴포넌트(`.eyebrow`·`.badge`·`.headline`·`.card`·`.info-list`·`.cta`)는 스타터에 이미 있다.
+
+> **왜 프리셋 먼저?** 정해진 템플릿으로만 만들면 매번 비슷해진다. 프리셋은 "디자인 룩을 재사용 단위로" 분리해, 소재마다 **새 룩을 고르거나 기존 걸 재사용**하게 한다. 새 룩이 필요하면 `_presets/README.md`의 "새 프리셋 추가(~10분)".
 
 ---
 
@@ -46,11 +46,20 @@ index.html (HTML+GSAP 컴포지션, 9:16 1080×1920)
 
 상세는 프로젝트 폴더의 `AGENTS.md`/`CLAUDE.md`가 정본이다. 핵심만:
 
-- 씬 요소는 `data-start`/`data-duration`/`data-track-index` 타이밍 속성 필수.
-- 화면에 보이는 요소는 `class="clip"`.
-- GSAP 타임라인은 **paused 상태로 만들고 `window.__timelines`에 등록** — 렌더러가 시간을 제어한다.
+- **타이밍 = GSAP 마스터 타임라인.** `gsap.timeline({paused:true})`에 **절대초**로 타이밍을 지정하고 `window.__timelines["main"]`에 등록한다 — 렌더러가 이 paused 타임라인을 seek한다. (HyperFrames는 요소별 `data-start/duration/track-index` 방식도 지원하지만, 이 레포는 GSAP 마스터 타임라인 방식으로 표준화한다 — 기존 두 프로젝트의 실제 방식.)
 - `<video>`는 muted (오디오는 후처리에서 합성).
 - **결정론적 로직만** — `Math.random()`·현재 시각 등 실행마다 달라지는 코드 금지 (렌더 재현성).
+
+---
+
+## 2-1. 디자인 도크트린 — Atoms sacred, composition free
+
+레이아웃·연출을 **매번 바꾸되** 브랜드 일관성은 지키는 원칙. (`courses/classic/ads/0618/PHILOSOPHY.md` "Disciplined Edge"에서 승격.)
+
+- **모션은 고정 재사용 세트** — 마스터 타임라인 구조, reveal 이디엄(fade-up·slide·stagger), ease 세트는 스타터에서 이어받아 그대로 쓴다. 매번 새로 짜지 않는다.
+- **레이아웃·구도·팔레트는 매번 자유** — 씬 배치와 프리셋 선택이 소재마다 달라지는 지점이다. 여기서 "매번 다른 연출"이 나온다.
+- **색 = 신호 (전 프리셋 공통)**: 마젠타 `#ff3bff` = 고통의 지점, 옐로 `#ffd400`/골드 = 약속의 지점·CTA. 색이 곧 카피의 강조다 — 남발하면 신호가 죽는다.
+- **같은 골격, 다른 옷** — 상단(정체성·모집) → 중앙(질문) → 하단(약속) 골격은 유지하고, 프리셋으로 옷을 갈아입힌다.
 
 ---
 
@@ -66,18 +75,20 @@ npm run render    # 본편 MP4 → renders/ (무음·스크래치)
 
 - 자산(실사 클립·이미지)이 아직 없으면 플레이스홀더 패널로 두고 구조부터 렌더해 확인한다.
 - `renders/`는 스크래치다 — gitignore 대상, 확정본만 배달한다 (관문 문서 참조).
+- **디자인 QA**: 렌더/프레임을 `hallmark` 스킬로 안티-슬롭·대비 감사한다 (뻔한 그라디언트·중앙정렬 남용·저대비 텍스트 점검).
 
 ---
 
 ## 4. 후처리 — build-final.sh (아웃트로 + BGM)
 
-Hyperframe render는 **본편(무음)만** 출력한다. 로고 아웃트로(`somss-outro.mp4`)와 BGM은 ffmpeg로 합성한다:
+Hyperframe render는 **본편(무음)만** 출력한다. 로고 아웃트로와 BGM은 ffmpeg로 합성한다:
 
 ```bash
 ./build-final.sh              # renders/ 최신 mp4를 본편으로 사용
 ./build-final.sh renders/특정본편.mp4
 ```
 
+- **공용 자산은 중앙에서 참조** — 스타터의 `build-final.sh`는 아웃트로 `remotion/public/brand/somss-outro-1080.mp4`, BGM `remotion/public/audio/{트랙}.mp3`를 가리킨다(프로젝트마다 복제하지 않는다). 다른 BGM은 스크립트 상단 `BGM` 변수만 바꾼다.
 - **전체 기능 ffmpeg 필요** — Remotion 번들 ffmpeg(`.localbin/ffmpeg`)는 pad·setpts 필터가 없는 최소 빌드라 사용 불가. 우선순위: `$FFMPEG` env > `ad-projects/.localbin/ffmpeg-full` > PATH.
 - 스크립트 상단 파라미터: `DUR`(본편 컷 지점 — CTA 풀 노출 직후로), `BGM_VOL`(볼륨), `BGM`(음원 파일 — 로열티프리만).
 - BGM은 자동 페이드(인 1.5s/아웃 2.5s), 아웃트로 스팅 오디오는 그대로 얹힌다.

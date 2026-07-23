@@ -9,6 +9,7 @@
 
 - 코스 / 기수: {course} / {기수}
 - **제작 경로**: Remotion / Hyperframe  ← 선택 기준: `docs/video-ad-process.md` §1
+- **디자인 프리셋** (Hyperframe): editorial-dark / ivory-premium / magenta-block / split-bold  ← `ad-projects/_presets/`
 - accent (강조색): {HEX — `courses/{course}/design_token.css`}
 - 배경음악: {트랙명 또는 미정}
 - 총 길이: ~{N}초 · {M}씬

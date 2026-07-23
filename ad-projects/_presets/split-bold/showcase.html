@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>split-bold · showcase</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+  body{background:#2a2a2a;display:flex;justify-content:center;padding:20px;}
+  /* 프리셋 토큰 (split-bold/FRAME.md) */
+  .stage{
+    --bg:#15120f; --card:#26221f; --ink-dark:#171310; --light:#f5f1ea;
+    --pain:#ff3bff; --promise:#ffd400; --on-promise:#5a2a00;
+    width:1080px;height:1920px;position:relative;overflow:hidden;
+    background:var(--bg);font-family:'Pretendard Variable',sans-serif;color:var(--light);
+  }
+  /* BEFORE 면 (상단) */
+  .before{position:absolute;left:0;right:0;top:0;height:1120px;padding:110px 80px 0;}
+  .top{display:flex;align-items:center;justify-content:space-between;}
+  .brand .mark{font-weight:800;font-size:23px;letter-spacing:.22em;}
+  .brand .sub{font-weight:500;font-size:20px;letter-spacing:.02em;margin-left:12px;color:#b8afa4;}
+  .badge{font-weight:800;font-size:28px;color:var(--ink-dark);background:var(--promise);border-radius:999px;padding:14px 26px;}
+  .eyebrow{margin-top:70px;font-weight:800;font-size:22px;letter-spacing:.08em;color:var(--pain);}
+  .head h1{margin-top:20px;font-weight:800;font-size:96px;line-height:1.17;letter-spacing:-.035em;}
+  .head .em{color:var(--pain);}
+  /* AFTER 면 (하단, 솟아오르는 그라데이션) */
+  .after{position:absolute;left:0;right:0;bottom:0;height:900px;
+    background:linear-gradient(120deg,#ff3bff 0%,#ffba2a 100%);border-radius:56px 56px 0 0;
+    padding:120px 80px 0;color:var(--ink-dark);}
+  .after .eyebrow{color:var(--ink-dark);opacity:.7;margin-top:0;}
+  .after .big{margin-top:16px;font-weight:800;font-size:84px;line-height:1.1;letter-spacing:-.03em;}
+  .after .btn{margin-top:48px;display:inline-block;background:var(--promise);color:var(--on-promise);
+    font-weight:800;font-size:31px;padding:26px 44px;border-radius:999px;}
+  /* 경계 화살표 */
+  .arrow{position:absolute;left:50%;top:1030px;transform:translateX(-50%);width:120px;height:120px;
+    background:var(--light);border-radius:999px;display:flex;align-items:center;justify-content:center;
+    font-size:64px;color:var(--bg);z-index:5;box-shadow:0 20px 50px -12px rgba(0,0,0,.6);}
+</style></head><body>
+<div class="stage">
+  <div class="before">
+    <div class="top">
+      <div class="brand"><span class="mark">SOMSS·</span><span class="sub">클래식과정</span></div>
+      <div class="badge">65기 모집중</div>
+    </div>
+    <div class="eyebrow">BEFORE · 지금</div>
+    <div class="head"><h1>배웠는데<br>커트는 왜<br><span class="em">제자리</span>일까요?</h1></div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="after">
+    <div class="eyebrow">AFTER · 8주 뒤</div>
+    <div class="big">완전히<br>달라집니다</div>
+    <div class="btn">무료 상담 신청 →</div>
+  </div>
+</div>
+</body></html>

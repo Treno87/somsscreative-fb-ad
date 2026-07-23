@@ -83,7 +83,7 @@ Phase 4 광고 제안서 (campaigns/{기수}.md)
 승인된 story-plan을 들고 선택한 경로 문서로 들어간다.
 
 - **Remotion** → `docs/video-remotion.md` — story.json 주문서 작성 → `npm run render:story`로 전 비율 일괄 렌더.
-- **Hyperframe** → `docs/video-hyperframe.md` — `ad-projects/{course}-{기수}-hf/` 프로젝트로 HTML 제작 → `npm run render` + `build-final.sh` 후처리.
+- **Hyperframe** → `docs/video-hyperframe.md` — `ad-projects/_template-hf/` 복사 + **디자인 프리셋 선택**(`ad-projects/_presets/` showcase-first) → HTML 제작 → `npm run render` + `build-final.sh` 후처리.
 
 두 경로 모두 결과물은 **스크래치**(`remotion/out/` · `ad-projects/*/renders/`)에 나온다 — 아직 배달본이 아니다.
 

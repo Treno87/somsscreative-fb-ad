@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+  Hyperframe 영상 스타터 — 새 광고 프로젝트의 골격.
+  1) 이 폴더(_template-hf)를 ad-projects/{course}-{기수}-hf/ 로 복사.
+  2) 아래 :root 토큰을 고른 프리셋(ad-projects/_presets/{name}/FRAME.md)의
+     colors·typography 값으로 교체.
+  3) story-plan 씬대로 씬을 추가. 공용 컴포넌트(.eyebrow/.badge/.card/.cta/.info-list) 재사용.
+  타이밍은 요소별 data-* 가 아니라 하단 GSAP 마스터 타임라인(절대초)으로 제어한다.
+  자세히: docs/video-hyperframe.md
+-->
+<html lang="ko" data-resolution="portrait">
+<head>
+<meta charset="utf-8">
+<style>
+  /* 브랜드 폰트 — 자립형(프로젝트 로컬) */
+  @font-face { font-family:'Pretendard'; src:url('./fonts/PretendardVariable.woff2') format('woff2'); font-weight:100 900; }
+
+  /* ── 프리셋 토큰 슬롯 (여기를 프리셋 FRAME.md 값으로 교체) ──
+     아래는 editorial-dark 예시. 색=신호: --pain(마젠타)=고통, --promise(옐로)=약속. */
+  :root {
+    --bg-a:#272320; --bg-b:#1a1715; --bg-c:#121010;
+    --ink:#f5f1ea; --muted:#a59d92;
+    --pain:#ff3bff; --promise:#ffd400; --on-promise:#171310; --on-promise-sub:#5a4b00;
+    --pad-x:80px;                 /* 좌우 여백 */
+    --safe-top:330px; --safe-bottom:1580px;   /* 9:16 안전영역(4:5 크롭 무손실) */
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+  html,body{width:1080px;height:1920px;background:#000;
+    font-family:'Pretendard',sans-serif;color:var(--ink);}
+
+  /* 전 씬 공통 컨테이너 */
+  .scene{position:absolute;top:0;left:0;width:1080px;height:1920px;overflow:hidden;}
+
+  /* ── 공용 컴포넌트 (프로젝트마다 재구현하지 않는다) ── */
+  .eyebrow{font-weight:600;font-size:22px;letter-spacing:.14em;color:var(--pain);text-transform:uppercase;}
+  .badge{display:inline-block;font-weight:800;font-size:28px;color:var(--on-promise);
+    background:var(--promise);border-radius:999px;padding:14px 26px;}
+  .headline{font-weight:800;font-size:104px;line-height:1.16;letter-spacing:-.035em;}
+  .headline .em{color:var(--pain);}         /* 고통 강조 */
+  .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);
+    border-radius:20px;padding:40px;}
+  .info-list{list-style:none;}
+  .info-list li{position:relative;padding-left:34px;font-size:34px;line-height:1.7;color:var(--ink);}
+  .info-list li::before{content:"";position:absolute;left:0;top:.7em;width:16px;height:4px;background:var(--promise);}
+  .cta{display:inline-flex;align-items:center;gap:14px;font-weight:800;font-size:34px;
+    color:var(--on-promise);background:var(--promise);border-radius:999px;padding:26px 44px;}
+
+  /* 씬 배치 헬퍼 — 안전영역 안에서 세로 배치 */
+  .stack{position:absolute;left:var(--pad-x);right:var(--pad-x);
+    top:var(--safe-top);display:flex;flex-direction:column;gap:32px;}
+
+  /* 씬별 레이아웃 (여기서 매번 자유롭게 구성) */
+  #s1{background:radial-gradient(120% 60% at 50% 0%,var(--bg-a),var(--bg-b) 55%,var(--bg-c));}
+  #s1 .stack{top:560px;}
+  #s2{background:var(--bg-c);}
+  #s2 .stack{top:520px;gap:40px;}
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1080" data-height="1920">
+
+  <!-- S1 · HOOK — 예시 씬 -->
+  <div id="s1" class="scene">
+    <div class="stack">
+      <div class="eyebrow">SOMSSCREATIVE · 클래식과정 65기</div>
+      <h1 class="headline">커트는<br><span class="em">기술</span>이<br>아닙니다</h1>
+    </div>
+  </div>
+
+  <!-- S2 · CTA — 예시 씬 -->
+  <div id="s2" class="scene" style="opacity:0;">
+    <div class="stack">
+      <span class="badge">65기 모집 · 8/17 개강</span>
+      <h1 class="headline">완전히<br>달라집니다</h1>
+      <ul class="info-list">
+        <li>8주 · 총 8회 · 정원 7명</li>
+        <li>매주 월요일 오후 4시</li>
+      </ul>
+      <div><span class="cta">무료 상담 신청 →</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+  // 마스터 타임라인 — paused 로 만들고 window.__timelines 에 등록 (Hyperframe 규약).
+  // 타이밍은 절대초(예: , 5)로 지정한다. 결정론적 로직만 (Math.random·Date.now 금지).
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+
+  // S1 (0~5초): 헤드라인 단어 fade-up
+  tl.from("#s1 .eyebrow", { opacity: 0, y: 24, duration: 0.6 }, 0.2);
+  tl.from("#s1 .headline", { opacity: 0, y: 40, duration: 0.8 }, 0.5);
+
+  // S1 → S2 전환 (5초)
+  tl.to("#s1", { opacity: 0, duration: 0.5 }, 4.6);
+  tl.to("#s2", { opacity: 1, duration: 0.5 }, 4.8);
+
+  // S2 (5~10초)
+  tl.from("#s2 .badge",     { opacity: 0, y: 24, duration: 0.5 }, 5.2);
+  tl.from("#s2 .headline",  { opacity: 0, y: 40, duration: 0.7 }, 5.5);
+  tl.from("#s2 .info-list li", { opacity: 0, y: 20, duration: 0.5, stagger: 0.15 }, 6.2);
+  tl.from("#s2 .cta",       { opacity: 0, scale: 0.9, duration: 0.5 }, 7.0);
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

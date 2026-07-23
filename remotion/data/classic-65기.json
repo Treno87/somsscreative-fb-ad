@@ -1,0 +1,26 @@
+[
+	{
+		"id": "classic-65기-01-pain",
+		"angle": "고통 포인트",
+		"headline": "배웠는데 왜\n커트는 제자리일까요",
+		"subheadline": "외운 스타일로는 처음 보는 커트에 손이 멈춥니다",
+		"cta": "무료 상담 신청",
+		"accent": "#ff3bff"
+	},
+	{
+		"id": "classic-65기-02-proof",
+		"angle": "사회적 증명",
+		"headline": "단골 3명에서\n11명으로\n한 달 만에 회수",
+		"subheadline": "구조를 배운 뒤 달라진 54기 수강생 사례 (검증 필요)",
+		"cta": "상담 신청하기",
+		"accent": "#d94fd5"
+	},
+	{
+		"id": "classic-65기-03-offer",
+		"angle": "직접 혜택",
+		"headline": "8주 · 7명 한정\n8/17 개강",
+		"subheadline": "런던 사순 TTC 심일보 · 20% 선납 시 자리 확정",
+		"cta": "지금 신청",
+		"accent": "#5c24ff"
+	}
+]

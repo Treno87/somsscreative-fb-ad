@@ -206,6 +206,9 @@ public/courses/{course}/
 
 ### 검토 게이트
 
+> **먼저 `creative-critic`으로 카피를 채점한다** → 사람은 그 진단을 보고 컨펌한다. 품질 판정을 눈이 아니라 채점표(`.claude/creative-rubric.md`)로 옮기는 게이트다. FAIL이 있으면 리라이트안 반영 후 재채점.
+
+- [ ] `creative-critic` 채점에서 FAIL 0건인가? (FIX 필요 항목 해소)
 - [ ] 목표 CPL이 현실적인가? (기존 audit 데이터 있으면 ±20% 이내)
 - [ ] 오디언스 크기가 광고세트당 일 예산 ÷ 평균 도달 단가에 맞는가?
 - [ ] 헤드라인이 USP 카피 변형 중 하나와 일치하는가?
@@ -238,6 +241,9 @@ public/ads/{course}/{기수}/v{NN}/
 
 ### 검토 게이트
 
+> **소재(정지 이미지·영상)도 `creative-critic`으로 먼저 채점한다** → 색=신호·구조·차별점·증거 차원(디자인/영상 적용)으로 진단 후 사람이 컨펌.
+
+- [ ] `creative-critic` 채점에서 FAIL 0건인가?
 - [ ] Meta 광고 관리자 미리보기에서 정상 노출되는가?
 - [ ] 텍스트 비율이 20% 이하인가? (Meta 권장)
 - [ ] 브랜드 톤 일관성 (랜딩 이미지와 비교)
@@ -325,6 +331,7 @@ node scripts/landing-drift-check.mjs {course} {live-url}
 | `landing-builder` | 2 | content.md | imweb.html (정본) + imweb-preview.html + visual-brief.md |
 | `image-prompt-brand` | 3, 5 | visual-brief.md or 제안서 | 이미지 프롬프트 |
 | `ad-proposal` | 4 | content.md + 랜딩 URL | `campaigns/{기수}.md` |
+| `creative-critic` | 4·5 (컨펌 전 게이트) | 카피·씬·소재 + `creative-rubric.md` | 8차원 채점 + 리라이트안 (인라인) |
 | `fb-ad-audit` | 7 | analytics/input/ CSV | `analytics/output/report.json` |
 | `dashboard-analyst` | 7 | analytics/input/ CSV | `analytics/output/analysis_*.md` |
 | `landing-optimizer` | 7 | Clarity + 라이브 iMweb DOM + 광고 성과 | 아임웹 적용용 개선 제안 |

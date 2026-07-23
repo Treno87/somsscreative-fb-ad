@@ -1,0 +1,101 @@
+{
+	"id": "classic-65기-story",
+	"accent": "#d94fd5",
+	"music": "audio/classic-bgm2.mp3",
+	"outro": "brand/somss-outro-1080.mp4",
+	"outroSeconds": 8.94,
+	"scenes": [
+		{
+			"id": "s1-hook",
+			"kind": "hook",
+			"media": "#0e0e12",
+			"brief": "다크 솔리드 카드 — 자산 없음",
+			"eyebrow": "SOMSSCREATIVE · 클래식과정 65기",
+			"headline": "커트는\n기술이 아닙니다",
+			"body": "",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "expand", "unit": "word" },
+			"durationInSeconds": 4
+		},
+		{
+			"id": "s2-turn",
+			"kind": "turn",
+			"media": "#0e0e12",
+			"brief": "다크 솔리드 카드 — 자산 없음",
+			"eyebrow": "소옴 클래식과정",
+			"headline": "원리를\n이해하는 일입니다",
+			"body": "",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "blur-in", "unit": "word" },
+			"durationInSeconds": 4
+		},
+		{
+			"id": "s3-proof",
+			"kind": "proof",
+			"media": [
+				"images/persona-design-1기/01-form.jpg",
+				"images/persona-design-1기/04-neckline.jpg",
+				"images/persona-design-1기/05-fashion.jpg"
+			],
+			"brief": "⚠️ 임시 스탠드인(persona 헤어 이미지). 실제로는 소옴 커트 시술 몽타주(상담→섹셔닝→커팅→드라이→피니시)로 교체.",
+			"eyebrow": "심일보 수석강사",
+			"headline": "원리 · 구조\n재현 · 분석",
+			"body": "런던 비달사순 TTC 수료 · 커트콘테스트 2위",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "fade-up", "unit": "line" },
+			"durationInSeconds": 5
+		},
+		{
+			"id": "s4-proof",
+			"kind": "proof",
+			"media": "images/persona-design-1기/00-hero-face.jpg",
+			"brief": "⚠️ 임시 스탠드인(persona 얼굴 이미지). 실제로는 심일보 수석강사 실사 컷으로 교체.",
+			"eyebrow": "클래식과정 65기",
+			"headline": "커트의 원리와 구조를\n8주간 처음부터",
+			"body": "",
+			"bullets": [
+				"심일보 수석강사 · 교육경력 16년",
+				"클래식 과정 64기 배출",
+				"매주 월요일 오후 4시 (3시간)"
+			],
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "fade-up", "unit": "line" },
+			"durationInSeconds": 6
+		},
+		{
+			"id": "s5-turn",
+			"kind": "turn",
+			"media": "#0e0e12",
+			"brief": "다크 솔리드 카드 — 자산 없음",
+			"eyebrow": "소옴이 가르치는 것",
+			"headline": "기술이 아니라\n기준을 세운다",
+			"body": "",
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "rise", "unit": "word" },
+			"durationInSeconds": 4
+		},
+		{
+			"id": "s6-cta",
+			"kind": "cta",
+			"media": "#0e0e12",
+			"brief": "다크 솔리드 카드 — 자산 없음",
+			"eyebrow": "클래식과정 65기 모집",
+			"headline": "8월 17일 개강\n잔여 3자리",
+			"body": "",
+			"bullets": [
+				"수강료 160만원 · 8주 총 8회",
+				"매주 월요일 오후 4시 · 정원 7명",
+				"20% 선납 시 기수 확정"
+			],
+			"cta": "",
+			"textPosition": "center",
+			"headlineAnim": { "preset": "expand", "unit": "word" },
+			"durationInSeconds": 6
+		}
+	]
+}

@@ -79,6 +79,7 @@ docs/ad-asset-organization.md → 광고 소재 폴더·네이밍·버전 규약
 | `content-writer` | 코스 랜딩페이지 콘텐츠 초안 작성 |
 | `landing-builder` | 아임웹 코드블록 랜딩페이지 생성 (`courses/{course}/imweb.html` 단일 정본) |
 | `ad-proposal` | 랜딩페이지 기반 Meta 광고 제안서 작성 |
+| `creative-critic` | 카피·씬·디자인 소재를 `creative-rubric.md` 채점표로 진단·리라이트 (컨펌 전 게이트) |
 
 ---
 
