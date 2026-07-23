@@ -52,7 +52,9 @@ reference/imweb-samples/ → 아임웹 샘플 HTML·Pixel 가이드
 .claude/agents/       → Claude 서브에이전트 정의
 .claude/brand-context.md → 브랜드 컨텍스트
 docs/PROCESS.md       → 7단계 워크플로우 마스터 문서
-docs/video-ad-process.md → 광고 동영상 생성 프로세스 (Remotion · 영상 작업 시 반드시 참고)
+docs/video-ad-process.md → 영상 소재 공통 관문 (Remotion·Hyperframe 경로 선택·배달·마감 — 영상 작업 시 반드시 참고)
+docs/video-remotion.md → Remotion 제작 세부 (JSON 주문서 → remotion/ 렌더)
+docs/video-hyperframe.md → Hyperframe 제작 세부 (HTML+GSAP → ad-projects/*-hf/)
 docs/ad-asset-organization.md → 광고 소재 폴더·네이밍·버전 규약 (소재 생성·저장 시 반드시 참고)
 ```
 
@@ -95,6 +97,19 @@ docs/ad-asset-organization.md → 광고 소재 폴더·네이밍·버전 규약
 - 인라인 스타일 금지 — Tailwind 클래스 사용
 - `console.log` 프로덕션 코드에 방치 금지
 - `"use client"` 남발 금지 — 서버 컴포넌트 최대 활용
+
+### 파일 네이밍 규칙 (반드시 준수)
+
+`courses/{course}/campaigns/` 파일명은 **`{기수}-용도`** 형식만 사용한다. `{기수}`는 `65기`처럼 기수 번호(날짜·임의 문자열 금지).
+
+| 파일명 | 용도 |
+|--------|------|
+| `{기수}.md` | Meta 광고 제안서 (`ad-proposal`) |
+| `{기수}-story-plan.md` | 동영상 광고 씬 기획 |
+| `{기수}-assets.md` | 캠페인 소재 인덱스 |
+| `{기수}-adspec.mjs` | Meta 광고 생성 스펙 |
+
+> 표준 외 이름(`-story-images`, `-new-plan`, 날짜형 `0618-` 등) 금지. `.claude/settings.json`의 PreToolUse 훅이 campaigns/ 신규 파일명을 검사해 비표준이면 확인을 요구한다.
 
 ---
 

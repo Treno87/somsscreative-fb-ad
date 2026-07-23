@@ -2,17 +2,19 @@
 
 > 사용법: 동영상 광고의 씬 구분·카피·자산·효과를 **사람이 검토할 수 있게** 정리하는 문서.
 > 광고 제안서 `courses/{course}/campaigns/{기수}.md`의 앵글·카피를 영상 내러티브로
-> 재구성한다. **이 문서를 사람이 승인한 뒤** STEP 6에서
-> `remotion/data/{course}-{기수}-story.json`으로 1:1 변환한다.
-> 전체 프로세스: `docs/video-ad-process.md`.
+> 재구성한다. **이 문서를 사람이 승인한 뒤** 선택한 경로로 제작한다.
+> 전체 프로세스(경로 선택 포함): `docs/video-ad-process.md`.
 
 ## 메타
 
 - 코스 / 기수: {course} / {기수}
+- **제작 경로**: Remotion / Hyperframe  ← 선택 기준: `docs/video-ad-process.md` §1
 - accent (강조색): {HEX — `courses/{course}/design_token.css`}
 - 배경음악: {트랙명 또는 미정}
 - 총 길이: ~{N}초 · {M}씬
-- 데이터 피드 출력: `remotion/data/{course}-{기수}-story.json`
+- 제작물 출력:
+  - Remotion → `remotion/data/{course}-{기수}-story.json` (주문서)
+  - Hyperframe → `ad-projects/{course}-{기수}-hf/` (index.html + 빌드 스크립트)
 - 작성일: {YYYY-MM-DD}
 
 ---
@@ -33,8 +35,9 @@
 
 ## 씬별 상세
 
-씬 하나 = JSON 씬 객체 하나. STEP 6에서 그대로 변환된다.
+씬 하나 = 제작물의 씬 하나. Remotion 경로에선 JSON 씬 객체로 1:1 변환된다.
 헤드라인 줄바꿈은 `/`로 표기한다 (JSON 변환 시 `\n`).
+아래 `textPosition`·`headlineAnim`은 **Remotion 전용 필드**다 — Hyperframe 경로에선 연출 메모(등장 방식·위치)로 대신 채운다.
 
 ### 씬 1 — hook
 
@@ -107,4 +110,4 @@
 - [ ] 텍스트 효과(preset·unit)가 씬마다 달라 단조롭지 않은가
 - [ ] 총 길이가 30초 이하인가
 
-✅ 승인 → STEP 6 (`story.json` 변환) / ❌ 수정 → 이 문서 갱신 후 재검토
+✅ 승인 → 선택한 경로로 제작 (`docs/video-remotion.md` 또는 `docs/video-hyperframe.md`) / ❌ 수정 → 이 문서 갱신 후 재검토

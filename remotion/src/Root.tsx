@@ -11,12 +11,15 @@ import {
 	type StorytellingAdProps,
 	totalDurationInFrames,
 } from "./StorytellingAd";
-import internStory from "../data/intern10000-2기-story-v3.json";
-
 const FPS = 30;
 const DURATION = 150; // 5초 — KineticHeadlineAd
 
-const story = internStory as StorytellingAdProps;
+// 스튜디오 미리보기용 스토리 선택 — REMOTION_STORY 환경변수로 전환한다.
+//   예: REMOTION_STORY=classic-65기-story npm run dev
+// defaultProps는 미리보기용 예시일 뿐, 렌더 정본은 항상 --props(scripts/render-story.mjs)다.
+const storyName = process.env.REMOTION_STORY ?? "intern10000-2기-story-v3";
+// webpack 컨텍스트 require — data/ 폴더의 json을 실행 시점 이름으로 불러온다.
+const story = require(`../data/${storyName}.json`) as StorytellingAdProps;
 
 export const RemotionRoot: React.FC = () => {
 	return (

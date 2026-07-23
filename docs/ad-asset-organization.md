@@ -55,6 +55,8 @@ public/ads/intern10000/2기/v03/video/intern10000-2기-story-191-v03.mp4
 
 ## 2. 소스 위치 (도구별 — 옮기지 않는다, 네이밍만 통일)
 
+> 영상 제작 프로세스(경로 선택·제작 세부)는 `docs/video-ad-process.md`(공통 관문)를 따른다.
+
 | 포맷 | 소스 위치 | 비고 |
 |---|---|---|
 | Remotion 주문서(JSON) | `remotion/data/{course}-{기수}-story.json` | 파이프라인이 여기서 props를 읽는다. 파일명 유지 |
