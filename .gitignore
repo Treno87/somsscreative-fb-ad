@@ -29,6 +29,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+# 렌더·스튜디오 실행 로그 (remotion/install.log, render-*.log, studio.log 등)
+*.log
 
 # env files (.env.example is committed; .env.local is not)
 .env*.local
