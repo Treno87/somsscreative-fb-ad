@@ -11,7 +11,7 @@ colors:
   block_dark: "#7a0f86"   # 자주빛 다크 블록
   ink: "#ffffff"          # 마젠타 위 화이트 본문
   ink_dark: "#3a0340"     # 밝은 블록 위 다크 텍스트
-  accent_promise: "#ffd400" # 옐로 — 약속점·CTA (마젠타 위에서 최고 대비)
+  accent_promise: "#ffd400" # 옐로 — 이 프리셋은 마젠타가 배경이라 대비색이 필수. 단색 규칙의 유일한 예외
   on_promise: "#7a0f86"     # 옐로 위 텍스트
 typography:
   eyebrow:    { size: 20, weight: 600, tracking: "0.14em" }

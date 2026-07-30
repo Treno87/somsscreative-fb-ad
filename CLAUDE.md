@@ -46,6 +46,8 @@ public/
 ├── courses/{course}/ → 랜딩 이미지
 └── ads/{course}/{기수}/v{NN}/{video|image|carousel}/ → 광고 소재 배달 트리 (전 포맷·버전)
 
+assets/raw/{course}-{기수}/ → 카메라 원본 보관소 (git 미추적. 컴포지션이 직접 참조 금지 — make-clips.sh로 잘라 쓴다)
+
 ad-projects/{course}-{기수}-hf/ → Hyperframe(HTML) 동영상 작업 프로젝트 (self-contained)
 
 reference/imweb-samples/ → 아임웹 샘플 HTML·Pixel 가이드
@@ -80,6 +82,10 @@ docs/ad-asset-organization.md → 광고 소재 폴더·네이밍·버전 규약
 | `landing-builder` | 아임웹 코드블록 랜딩페이지 생성 (`courses/{course}/imweb.html` 단일 정본) |
 | `ad-proposal` | 랜딩페이지 기반 Meta 광고 제안서 작성 |
 | `creative-critic` | 카피·씬·디자인 소재를 `creative-rubric.md` 채점표로 진단·리라이트 (컨펌 전 게이트) |
+
+## Claude 스킬
+
+- **`ad-director`** (`.claude/skills/ad-director/`) — 광고 크리에이티브 디렉터 인터뷰. 컨셉→포맷·경로(이미지/Remotion/Hyperframe)→카피 방향→씬→디자인을 문답으로 합의하고 `campaigns/{기수}.md` 최상단 `## 디렉터 합의`에 기록. **`/make-ad` 1단계 필수 관문.**
 
 ---
 

@@ -12,7 +12,7 @@ colors:
   muted: "#a59d92"
   muted2: "#9a9189"
   accent_pain: "#ff3bff"    # 마젠타 — "제자리" 고통점에만
-  accent_promise: "#ffd400" # 옐로 — "달라진다" 약속점·CTA에만
+  accent_promise: "#ffd400" # ⚠️ 2색 체계 잔재(2026-07-30 폐지). 기본은 마젠타 단색 — 그 기수 「디렉터 합의」에 명시했을 때만 쓴다
   on_promise: "#171310"     # 옐로 위 텍스트
   on_promise_sub: "#5a4b00"
 typography:

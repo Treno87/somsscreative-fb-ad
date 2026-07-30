@@ -12,7 +12,7 @@ colors:
   muted: "#a89a82"
   hairline: "#cdc1ab"
   accent_pain: "#ff3bff"    # 마젠타 — 고통점에만 (라이트 위에서도 강한 신호)
-  accent_promise: "#a07b2e" # 골드 — 약속점·CTA (옐로는 아이보리 위에서 안 뜸)
+  accent_promise: "#a07b2e" # ⚠️ 2색 체계 잔재(2026-07-30 폐지). 기본은 마젠타 단색 — 그 기수 「디렉터 합의」에 명시했을 때만 쓴다
   on_promise: "#f3ede3"     # 골드 위 텍스트
 typography:
   eyebrow:    { size: 20, weight: 600, tracking: "0.14em" }

@@ -11,7 +11,7 @@ colors:
   ink_dark: "#171310"
   light: "#f5f1ea"        # 아이보리 텍스트
   accent_pain: "#ff3bff"    # 마젠타 — 고통/BEFORE 강조
-  accent_promise: "#ffd400" # 옐로 — 약속/AFTER·CTA
+  accent_promise: "#ffd400" # ⚠️ 2색 체계 잔재(2026-07-30 폐지). 기본은 마젠타 단색 — 그 기수 「디렉터 합의」에 명시했을 때만 쓴다
   on_promise: "#5a2a00"     # 옐로 위 텍스트 (진한 브라운)
   grad_after: "linear-gradient(120deg, #ff3bff 0%, #ffba2a 100%)"
 typography:

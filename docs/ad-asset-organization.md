@@ -45,10 +45,14 @@ public/ads/{course}/{기수}/v{NN}/
 
 예시:
 ```
-public/ads/persona-design/1기/v01/video/persona-design-1기-story-reels-v01.mp4
-public/ads/persona-design/1기/v01/image/persona-design-1기-hook-1x1-v01.png
-public/ads/persona-design/1기/v01/carousel/face9/01-v01.png
+public/ads/classic/65기/v01/video/classic-65기-story-reels-v01.mp4
+public/ads/classic/65기/v01/video/classic-65기-story-1x1-v01.mp4
 public/ads/intern10000/2기/v03/video/intern10000-2기-story-191-v03.mp4
+```
+(이미지·캐러셀 형식 예시 — 아직 배달본 없음)
+```
+public/ads/{course}/{기수}/v01/image/{course}-{기수}-hook-1x1-v01.png
+public/ads/{course}/{기수}/v01/carousel/face9/01-v01.png
 ```
 
 ---
@@ -66,10 +70,34 @@ public/ads/intern10000/2기/v03/video/intern10000-2기-story-191-v03.mp4
 | 광고 기획·제안서 | `courses/{course}/campaigns/{기수}*.md` | story-plan·제안서. 현행 유지 |
 | **캠페인 인덱스** | `courses/{course}/campaigns/{기수}-assets.md` | 그 캠페인의 소스·출력 경로를 한 장에 모은 매니페스트 |
 
-### 렌더 스크래치 디렉터리
+### 파일이 있어야 할 자리 (전체 지도)
 
-`remotion/out/` 와 `ad-projects/*/renders/` 는 **작업용 스크래치**다(gitignored).
-렌더 직후 산출물을 검수한 뒤, **확정본만** `public/ads/...` 배달 트리로 버전 네이밍해 복사한다.
+"이 파일 어디 둬야 하지 / 이거 지워도 되나"의 답은 전부 이 표에 있다.
+
+| 구분 | 위치 | git | 비고 |
+|---|---|---|---|
+| **카메라 원본(raw)** | `assets/raw/{course}-{기수}/` · `assets/raw/misc/` | ❌ | 컴포지션이 **직접 참조 금지**. `make-clips.sh`로 잘라 프로젝트에 들여온다 |
+| 컴포지션 | `ad-projects/{proj}/index.html` · `compositions/*.html` | ✅ | 루트 컴포지션은 프로젝트당 `index.html` 1개. 추가 비율은 `compositions/` 하위 |
+| 영상 클립(작업본) | `ad-projects/{proj}/video/*.mp4` | ❌ | **프로젝트 안 필수.** 재현 근거 = `make-clips.sh` + `assets/raw/` |
+| 이미지·폰트(작업본) | `ad-projects/{proj}/{images,fonts}/` | ✅ | 프로젝트 안 필수 → **의도적 복제**(아래 원칙 2) |
+| 빌드 스크립트 | `ad-projects/{proj}/*.sh` | ✅ | 셸은 `../..` 참조 허용(린터는 HTML만 검사) |
+| 렌더 스크래치 | `ad-projects/{proj}/renders/` · `remotion/out/` | ❌ | 검수용 임시. 확정본만 배달 |
+| 검수 산출물 | `ad-projects/{proj}/snapshots/` · `.thumbnails/` | ❌ | `.thumbnails/`는 CLI 캐시 — 손대지 않는다 |
+| 배달 대기(스테이징) | `ad-projects/{proj}/{proj}-reels*.mp4` | ❌ | build-final.sh 출력. **배달 트리로 복사한 뒤 지운다** |
+| **최종 출력(배달 정본)** | `public/ads/{course}/{기수}/v{NN}/` | ❌ | §1 네이밍 |
+| 공용 자산 | `remotion/public/{brand,audio,fonts}/` | ✅ | 아웃트로·BGM·폰트. 셸에서 `../../remotion/public/...`로 참조 |
+
+### 원칙 (규칙이지 우연이 아니다)
+
+1. **원본은 프로젝트 안에 두지 않는다.** 카메라 원본은 `assets/raw/`, 프로젝트에는 잘라 쓴 경량 클립만.
+   컴포지션이 4K 원본을 `data-media-start`로 잘라 쓰면 렌더가 느리고 원본을 옮기는 순간 깨진다.
+2. **프로젝트 폴더는 self-contained다.** HyperFrames는 자산 경로에 `../`를 금지한다
+   (린트 에러 `invalid_parent_traversal_in_asset_path`). 그래서 폰트·이미지 복제는 낭비가 아니라 **요구사항**이다.
+   원본은 항상 `remotion/public/`이고 프로젝트로는 복사해 들어간다.
+   **심볼릭 링크는 쓰지 않는다** — CLI 아티팩트 수집이 심링크를 거부한다.
+3. **추적/미추적은 확장자가 아니라 역할로 정한다.** 소스(HTML·sh·json·폰트·이미지)는 추적,
+   바이너리 결과물(mp4·mp3·MOV)과 검수 산출물은 미추적.
+4. **최종본이 있을 수 있는 곳은 `public/ads/` 하나다.** 프로젝트 루트에 남은 빌드 출력은 배달 후 지운다.
 
 ---
 
