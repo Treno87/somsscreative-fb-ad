@@ -71,10 +71,24 @@ courses/**/*.jpg
 courses/**/*.jpeg
 courses/**/*.pdf
 
-# 광고 작업 프로젝트(ad-projects/{course}-{기수}-hf) 렌더 바이너리 — 소스(html·sh·json·fonts)만 추적.
+# 카메라 원본(raw) — 저장소 안에 두되 커밋하지 않는다. 규약: docs/ad-asset-organization.md
+assets/raw/*
+!assets/raw/README.md
+
+# 광고 작업 프로젝트(ad-projects/{course}-{기수}-hf).
+# 추적/미추적은 확장자가 아니라 역할로 정한다 —
+#   추적: 소스(html·sh·json·fonts·images)  /  미추적: 바이너리 결과물·검수 산출물·카메라 원본
 # 규약: docs/ad-asset-organization.md
+# (주의: .gitignore 는 줄 끝 주석을 지원하지 않는다. 주석은 반드시 별도 줄에.)
+# 렌더 스크래치 · 검수 스냅샷 · CLI 캐시
 ad-projects/**/renders/
+ad-projects/**/snapshots/
+ad-projects/**/.thumbnails/
 ad-projects/**/.ffbin/
 ad-projects/**/_hold/
+# 바이너리 결과물. *.MOV 가 없어서 .git 에 348MB 좀비가 생겼었다.
 ad-projects/**/*.mp4
 ad-projects/**/*.mp3
+ad-projects/**/*.MOV
+ad-projects/**/*.mov
+ad-projects/**/*.MP4
