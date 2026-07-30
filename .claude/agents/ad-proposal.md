@@ -26,14 +26,17 @@ tools: Read, Write, Glob
 
 ## 실행 전 필수 읽기
 
-1. `courses/{course}/content.md` — 타겟, 메시지, 후기
-2. `.claude/brand-context.md` — 페르소나, 반론, VoC
-3. `analytics/output/META-ADS-REPORT.md` (있을 경우) — 기존 성과 데이터 참고
-4. `analytics/input/` — 최신 광고 데이터 CSV (있을 경우)
+1. `courses/{course}/campaigns/{기수}.md`의 `## 디렉터 합의` 섹션 (있을 경우) — **구속 조건**. 합의된 타겟·앵글·카피 제약·제작 경로를 벗어나지 않는다
+2. `courses/{course}/USP.md` — 차별점, 헤드라인 라이브러리, 누적 후기·VoC
+3. `courses/{course}/content.md` — 타겟, 메시지, 후기
+4. `.claude/brand-context.md` — 페르소나, 반론, VoC
+5. `analytics/output/META-ADS-REPORT.md` (있을 경우) — 기존 성과 데이터 참고
+6. `analytics/input/` — 최신 광고 데이터 CSV (있을 경우)
 
 ## 출력 형식
 
-`courses/{course}/campaigns/{기수}.md` 파일로 저장:
+`courses/{course}/campaigns/{기수}.md` 파일로 저장.
+파일이 이미 존재하고 `## 디렉터 합의` 섹션이 있으면 **그 섹션을 보존한 채 아래에 이어 쓴다**:
 
 ```markdown
 # {코스명} {기수} Meta 광고 제안서

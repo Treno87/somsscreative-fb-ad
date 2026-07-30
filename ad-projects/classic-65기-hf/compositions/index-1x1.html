@@ -1,207 +1,175 @@
 <!DOCTYPE html>
-<html lang="ko" data-resolution="portrait">
+<html lang="ko" data-resolution="square">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1080, height=1920">
+    <meta name="viewport" content="width=1080, height=1080">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
+      /* 1:1(1080×1080) 전용 레이아웃 — index.html(9:16)의 정사각 변형.
+         중앙 크롭은 금지(아이브로우·하단 텍스트가 잘린다). 씬 구성·타임라인은 9:16과 동일하고
+         세로 공간이 절반이라 배치·글자크기만 다시 잡는다. 카피·연출을 바꾸면 양쪽 다 고칠 것. */
       @font-face { font-family: "Pretendard"; font-weight: 100 900; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-display: block; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      /* ===== editorial-dark 프리셋 (ad-projects/_presets/editorial-dark/FRAME.md) ===== */
+      /* ===== editorial-dark 프리셋 — 색은 9:16 정본과 동일 ===== */
       :root {
-        /* 프리셋 원본 그라데이션(#272320→#121010)은 위쪽이 떠서 희끄무레했다.
-           거의 검정에 가깝게 낮추고 폭도 좁혀, 텍스트만 뜨게 한다. */
         --bg: #0a0908;
         --bg-grad: radial-gradient(120% 80% at 50% 0%, #14120f 0%, #0a0908 50%, #040403 100%);
-        --surface: #131110;     /* 클립 밴드 바닥 */
-        --ink: #f5f1ea;         /* 아이보리 본문 (다크 위 15:1) */
-        --muted: #a59d92;
-        --muted-text: #a59d92;  /* 다크 위 6.6:1 — 아이보리 때처럼 낮출 필요 없음 */
+        --surface: #131110;
+        --ink: #f5f1ea;
+        --muted-text: #a59d92;
         --muted-fine: #9a9189;
         --hairline: #3a3430;
-        /* 텍스트 강조는 전 씬 퍼플 하나로 통일 (다크 위 7.4:1).
-           퍼플과 부딪히던 건 옐로였으므로, 색을 빼는 쪽은 면(배지·CTA 바)으로 옮겼다. */
-        --pain: #ff3bff;
         --pain-text: #ff3bff;
         --promise: #ff3bff;
-        --cta-surface: #f5f1ea; /* 배지·CTA 바 = 아이보리 면 (다크 위 15:1). 무채색이라 퍼플과 안 싸운다 */
-        --on-promise: #171310;  /* 아이보리 면 위 텍스트 */
+        --cta-surface: #f5f1ea;
+        --on-promise: #171310;
         --on-promise-sub: #6b6257;
       }
       html, body {
-        width: 1080px; height: 1920px; overflow: hidden; background: var(--bg);
+        width: 1080px; height: 1080px; overflow: hidden; background: var(--bg);
         font-family: "Pretendard", sans-serif;
         -webkit-font-smoothing: antialiased; color: var(--ink);
       }
-      /* 씬 전환 순간에도 배경이 비지 않도록 stage 안에 상시 배경 레이어를 둔다 */
       #bg { position: absolute; inset: 0; background: var(--bg-grad); z-index: 0; }
-      .scene { position: absolute; top: 0; left: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--bg-grad); }
-      /* 필름 그레인은 제거 — 어두운 배경 위에서 노이즈가 "지저분함"으로 읽혀 역효과였다 */
+      .scene { position: absolute; top: 0; left: 0; width: 1080px; height: 1080px; overflow: hidden; background: var(--bg-grad); }
 
-      /* Instagram 안전영역: 핵심 텍스트는 y≈330~1580 안에 둔다 */
-
-      /* ===== 클립 밴드 — 가로·세로 원본을 모두 같은 정사각 틀에 담는다 ===== */
+      /* 클립 밴드 — 정사각 프레임을 유지하되 세로 공간에 맞춰 축소 */
       .band {
-        position: absolute; left: 80px; top: 660px; width: 920px; height: 920px;
-        overflow: hidden; border-radius: 20px; background: var(--surface);
+        position: absolute; left: 240px; top: 340px; width: 600px; height: 600px;
+        overflow: hidden; border-radius: 16px; background: var(--surface);
       }
       .band video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
       /* 공용 타이포 */
       .eyebrow {
-        position: absolute; top: 330px; left: 0; width: 1080px; text-align: center;
-        font-size: 26px; font-weight: 600; letter-spacing: 0.14em; color: var(--muted-text);
+        position: absolute; top: 56px; left: 0; width: 1080px; text-align: center;
+        font-size: 22px; font-weight: 600; letter-spacing: 0.14em; color: var(--muted-text);
       }
-      .badge-pill {
-        position: absolute; top: 396px; left: 0; width: 1080px; text-align: center;
-      }
-      /* 프리셋 badge 컴포넌트 — 아이보리 pill (다크 위 15:1로 t=0 썸네일의 시선 앵커) */
+      .badge-pill { position: absolute; top: 104px; left: 0; width: 1080px; text-align: center; }
       .badge-pill span {
-        display: inline-block; padding: 16px 40px; border-radius: 999px;
+        display: inline-block; padding: 12px 32px; border-radius: 999px;
         background: var(--cta-surface); color: var(--on-promise);
-        font-size: 28px; font-weight: 800; letter-spacing: -0.01em;
+        font-size: 23px; font-weight: 800; letter-spacing: -0.01em;
       }
       .watermark {
-        position: absolute; bottom: 96px; left: 0; width: 1080px; text-align: center;
-        font-size: 19px; font-weight: 600; letter-spacing: 0.28em; color: var(--muted-fine); z-index: 20;
+        position: absolute; bottom: 34px; left: 0; width: 1080px; text-align: center;
+        font-size: 15px; font-weight: 600; letter-spacing: 0.28em; color: var(--muted-fine); z-index: 20;
       }
 
-      /* ===== 텍스트 모션 보조 — 씬별 차별 연출 + 신호어 강조 ===== */
-      /* 단어(.w)·글자(.ch)·신호어(.sig)에 transform을 걸려면 inline-block 필요 */
+      /* ===== 텍스트 모션 보조 — 9:16과 동일 ===== */
       .w, .ch { display: inline-block; will-change: transform; }
       .sig { display: inline-block; position: relative; }
-      /* S3-a '헤어스타일' 취소선 — 아이보리 선이 마젠타 단어를 긋는다 (형태가 아니라 구조·원리) */
       #s3a-strike {
-        position: absolute; left: -4%; top: 52%; width: 108%; height: 7px;
+        position: absolute; left: -4%; top: 52%; width: 108%; height: 5px;
         background: var(--ink); transform: scaleX(0); transform-origin: left center;
       }
-      /* S3-b '원리' 밑줄 — 전환의 정점을 드로우로 못박는다 */
       #s3b-uline {
-        position: absolute; left: 2%; bottom: -12px; width: 96%; height: 6px;
+        position: absolute; left: 2%; bottom: -9px; width: 96%; height: 5px;
         background: var(--promise); transform: scaleX(0); transform-origin: left center;
       }
 
-      /* ===== S1 · HOOK (0–4.4s) ===== */
+      /* ===== S1 · HOOK ===== */
       #s1 { z-index: 1; }
       #s1-head {
-        position: absolute; top: 700px; left: 60px; width: 960px; text-align: center;
-        font-size: 92px; font-weight: 800; line-height: 1.16; letter-spacing: -0.035em; color: var(--ink);
+        position: absolute; top: 380px; left: 60px; width: 960px; text-align: center;
+        font-size: 62px; font-weight: 800; line-height: 1.16; letter-spacing: -0.035em; color: var(--ink);
       }
-      #s1-head .big {
-        display: block; font-size: 200px; line-height: 1.05; letter-spacing: -0.05em;
-      }
+      #s1-head .big { display: block; font-size: 140px; line-height: 1.05; letter-spacing: -0.05em; }
       #s1-head .sig { color: var(--pain-text); }
       #s1-rule {
-        position: absolute; top: 1180px; left: 490px; width: 100px; height: 5px;
+        position: absolute; top: 730px; left: 500px; width: 80px; height: 4px;
         background: var(--hairline); transform-origin: center;
       }
 
-      /* ===== S2 · 공감 (4.4–8.8s) ===== */
+      /* ===== S2 · 공감 ===== */
       #s2 { opacity: 0; z-index: 2; }
-      #s2-text {
-        position: absolute; top: 360px; left: 60px; width: 960px; text-align: center;
-      }
+      #s2-text { position: absolute; top: 150px; left: 60px; width: 960px; text-align: center; }
       #s2-text .l {
-        font-size: 60px; font-weight: 800; line-height: 1.34; letter-spacing: -0.03em; color: var(--ink);
+        font-size: 46px; font-weight: 800; line-height: 1.34; letter-spacing: -0.03em; color: var(--ink);
       }
       #s2-text .l .sig { color: var(--pain-text); }
 
-      /* ===== S3 · 진단(전반) → 원리(후반) (8.8–18.4s) ===== */
+      /* ===== S3 · 진단 → 원리 ===== */
       #s3 { opacity: 0; z-index: 3; }
-      #s3-a {
-        position: absolute; top: 380px; left: 60px; width: 960px; text-align: center;
-      }
-      #s3-a .l { font-size: 62px; font-weight: 800; line-height: 1.32; letter-spacing: -0.03em; color: var(--ink); }
+      #s3-a { position: absolute; top: 150px; left: 60px; width: 960px; text-align: center; }
+      #s3-a .l { font-size: 46px; font-weight: 800; line-height: 1.32; letter-spacing: -0.03em; color: var(--ink); }
       #s3-a .l .sig { color: var(--pain-text); }
-      /* 헤드라인을 상단으로 올리고 그 아래 밴드에 clip3 을 붙인다 (s3-a 와 같은 골격) */
-      #s3-b {
-        position: absolute; top: 380px; left: 60px; width: 960px; text-align: center; opacity: 0;
-      }
-      #s3-b .t { font-size: 88px; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; color: var(--ink); }
+      #s3-b { position: absolute; top: 160px; left: 60px; width: 960px; text-align: center; opacity: 0; }
+      #s3-b .t { font-size: 64px; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; color: var(--ink); }
       #s3-b .t .sig { color: var(--promise); }
       #s3b-band { opacity: 0; }
 
-      /* ===== S4 · 변화 (18.4–25.2s) ===== */
+      /* ===== S4 · 변화 → 강사 ===== */
       #s4 { opacity: 0; z-index: 4; }
-      #s4-text {
-        position: absolute; top: 380px; left: 60px; width: 960px; text-align: center;
-      }
-      #s4-text .l { font-size: 66px; font-weight: 800; line-height: 1.3; letter-spacing: -0.03em; color: var(--ink); }
+      #s4-text { position: absolute; top: 150px; left: 60px; width: 960px; text-align: center; }
+      #s4-text .l { font-size: 48px; font-weight: 800; line-height: 1.3; letter-spacing: -0.03em; color: var(--ink); }
       #s4-text .l .sig { color: var(--promise); }
-      /* 강사 훅 — 대사체 인용. 사진보다 먼저 떠서 "누가 가르치는데?"에 철학으로 답한다 */
+      /* 강사 훅 — 사진보다 먼저 떠서 "누가 가르치는데?"에 철학으로 답한다 */
       #s4-quote {
-        position: absolute; top: 470px; left: 60px; width: 960px; text-align: center;
-        font-size: 56px; font-weight: 700; line-height: 1.3; letter-spacing: -0.02em; color: var(--ink);
+        position: absolute; top: 246px; left: 60px; width: 960px; text-align: center;
+        font-size: 42px; font-weight: 700; line-height: 1.3; letter-spacing: -0.02em; color: var(--ink);
       }
       #s4-quote .sig { color: var(--promise); }
-      /* 클립이 물러난 자리에 강사 크레딧. 흰 배경 원본이라 원형으로 잘라 인물만 남긴다 */
-      #s4-cred {
-        position: absolute; top: 620px; left: 60px; width: 960px; text-align: center; opacity: 0;
-      }
+      #s4-cred { position: absolute; top: 352px; left: 60px; width: 960px; text-align: center; opacity: 0; }
       #s4-face {
-        width: 480px; height: 480px; border-radius: 50%; object-fit: cover;
-        display: block; margin: 0 auto 36px;
+        width: 300px; height: 300px; border-radius: 50%; object-fit: cover;
+        display: block; margin: 0 auto 26px;
       }
-      #s4-cred .name { font-size: 60px; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; }
-      /* 이름과 약력 사이는 넉넉히 띄워 두 덩어리로 읽히게 한다 */
-      #s4-cred .hist { margin-top: 44px; }
+      #s4-cred .name { font-size: 46px; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; }
+      #s4-cred .hist { margin-top: 30px; }
       #s4-cred .hist div {
-        font-size: 34px; font-weight: 600; line-height: 1.5;
+        font-size: 26px; font-weight: 600; line-height: 1.5;
         color: var(--muted-text); letter-spacing: -0.02em;
       }
 
-      /* ===== S5 · 오퍼 (25.2–31.0s) ===== */
+      /* ===== S5 · 오퍼 ===== */
       #s5 { opacity: 0; z-index: 5; }
       #s5-head {
-        position: absolute; top: 620px; left: 60px; width: 960px; text-align: center;
-        font-size: 80px; font-weight: 800; line-height: 1.18; letter-spacing: -0.03em; color: var(--ink);
+        position: absolute; top: 244px; left: 60px; width: 960px; text-align: center;
+        font-size: 58px; font-weight: 800; line-height: 1.18; letter-spacing: -0.03em; color: var(--ink);
       }
       #s5-head .sig { color: var(--promise); }
       #s5-card {
-        position: absolute; top: 940px; left: 220px; width: 580px;
-        display: flex; flex-direction: column; gap: 20px;
+        position: absolute; top: 546px; left: 280px; width: 520px;
+        display: flex; flex-direction: column; gap: 16px;
         border-top: 2px solid var(--hairline); border-bottom: 2px solid var(--hairline);
-        /* 왼쪽 30px 여백 = 행 등장 애니메이션(x:-30)의 이동 공간 */
-        padding: 44px 0 44px 30px;
+        padding: 32px 0 32px 30px;
       }
       #s5-card .row {
-        display: flex; align-items: center; gap: 18px;
-        font-size: 42px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em;
+        display: flex; align-items: center; gap: 16px;
+        font-size: 34px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em;
       }
-      /* 진짜 불릿 마커 — 왼쪽 정렬로 훑어읽기 쉽게 */
       #s5-card .row::before {
-        content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%;
+        content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%;
         background: var(--promise);
       }
-      /* 모집 사실을 씬 상단에서 크게 선언 — 프리셋 골격의 "모집 배지" 자리 */
-      #s5-badge { top: 360px; }
-      #s5-badge span { font-size: 36px; padding: 20px 52px; }
+      #s5-badge { top: 96px; }
+      #s5-badge span { font-size: 28px; padding: 15px 42px; }
 
-      /* ===== S6 · CTA (31.0–34.5s) ===== */
+      /* ===== S6 · CTA ===== */
       #s6 { opacity: 0; z-index: 6; }
       #s6-head {
-        position: absolute; top: 780px; left: 60px; width: 960px; text-align: center;
-        font-size: 92px; font-weight: 800; line-height: 1.16; letter-spacing: -0.035em; color: var(--ink);
+        position: absolute; top: 336px; left: 60px; width: 960px; text-align: center;
+        font-size: 62px; font-weight: 800; line-height: 1.16; letter-spacing: -0.035em; color: var(--ink);
       }
-      /* 프리셋 cta_bar 컴포넌트 — 하단 풀블리드 아이보리 바. bottom:340 = 안전영역 하단(1580)에 맞춤 */
       #s6-bar {
-        position: absolute; left: 0; bottom: 340px; width: 1080px;
+        position: absolute; left: 0; bottom: 186px; width: 1080px;
         background: var(--cta-surface); color: var(--on-promise);
         display: flex; align-items: center; justify-content: space-between;
-        padding: 54px 70px;
+        padding: 38px 56px;
       }
-      #s6-bar .pre { font-size: 30px; font-weight: 600; color: var(--on-promise-sub); }
-      #s6-bar .big { font-size: 64px; font-weight: 800; letter-spacing: -0.03em; margin-top: 10px; }
+      #s6-bar .pre { font-size: 22px; font-weight: 600; color: var(--on-promise-sub); }
+      #s6-bar .big { font-size: 46px; font-weight: 800; letter-spacing: -0.03em; margin-top: 8px; }
       #s6-bar .btn {
-        display: inline-block; flex: none; padding: 26px 46px; border-radius: 999px;
+        display: inline-block; flex: none; padding: 19px 34px; border-radius: 999px;
         background: var(--on-promise); color: var(--cta-surface);
-        font-size: 36px; font-weight: 800; letter-spacing: -0.02em;
+        font-size: 27px; font-weight: 800; letter-spacing: -0.02em;
       }
     </style>
   </head>
   <body>
-    <div data-hf-id="hf-kzfz" id="stage" data-composition-id="root" data-width="1080" data-height="1920" data-start="0" data-duration="34.5">
+    <div data-hf-id="hf-dw9s" id="stage" data-composition-id="root" data-width="1080" data-height="1080" data-start="0" data-duration="34.5">
       <div data-hf-id="hf-2xc0" id="bg"></div>
 
       <!-- ===== Scene 1 · HOOK (0–4.4s) ===== -->
@@ -235,8 +203,6 @@
         <div data-hf-id="hf-8frm" id="s3-b">
           <div data-hf-id="hf-na5n" class="t">클래식과정은<br data-hf-id="hf-rsrt"><span data-hf-id="hf-nrp6" class="sig">'원리'<span data-hf-id="hf-y7cy" id="s3b-uline"></span></span>를 가르칩니다</div>
         </div>
-        <!-- clip3 은 4개 샷 중 ②측면 섹션 격자 + ③뒷모습 격자만 쓴다.
-             ①정면 얼굴파츠 분석은 메시지 불일치, ④는 "Hair Academy" 타 브랜드 자막 포함 -->
         <div data-hf-id="hf-tk6b" class="band" id="s3b-band">
           <video data-hf-id="hf-xjpy" id="clip-s3b" class="clip" src="video/clip3.mp4" data-start="13.4" data-duration="4.5" data-media-start="2.1" data-track-index="0" muted playsinline></video>
         </div>
@@ -256,7 +222,6 @@
         <div data-hf-id="hf-3t29" id="s4-cred">
           <img data-hf-id="hf-jp3g" id="s4-face" src="images/instructor.png" alt="">
           <div data-hf-id="hf-njkf" class="name">심일보 수석강사</div>
-          <!-- 65기.md 의 "강사 증명 사실(검증됨)" 만 사용. "36년"은 근거 불명확이라 소재 금지 -->
           <div data-hf-id="hf-jxl0" class="hist">
             <div data-hf-id="hf-anev">런던 비달사순 TTC 수료</div>
             <div data-hf-id="hf-6w3u">비달사순 커트콘테스트 2위</div>
@@ -289,21 +254,20 @@
         </div>
       </div>
 
-      <!-- 전 씬 상시 노출 워터마크 (별도 블록으로 세지 않는다) -->
       <div data-hf-id="hf-qtts" class="watermark">SOMSSCREATIVE</div>
     </div>
 
     <script>
+      /* 타임라인은 9:16 정본(index.html)과 완전히 동일하다 — 배치만 정사각용으로 다르다 */
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
       /* ===== S1 · HOOK (0–4.4s) — 썸네일 대비: t=0에 완전 노출, 미세 모션만 ===== */
-      /* letterSpacing 트윈은 글리프가 정수 픽셀로 스냅해 렌더에서 떨린다 — transform 미세 정착으로 대체 */
       tl.fromTo("#s1-head", { scale: 1.035 }, { scale: 1, duration: 3.6, ease: "sine.out" }, 0);
       tl.fromTo("#s1 .eyebrow", { opacity: 0.5 }, { opacity: 1, duration: 1.0, ease: "sine.out" }, 0);
       tl.fromTo("#s1 .badge-pill", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.3);
       tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.6);
-      /* 신호어 '왜' — 한 박자 뒤 펄스로 시선 고정 (썸네일 t=0은 그대로) */
+      /* 신호어 '왜' — 한 박자 뒤 펄스로 시선 고정 */
       tl.fromTo("#s1-head .sig", { scale: 1 }, { scale: 1.18, duration: 0.3, ease: "power2.out" }, 1.2);
       tl.to("#s1-head .sig", { scale: 1, duration: 0.55, ease: "back.out(2.5)" }, 1.51);
       tl.to("#s1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 4.0);
@@ -311,26 +275,19 @@
 
       /* ===== S2 · 공감 reveal @4.4 ===== */
       tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 4.4);
-      /* 단어 단위 waterfall — 줄 페이드 대신 단어가 아래에서 차오른다 */
       tl.fromTo("#s2-text .w", { opacity: 0, y: 46 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out", stagger: 0.09 }, 4.7);
-      /* 신호어 '제자리인 느낌' — 마지막에 크게 내려앉는 슬램 */
       tl.fromTo("#s2-text .sig", { opacity: 0, y: 60, scale: 1.28 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, 5.55);
       tl.to("#s2", { opacity: 0, duration: 0.4, ease: "power2.in" }, 8.4);
       tl.set("#s2", { opacity: 0 }, 8.8);
 
-      /* ===== S3 · 진단(전반) → 원리(후반) reveal @8.8 ===== */
+      /* ===== S3 · 진단 → 원리 reveal @8.8 ===== */
       tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 8.8);
-      /* 진단 문장 — 블러에서 초점이 맞으며 들어온다 ("문제를 정확히 짚는다"를 모션으로) */
       tl.fromTo("#s3-a .l", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.75, ease: "power2.out", stagger: 0.5 }, 9.1);
-      /* 신호어 '헤어스타일' — 취소선이 그어진다 */
       tl.fromTo("#s3a-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.inOut" }, 10.6);
-      /* 11.3초: 클립(2.5초)이 끝나면 밴드만 먼저 물러난다. 진단 문장은 다크 위에 홀로 남아 12.5까지 읽힌다 */
       tl.to("#s3-band", { opacity: 0, duration: 0.5, ease: "power2.in" }, 11.3);
       tl.to("#s3-a", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 12.5);
-      /* 13.1초: 진단 → 전환 */
       tl.fromTo("#s3-b", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 13.1);
       tl.fromTo("#s3-b .t", { opacity: 0, y: 26, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" }, 13.1);
-      /* 신호어 '원리' — 전환의 정점: 팝 + 밑줄 드로우 */
       tl.fromTo("#s3-b .sig", { scale: 1 }, { scale: 1.16, duration: 0.28, ease: "power2.out" }, 13.9);
       tl.to("#s3-b .sig", { scale: 1, duration: 0.5, ease: "back.out(2)" }, 14.19);
       tl.fromTo("#s3b-uline", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 14.1);
@@ -341,7 +298,7 @@
       /* ===== S4 · 변화 reveal @18.4 ===== */
       tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 18.4);
       tl.fromTo("#s4-text .l", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.45 }, 18.6);
-      /* 신호어 '분해됩니다' — 글자가 흩어진 상태에서 조립된다 (분해→조립을 모션으로) */
+      /* 신호어 '분해됩니다' — 글자가 흩어진 상태에서 조립된다 */
       const s4dx = [-70, 48, -34, 56, -44, 38];
       const s4dy = [-46, 34, -52, 40, -30, 48];
       const s4dr = [-18, 12, -10, 16, -14, 9];
@@ -349,12 +306,11 @@
         tl.fromTo(el, { opacity: 0, x: s4dx[i], y: s4dy[i], rotation: s4dr[i] },
           { opacity: 1, x: 0, y: 0, rotation: 0, duration: 0.55, ease: "power3.out" }, 19.25 + i * 0.06);
       });
-      /* 21.0초: 클립과 문장이 함께 물러나 화면을 완전히 비운다 */
       tl.to("#s4-band", { opacity: 0, duration: 0.5, ease: "power2.in" }, 21.0);
       tl.to("#s4-text", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 21.0);
-      /* 21.55초: 빈 화면에 강사 대사가 먼저 뜬다 — 고백조라 단어가 천천히 차오른다 */
+      /* 21.55초: 강사 대사가 먼저 뜬다 — 고백조라 단어가 천천히 차오른다 */
       tl.fromTo("#s4-quote .w", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", stagger: 0.14 }, 21.55);
-      /* 21.95초: 대사의 주인이 등장 — 사진이 커지며, 이름 → 약력이 대사의 증거로 따라온다 */
+      /* 21.95초: 대사의 주인이 등장 — 이름 → 약력이 대사의 증거로 따라온다 */
       tl.fromTo("#s4-cred", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 21.95);
       tl.fromTo("#s4-face", { scale: 0.8 }, { scale: 1, duration: 1.0, ease: "power3.out" }, 21.95);
       tl.fromTo("#s4-cred .name", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 22.5);
@@ -365,7 +321,6 @@
       tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 25.2);
       tl.fromTo("#s5-badge", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 25.4);
       tl.fromTo("#s5-head", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 25.6);
-      /* 신호어 '다릅니다' — 헤드라인 정착 직후 펄스 */
       tl.fromTo("#s5-head .sig", { scale: 1 }, { scale: 1.14, duration: 0.28, ease: "power2.out" }, 26.35);
       tl.to("#s5-head .sig", { scale: 1, duration: 0.5, ease: "back.out(2)" }, 26.64);
       tl.fromTo("#s5-card [data-row]", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.22 }, 26.4);
@@ -374,10 +329,8 @@
       /* ===== S6 · CTA reveal @31.0 ===== */
       tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 31.0);
       tl.fromTo("#s6-head", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 31.2);
-      /* 프리셋 모션 노트: 느리고 절제된 전환만 — 바운스 이징 대신 power3 */
       tl.fromTo("#s6-bar", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 31.8);
       tl.fromTo("#s6-bar .btn", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 32.5);
-      /* CTA 버튼 — 등장 후 한 번 더 눌러주는 탭 유도 펄스 */
       tl.to("#s6-bar .btn", { scale: 1.08, duration: 0.2, ease: "power2.in" }, 33.4);
       tl.to("#s6-bar .btn", { scale: 1, duration: 0.45, ease: "back.out(3)" }, 33.61);
 
