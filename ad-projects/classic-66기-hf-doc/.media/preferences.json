@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "preferences": {
+    "destination": {
+      "value": "instagram-reels",
+      "confirmed_in": [
+        "classic-66기-hf-doc"
+      ],
+      "updated_at": "2026-09-05T10:18:15.418Z"
+    },
+    "aspect": {
+      "value": "1080x1920",
+      "confirmed_in": [
+        "classic-66기-hf-doc"
+      ],
+      "updated_at": "2026-09-05T10:18:15.445Z"
+    },
+    "language": {
+      "value": "ko",
+      "confirmed_in": [
+        "classic-66기-hf-doc"
+      ],
+      "updated_at": "2026-09-05T10:18:15.475Z"
+    },
+    "flow": {
+      "value": "automation",
+      "confirmed_in": [
+        "classic-66기-hf-doc"
+      ],
+      "updated_at": "2026-09-05T10:18:15.513Z"
+    },
+    "storyboard": {
+      "value": "yes",
+      "confirmed_in": [
+        "classic-66기-hf-doc"
+      ],
+      "updated_at": "2026-09-05T10:18:15.536Z"
+    },
+    "style_preset.product-launch-video": {
+      "value": "cartesian",
+      "confirmed_in": [
+        "classic-66기-hf-doc"
+      ],
+      "updated_at": "2026-09-05T10:20:35.350Z"
+    }
+  },
+  "sightings": {}
+}

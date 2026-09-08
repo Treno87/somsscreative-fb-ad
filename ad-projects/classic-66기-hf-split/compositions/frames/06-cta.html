@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>06-cta</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .hl{color:#f5f1ea;font-weight:800;letter-spacing:-.035em;line-height:1.14;}
+#root .sig{color:#ff3bff;}
+#root .hair{position:absolute;background:#f5f1ea;opacity:.28;}
+#root #head6{position:absolute;top:520px;left:70px;width:940px;font-size:84px;}
+#root #bar6{position:absolute;bottom:0;left:0;width:1080px;height:300px;background:#f5f1ea;}
+#root #pre6{position:absolute;bottom:200px;left:80px;font-size:26px;color:#5a534c;}
+#root #big6{position:absolute;bottom:110px;left:80px;font-size:62px;font-weight:800;color:#171310;letter-spacing:-.03em;}
+#root #btn6{position:absolute;bottom:118px;right:80px;font-size:34px;font-weight:800;color:#f5f1ea;background:#171310;padding:18px 30px;}
+</style>
+<div id="root" data-composition-id="06-cta" data-width="1080" data-height="1920" data-duration="3.5">
+<div id="bg-06-cta" class="bg clip" data-start="0" data-duration="3.5"></div>
+<div id="head6" class="hl"><div>무엇을 배우는지</div><div>커리큘럼에 다 있습니다</div></div>
+<div id="bar6"></div><div id="pre6" class="mono">10월 5일 개강 · 정원 7명</div>
+<div id="big6">커리큘럼 보기</div><div id="btn6">지금 →</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#head6 div",{opacity:0,y:22},{opacity:1,y:0,duration:.55,ease:"power3.out",stagger:.34},0);
+tl.fromTo("#bar6",{yPercent:100},{yPercent:0,duration:.8,ease:"power3.out"},1.2);
+tl.fromTo(["#pre6","#big6"],{opacity:0},{opacity:1,duration:.4,ease:"power2.out",stagger:.12},2.0);
+tl.fromTo("#btn6",{scale:.86,opacity:0},{scale:1,opacity:1,duration:.4,ease:"back.out(2.2)",transformOrigin:"center"},2.4);
+window.__timelines["06-cta"]=tl;
+</script>
+</template></body></html>

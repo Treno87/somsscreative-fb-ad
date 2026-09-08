@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>04-what-remains</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .hl{color:#f5f1ea;font-weight:800;letter-spacing:-.035em;line-height:1.14;}
+#root .sig{color:#ff3bff;}
+#root .hair{position:absolute;background:#f5f1ea;opacity:.28;}
+#root .card{position:absolute;left:70px;width:940px;border-left:5px solid #ff3bff;background:rgba(245,241,234,.05);
+ padding:26px 30px;box-sizing:border-box;color:#f5f1ea;font-size:40px;font-weight:800;letter-spacing:-.03em;}
+#root .card.alt{border-left-color:rgba(245,241,234,.3);}
+#root #divD{top:962px;left:70px;width:940px;height:2px;}
+#root #head4{position:absolute;top:720px;left:70px;width:940px;font-size:58px;}
+#root .cred{position:absolute;left:70px;width:940px;font-size:28px;color:#a59d92;line-height:1.7;}
+</style>
+<div id="root" data-composition-id="04-what-remains" data-width="1080" data-height="1920" data-duration="5.5">
+<div id="bg-04-what-remains" class="bg clip" data-start="0" data-duration="5.5"></div>
+<video id="clip4" class="clip" src="assets/clip3.mp4" data-start="0.7" data-duration="4.8" muted playsinline
+ style="position:absolute;top:110px;left:70px;width:940px;height:560px;object-fit:cover;"></video>
+<div class="hair" id="divD"></div>
+<div id="head4" class="hl">8주, 이렇게 쌓습니다</div>
+<div class="card" id="cd1" style="top:840px;">매주 개별훈련 · <span id="sig4" class="sig">리포트</span> 제출</div>
+<div class="card" id="cd2" style="top:1010px;">WEEK 08 디플로마 수여</div>
+<div class="card alt" id="cd3" style="top:1180px;">심일보 수석강사</div>
+<div class="cred mono" id="cred4" style="top:1330px;">런던 비달사순 TTC 수료 · 커트콘테스트 2위 · 교육경력 16년 · 클래식 64기 배출</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.to("#divD",{yPercent:-1400,opacity:0,duration:.7,ease:"power2.in"},0);
+tl.set("#divD",{opacity:0},0.70);
+tl.fromTo("#head4",{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:"power3.out"},1.4);
+tl.fromTo(["#cd1","#cd2","#cd3"],{yPercent:60,opacity:0},{yPercent:0,opacity:1,duration:.55,ease:"power3.out",stagger:.42},1.9);
+tl.fromTo("#sig4",{scale:1},{scale:1.14,duration:.2,ease:"power2.out",transformOrigin:"center"},3.3);
+tl.to("#sig4",{scale:1,duration:.28,ease:"back.out(2)"},3.5);
+tl.fromTo("#cred4",{opacity:0},{opacity:1,duration:.6,ease:"power2.out"},3.7);
+window.__timelines["04-what-remains"]=tl;
+</script>
+</template></body></html>

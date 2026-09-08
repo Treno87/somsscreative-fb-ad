@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>05-who-teaches</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .grid{position:absolute;inset:0;opacity:.10;
+ background-image:repeating-linear-gradient(0deg,#f5f1ea 0 1px,transparent 1px 120px),repeating-linear-gradient(90deg,#f5f1ea 0 1px,transparent 1px 120px);}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .sig{color:#ff3bff;}
+#root .idx{position:absolute;left:40px;font-size:30px;color:#6b635c;}
+#root .ttl{position:absolute;left:200px;width:790px;font-size:50px;font-weight:800;color:#f5f1ea;letter-spacing:-.03em;line-height:1.24;}
+#root .rule{position:absolute;left:150px;width:880px;height:1px;background:#f5f1ea;opacity:.22;}
+#root #spine{position:absolute;top:0;left:150px;width:1px;height:100%;background:#f5f1ea;opacity:.22;}
+#root #stage5{position:absolute;inset:0;}
+#root #face5{position:absolute;top:340px;left:340px;width:400px;height:400px;border-radius:999px;object-fit:cover;}
+#root #nm5{position:absolute;top:830px;left:70px;width:940px;text-align:center;font-size:70px;font-weight:800;color:#f5f1ea;letter-spacing:-.03em;}
+#root #ln5{position:absolute;top:975px;left:390px;width:300px;height:1px;background:#f5f1ea;opacity:.3;}
+#root .h5{position:absolute;left:70px;width:940px;text-align:center;font-size:30px;color:#a59d92;}
+</style>
+<div id="root" data-composition-id="05-who-teaches" data-width="1080" data-height="1920" data-duration="4.0">
+<div id="bg-05-who-teaches" class="bg clip" data-start="0" data-duration="4.0"></div>
+<div class="grid"></div>
+<div id="stage5">
+<img id="face5" src="assets/instructor.png" alt="">
+<div id="nm5">심일보 수석강사</div><div id="ln5"></div>
+<div class="h5 mono" id="h5a" style="top:1040px;">런던 비달사순 TTC 수료</div>
+<div class="h5 mono" id="h5b" style="top:1105px;">비달사순 커트콘테스트 2위</div>
+<div class="h5 mono" id="h5c" style="top:1170px;">교육경력 16년 · 클래식 64기 배출</div></div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#stage5",{y:120,opacity:0},{y:0,opacity:1,duration:.8,ease:"power3.out"},0);
+tl.fromTo("#face5",{scale:.86},{scale:1,duration:.8,ease:"power3.out",transformOrigin:"center"},.8);
+tl.fromTo("#nm5",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},1.6);
+gsap.set("#ln5",{transformOrigin:"center"});
+tl.fromTo("#ln5",{scaleX:0},{scaleX:1,duration:.4,ease:"power2.out"},2.1);
+tl.fromTo(["#h5a","#h5b","#h5c"],{opacity:0,y:14},{opacity:1,y:0,duration:.45,ease:"power2.out",stagger:.28},2.5);
+window.__timelines["05-who-teaches"]=tl;
+</script>
+</template></body></html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko" data-resolution="square">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* 1:1(1080×1080) 전용 레이아웃 — index.html(9:16)의 정사각 변형.
+         중앙 크롭은 금지(아이브로우·하단 텍스트가 잘린다). 씬 구성·타임라인은 9:16과 동일하고
+         세로 공간이 절반이라 배치·글자크기만 다시 잡는다. 카피·연출을 바꾸면 양쪽 다 고칠 것. */
+      @font-face { font-family: "Pretendard"; font-weight: 100 900; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-display: block; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      /* ===== editorial-dark 프리셋 — 색은 9:16 정본과 동일 ===== */
+      :root {
+        --bg: #0a0908;
+        --bg-grad: radial-gradient(120% 80% at 50% 0%, #14120f 0%, #0a0908 50%, #040403 100%);
+        --surface: #131110;
+        --ink: #f5f1ea;
+        --muted-text: #a59d92;
+        --muted-fine: #9a9189;
+        --hairline: #3a3430;
+        --pain-text: #ff3bff;
+        --promise: #ff3bff;
+        --cta-surface: #f5f1ea;
+        --on-promise: #171310;
+        --on-promise-sub: #6b6257;
+      }
+      html, body {
+        width: 1080px; height: 1080px; overflow: hidden; background: var(--bg);
+        font-family: "Pretendard", sans-serif;
+        -webkit-font-smoothing: antialiased; color: var(--ink);
+      }
+      #bg { position: absolute; inset: 0; background: var(--bg-grad); z-index: 0; }
+      .scene { position: absolute; top: 0; left: 0; width: 1080px; height: 1080px; overflow: hidden; background: var(--bg-grad); }
+
+      /* 클립 밴드 — 정사각 프레임을 유지하되 세로 공간에 맞춰 축소 */
+      .band {
+        position: absolute; left: 240px; top: 340px; width: 600px; height: 600px;
+        overflow: hidden; border-radius: 16px; background: var(--surface);
+      }
+      .band video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+      /* 공용 타이포 */
+      .eyebrow {
+        position: absolute; top: 56px; left: 0; width: 1080px; text-align: center;
+        font-size: 22px; font-weight: 600; letter-spacing: 0.14em; color: var(--muted-text);
+      }
+      .badge-pill { position: absolute; top: 104px; left: 0; width: 1080px; text-align: center; }
+      .badge-pill span {
+        display: inline-block; padding: 12px 32px; border-radius: 999px;
+        background: var(--cta-surface); color: var(--on-promise);
+        font-size: 23px; font-weight: 800; letter-spacing: -0.01em;
+      }
+      .watermark {
+        position: absolute; bottom: 34px; left: 0; width: 1080px; text-align: center;
+        font-size: 15px; font-weight: 600; letter-spacing: 0.28em; color: var(--muted-fine); z-index: 20;
+      }
+
+      /* ===== 텍스트 모션 보조 — 9:16과 동일 ===== */
+      .w, .ch { display: inline-block; will-change: transform; }
+      .sig { display: inline-block; position: relative; }
+      #s3a-strike {
+        position: absolute; left: -4%; top: 52%; width: 108%; height: 5px;
+        background: var(--ink); transform: scaleX(0); transform-origin: left center;
+      }
+      #s3b-uline {
+        position: absolute; left: 2%; bottom: -9px; width: 96%; height: 5px;
+        background: var(--promise); transform: scaleX(0); transform-origin: left center;
+      }
+
+      /* ===== S1 · HOOK ===== */
+      #s1 { z-index: 1; }
+      #s1-head {
+        position: absolute; top: 380px; left: 60px; width: 960px; text-align: center;
+        font-size: 62px; font-weight: 800; line-height: 1.16; letter-spacing: -0.035em; color: var(--ink);
+      }
+      #s1-head .big { display: block; font-size: 140px; line-height: 1.05; letter-spacing: -0.05em; }
+      #s1-head .sig { color: var(--pain-text); }
+      #s1-rule {
+        position: absolute; top: 730px; left: 500px; width: 80px; height: 4px;
+        background: var(--hairline); transform-origin: center;
+      }
+
+      /* ===== S2 · 공감 ===== */
+      #s2 { opacity: 0; z-index: 2; }
+      #s2-text { position: absolute; top: 150px; left: 60px; width: 960px; text-align: center; }
+      #s2-text .l {
+        font-size: 46px; font-weight: 800; line-height: 1.34; letter-spacing: -0.03em; color: var(--ink);
+      }
+      #s2-text .l .sig { color: var(--pain-text); }
+
+      /* ===== S3 · 진단 → 원리 ===== */
+      #s3 { opacity: 0; z-index: 3; }
+      #s3-a { position: absolute; top: 150px; left: 60px; width: 960px; text-align: center; }
+      #s3-a .l { font-size: 46px; font-weight: 800; line-height: 1.32; letter-spacing: -0.03em; color: var(--ink); }
+      #s3-a .l .sig { color: var(--pain-text); }
+      #s3-b { position: absolute; top: 160px; left: 60px; width: 960px; text-align: center; opacity: 0; }
+      #s3-b .t { font-size: 64px; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; color: var(--ink); }
+      #s3-b .t .sig { color: var(--promise); }
+      #s3b-band { opacity: 0; }
+
+      /* ===== S4 · 변화 → 강사 ===== */
+      #s4 { opacity: 0; z-index: 4; }
+      #s4-text { position: absolute; top: 150px; left: 60px; width: 960px; text-align: center; }
+      #s4-text .l { font-size: 48px; font-weight: 800; line-height: 1.3; letter-spacing: -0.03em; color: var(--ink); }
+      #s4-text .l .sig { color: var(--promise); }
+      /* 강사 훅 — 사진보다 먼저 떠서 "누가 가르치는데?"에 철학으로 답한다 */
+      #s4-quote {
+        position: absolute; top: 246px; left: 60px; width: 960px; text-align: center;
+        font-size: 42px; font-weight: 700; line-height: 1.3; letter-spacing: -0.02em; color: var(--ink);
+      }
+      #s4-quote .sig { color: var(--promise); }
+      #s4-cred { position: absolute; top: 352px; left: 60px; width: 960px; text-align: center; opacity: 0; }
+      #s4-face {
+        width: 300px; height: 300px; border-radius: 50%; object-fit: cover;
+        display: block; margin: 0 auto 26px;
+      }
+      #s4-cred .name { font-size: 46px; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; }
+      #s4-cred .hist { margin-top: 30px; }
+      #s4-cred .hist div {
+        font-size: 26px; font-weight: 600; line-height: 1.5;
+        color: var(--muted-text); letter-spacing: -0.02em;
+      }
+
+      /* ===== S5 · 오퍼 ===== */
+      #s5 { opacity: 0; z-index: 5; }
+      #s5-head {
+        position: absolute; top: 244px; left: 60px; width: 960px; text-align: center;
+        font-size: 58px; font-weight: 800; line-height: 1.18; letter-spacing: -0.03em; color: var(--ink);
+      }
+      #s5-head .sig { color: var(--promise); }
+      #s5-card {
+        position: absolute; top: 546px; left: 280px; width: 520px;
+        display: flex; flex-direction: column; gap: 16px;
+        border-top: 2px solid var(--hairline); border-bottom: 2px solid var(--hairline);
+        padding: 32px 0 32px 30px;
+      }
+      #s5-card .row {
+        display: flex; align-items: center; gap: 16px;
+        font-size: 34px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em;
+      }
+      #s5-card .row::before {
+        content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%;
+        background: var(--promise);
+      }
+      #s5-badge { top: 96px; }
+      #s5-badge span { font-size: 28px; padding: 15px 42px; }
+
+      /* ===== S6 · CTA ===== */
+      #s6 { opacity: 0; z-index: 6; }
+      #s6-head {
+        position: absolute; top: 336px; left: 60px; width: 960px; text-align: center;
+        font-size: 62px; font-weight: 800; line-height: 1.16; letter-spacing: -0.035em; color: var(--ink);
+      }
+      #s6-bar {
+        position: absolute; left: 0; bottom: 186px; width: 1080px;
+        background: var(--cta-surface); color: var(--on-promise);
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 38px 56px;
+      }
+      #s6-bar .pre { font-size: 22px; font-weight: 600; color: var(--on-promise-sub); }
+      #s6-bar .big { font-size: 46px; font-weight: 800; letter-spacing: -0.03em; margin-top: 8px; }
+      #s6-bar .btn {
+        display: inline-block; flex: none; padding: 19px 34px; border-radius: 999px;
+        background: var(--on-promise); color: var(--cta-surface);
+        font-size: 27px; font-weight: 800; letter-spacing: -0.02em;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-dw9s" id="stage" data-composition-id="root" data-width="1080" data-height="1080" data-start="0" data-duration="34.5">
+      <div data-hf-id="hf-2xc0" id="bg"></div>
+
+      <!-- ===== Scene 1 · HOOK (0–4.4s) ===== -->
+      <div data-hf-id="hf-yihu" id="s1" class="scene">
+        <div data-hf-id="hf-6a6v" class="eyebrow">SOMSSCREATIVE · 클래식과정 65기</div>
+        <div data-hf-id="hf-6xhb" class="badge-pill"><span data-hf-id="hf-c01q">클래식 65기 8월 과정 모집중</span></div>
+        <div data-hf-id="hf-e2x4" id="s1-head"><span data-hf-id="hf-abo9" class="big">커트</span>배웠는데 <span data-hf-id="hf-3fmc" class="sig">왜</span><br data-hf-id="hf-x5px">안 느는 걸까요</div>
+        <div data-hf-id="hf-7r4g" id="s1-rule"></div>
+      </div>
+
+      <!-- ===== Scene 2 · 공감 (4.4–8.8s) ===== -->
+      <div data-hf-id="hf-ukdt" id="s2" class="scene">
+        <div data-hf-id="hf-obyy" id="s2-text">
+          <div data-hf-id="hf-qeli" class="l" data-l=""><span data-hf-id="hf-c3cx" class="w">커트강의</span> <span data-hf-id="hf-mnao" class="w">여러</span> <span data-hf-id="hf-rbf4" class="w">번</span> <span data-hf-id="hf-bl4k" class="w">들었는데,</span></div>
+          <div data-hf-id="hf-vbai" class="l" data-l=""><span data-hf-id="hf-s8wp" class="w">실력은</span> <span data-hf-id="hf-w38c" class="sig">제자리인 느낌</span></div>
+        </div>
+        <div data-hf-id="hf-a71x" class="band">
+          <video data-hf-id="hf-m2jg" id="clip-s2" class="clip" src="video/s2-student-a.mp4" data-start="4.4" data-duration="4.4" data-track-index="0" muted playsinline></video>
+        </div>
+      </div>
+
+      <!-- ===== Scene 3 · 진단(전반) → 원리(후반) (8.8–18.4s) ===== -->
+      <div data-hf-id="hf-tsq0" id="s3" class="scene">
+        <div data-hf-id="hf-4hnl" id="s3-a">
+          <div data-hf-id="hf-yp6a" class="l">'구조와 원리'가 아닌</div>
+          <div data-hf-id="hf-cffv" class="l"><span data-hf-id="hf-s19k" class="sig">헤어스타일<span data-hf-id="hf-yo88" id="s3a-strike"></span></span>만 배웠기 때문입니다.</div>
+        </div>
+        <div data-hf-id="hf-fba3" class="band" id="s3-band">
+          <video data-hf-id="hf-6z05" id="clip-s3" class="clip" src="video/s3-instructor.mp4" data-start="8.8" data-duration="2.5" data-track-index="0" muted playsinline></video>
+        </div>
+        <div data-hf-id="hf-8frm" id="s3-b">
+          <div data-hf-id="hf-na5n" class="t">클래식과정은<br data-hf-id="hf-rsrt"><span data-hf-id="hf-nrp6" class="sig">'원리'<span data-hf-id="hf-y7cy" id="s3b-uline"></span></span>를 가르칩니다</div>
+        </div>
+        <div data-hf-id="hf-tk6b" class="band" id="s3b-band">
+          <video data-hf-id="hf-xjpy" id="clip-s3b" class="clip" src="video/clip3.mp4" data-start="13.4" data-duration="4.5" data-media-start="2.1" data-track-index="0" muted playsinline></video>
+        </div>
+      </div>
+
+      <!-- ===== Scene 4 · 변화 (18.4–25.2s) ===== -->
+      <div data-hf-id="hf-pulz" id="s4" class="scene">
+        <div data-hf-id="hf-5mpk" id="s4-text">
+          <div data-hf-id="hf-d7oo" class="l">구조를 이해하면</div>
+          <div data-hf-id="hf-2yi0" class="l">처음 보는 커트도 <span data-hf-id="hf-zh8g" class="sig"><span data-hf-id="hf-7ruo" class="ch">분</span><span data-hf-id="hf-erdc" class="ch">해</span><span data-hf-id="hf-n2fr" class="ch">됩</span><span data-hf-id="hf-cyjo" class="ch">니</span><span data-hf-id="hf-50f4" class="ch">다</span><span data-hf-id="hf-rivy" class="ch">.</span></span></div>
+        </div>
+        <div data-hf-id="hf-tb76" class="band" id="s4-band">
+          <video data-hf-id="hf-0n6q" id="clip-s4" class="clip" src="video/s4-student-b.mp4" data-start="18.4" data-duration="2.8" data-track-index="0" muted playsinline></video>
+        </div>
+        <!-- 강사 대사체 훅 — 카피라이터 확정안. '기본'에만 신호색 -->
+        <div data-hf-id="hf-mfwr" id="s4-quote"><span data-hf-id="hf-7pen" class="w">“가르칠수록</span> <span data-hf-id="hf-tnrw" class="w"><span data-hf-id="hf-aym0" class="sig">기본</span>만</span> <span data-hf-id="hf-ek2v" class="w">남더군요”</span></div>
+        <div data-hf-id="hf-3t29" id="s4-cred">
+          <img data-hf-id="hf-jp3g" id="s4-face" src="images/instructor.png" alt="">
+          <div data-hf-id="hf-njkf" class="name">심일보 수석강사</div>
+          <div data-hf-id="hf-jxl0" class="hist">
+            <div data-hf-id="hf-anev">런던 비달사순 TTC 수료</div>
+            <div data-hf-id="hf-6w3u">비달사순 커트콘테스트 2위</div>
+            <div data-hf-id="hf-965s">교육경력 16년 · 클래식 64기 배출</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Scene 5 · 오퍼 (25.2–31.0s) ===== -->
+      <div data-hf-id="hf-lwhy" id="s5" class="scene">
+        <div data-hf-id="hf-a9av" class="badge-pill" id="s5-badge"><span data-hf-id="hf-om9n">클래식과정 65기 모집</span></div>
+        <div data-hf-id="hf-utkw" id="s5-head">8주만에 달라지는<br data-hf-id="hf-szow">검증된 커트교육,<br data-hf-id="hf-sldv">클래식과정은 <span data-hf-id="hf-suef" class="sig">다릅니다</span></div>
+        <div data-hf-id="hf-vpc8" id="s5-card">
+          <div data-hf-id="hf-nh8h" class="row" data-row="">8월 31일 개강</div>
+          <div data-hf-id="hf-5nys" class="row" data-row="">매주 월요일 16–19시</div>
+          <div data-hf-id="hf-23z9" class="row" data-row="">소수정예 7명</div>
+          <div data-hf-id="hf-8m66" class="row" data-row="">수강료 160만원</div>
+        </div>
+      </div>
+
+      <!-- ===== Scene 6 · CTA (31.0–34.5s) ===== -->
+      <div data-hf-id="hf-hydx" id="s6" class="scene">
+        <div data-hf-id="hf-7yo7" id="s6-head">어떻게 다른지<br data-hf-id="hf-qluq">커리큘럼으로 확인하세요</div>
+        <div data-hf-id="hf-om8a" id="s6-bar">
+          <div data-hf-id="hf-yeow">
+            <div data-hf-id="hf-lm8v" class="pre">8월 31일 개강 · 잔여 3석</div>
+            <div data-hf-id="hf-lmi6" class="big">커리큘럼 보기</div>
+          </div>
+          <span data-hf-id="hf-i8nh" class="btn">지금 →</span>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-qtts" class="watermark">SOMSSCREATIVE</div>
+    </div>
+
+    <script>
+      /* 타임라인은 9:16 정본(index.html)과 완전히 동일하다 — 배치만 정사각용으로 다르다 */
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ===== S1 · HOOK (0–4.4s) — 썸네일 대비: t=0에 완전 노출, 미세 모션만 ===== */
+      tl.fromTo("#s1-head", { scale: 1.035 }, { scale: 1, duration: 3.6, ease: "sine.out" }, 0);
+      tl.fromTo("#s1 .eyebrow", { opacity: 0.5 }, { opacity: 1, duration: 1.0, ease: "sine.out" }, 0);
+      tl.fromTo("#s1 .badge-pill", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.3);
+      tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.6);
+      /* 신호어 '왜' — 한 박자 뒤 펄스로 시선 고정 */
+      tl.fromTo("#s1-head .sig", { scale: 1 }, { scale: 1.18, duration: 0.3, ease: "power2.out" }, 1.2);
+      tl.to("#s1-head .sig", { scale: 1, duration: 0.55, ease: "back.out(2.5)" }, 1.51);
+      tl.to("#s1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 4.0);
+      tl.set("#s1", { opacity: 0 }, 4.4);
+
+      /* ===== S2 · 공감 reveal @4.4 ===== */
+      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 4.4);
+      tl.fromTo("#s2-text .w", { opacity: 0, y: 46 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out", stagger: 0.09 }, 4.7);
+      tl.fromTo("#s2-text .sig", { opacity: 0, y: 60, scale: 1.28 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, 5.55);
+      tl.to("#s2", { opacity: 0, duration: 0.4, ease: "power2.in" }, 8.4);
+      tl.set("#s2", { opacity: 0 }, 8.8);
+
+      /* ===== S3 · 진단 → 원리 reveal @8.8 ===== */
+      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 8.8);
+      tl.fromTo("#s3-a .l", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.75, ease: "power2.out", stagger: 0.5 }, 9.1);
+      tl.fromTo("#s3a-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.inOut" }, 10.6);
+      tl.to("#s3-band", { opacity: 0, duration: 0.5, ease: "power2.in" }, 11.3);
+      tl.to("#s3-a", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 12.5);
+      tl.fromTo("#s3-b", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 13.1);
+      tl.fromTo("#s3-b .t", { opacity: 0, y: 26, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" }, 13.1);
+      tl.fromTo("#s3-b .sig", { scale: 1 }, { scale: 1.16, duration: 0.28, ease: "power2.out" }, 13.9);
+      tl.to("#s3-b .sig", { scale: 1, duration: 0.5, ease: "back.out(2)" }, 14.19);
+      tl.fromTo("#s3b-uline", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 14.1);
+      tl.to("#s3b-band", { opacity: 1, duration: 0.5, ease: "power2.out" }, 13.4);
+      tl.to("#s3", { opacity: 0, duration: 0.45, ease: "power2.in" }, 17.95);
+      tl.set("#s3", { opacity: 0 }, 18.4);
+
+      /* ===== S4 · 변화 reveal @18.4 ===== */
+      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 18.4);
+      tl.fromTo("#s4-text .l", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.45 }, 18.6);
+      /* 신호어 '분해됩니다' — 글자가 흩어진 상태에서 조립된다 */
+      const s4dx = [-70, 48, -34, 56, -44, 38];
+      const s4dy = [-46, 34, -52, 40, -30, 48];
+      const s4dr = [-18, 12, -10, 16, -14, 9];
+      gsap.utils.toArray("#s4-text .ch").forEach((el, i) => {
+        tl.fromTo(el, { opacity: 0, x: s4dx[i], y: s4dy[i], rotation: s4dr[i] },
+          { opacity: 1, x: 0, y: 0, rotation: 0, duration: 0.55, ease: "power3.out" }, 19.25 + i * 0.06);
+      });
+      tl.to("#s4-band", { opacity: 0, duration: 0.5, ease: "power2.in" }, 21.0);
+      tl.to("#s4-text", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 21.0);
+      /* 21.55초: 강사 대사가 먼저 뜬다 — 고백조라 단어가 천천히 차오른다 */
+      tl.fromTo("#s4-quote .w", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", stagger: 0.14 }, 21.55);
+      /* 21.95초: 대사의 주인이 등장 — 이름 → 약력이 대사의 증거로 따라온다 */
+      tl.fromTo("#s4-cred", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 21.95);
+      tl.fromTo("#s4-face", { scale: 0.8 }, { scale: 1, duration: 1.0, ease: "power3.out" }, 21.95);
+      tl.fromTo("#s4-cred .name", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 22.5);
+      tl.fromTo("#s4-cred .hist", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 22.85);
+      tl.to("#s4", { opacity: 0, duration: 0.45, ease: "power2.in" }, 24.75);
+
+      /* ===== S5 · 오퍼 reveal @25.2 ===== */
+      tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 25.2);
+      tl.fromTo("#s5-badge", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 25.4);
+      tl.fromTo("#s5-head", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 25.6);
+      tl.fromTo("#s5-head .sig", { scale: 1 }, { scale: 1.14, duration: 0.28, ease: "power2.out" }, 26.35);
+      tl.to("#s5-head .sig", { scale: 1, duration: 0.5, ease: "back.out(2)" }, 26.64);
+      tl.fromTo("#s5-card [data-row]", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.22 }, 26.4);
+      tl.to("#s5", { opacity: 0, duration: 0.45, ease: "power2.in" }, 30.55);
+
+      /* ===== S6 · CTA reveal @31.0 ===== */
+      tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 31.0);
+      tl.fromTo("#s6-head", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 31.2);
+      tl.fromTo("#s6-bar", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 31.8);
+      tl.fromTo("#s6-bar .btn", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 32.5);
+      tl.to("#s6-bar .btn", { scale: 1.08, duration: 0.2, ease: "power2.in" }, 33.4);
+      tl.to("#s6-bar .btn", { scale: 1, duration: 0.45, ease: "back.out(3)" }, 33.61);
+
+      tl.set({}, {}, 34.5); /* 총 길이 34.5초 고정 */
+
+      window.__timelines["root"] = tl;
+    </script>
+  </body>
+</html>

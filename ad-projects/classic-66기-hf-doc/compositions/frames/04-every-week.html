@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>04-every-week</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .grid{position:absolute;inset:0;opacity:.10;
+ background-image:repeating-linear-gradient(0deg,#f5f1ea 0 1px,transparent 1px 120px),repeating-linear-gradient(90deg,#f5f1ea 0 1px,transparent 1px 120px);}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .sig{color:#ff3bff;}
+#root .idx{position:absolute;left:40px;font-size:30px;color:#6b635c;}
+#root .ttl{position:absolute;left:200px;width:790px;font-size:50px;font-weight:800;color:#f5f1ea;letter-spacing:-.03em;line-height:1.24;}
+#root .rule{position:absolute;left:150px;width:880px;height:1px;background:#f5f1ea;opacity:.22;}
+#root #spine{position:absolute;top:0;left:150px;width:1px;height:100%;background:#f5f1ea;opacity:.22;}
+#root #zoom4{position:absolute;top:660px;left:70px;width:940px;transform-origin:left top;}
+#root #zoom4 .l{font-size:88px;font-weight:800;color:#f5f1ea;letter-spacing:-.035em;line-height:1.22;}
+#root .r4{position:absolute;left:0;width:1080px;height:1px;background:#f5f1ea;opacity:.22;}
+#root #cap4{position:absolute;top:1180px;left:70px;font-size:24px;color:#6b635c;}
+</style>
+<div id="root" data-composition-id="04-every-week" data-width="1080" data-height="1920" data-duration="5.5">
+<div id="bg-04-every-week" class="bg clip" data-start="0" data-duration="5.5"></div>
+<div class="grid"></div>
+<div class="r4" id="r4a" style="top:600px;"></div>
+<div id="zoom4"><div class="l">매주 개별훈련 시간 부과 및</div><div class="l"><span id="sigB4" class="sig">리포트</span> 제출</div></div>
+<div class="r4" id="r4b" style="top:1320px;"></div>
+<div id="cap4" class="mono">CURRICULUM 8 WEEKS · 원문</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#zoom4",{scale:.27,opacity:.45},{scale:1,opacity:1,duration:1.6,ease:"power3.out"},0);
+tl.fromTo("#zoom4 .l",{opacity:0},{opacity:1,duration:.5,ease:"power2.out",stagger:.4},1.6);
+tl.fromTo("#sigB4",{scale:1},{scale:1.14,duration:.2,ease:"power2.out",transformOrigin:"left center"},2.6);
+tl.to("#sigB4",{scale:1,duration:.28,ease:"back.out(2)",overwrite:"auto"},2.8);
+gsap.set(["#r4a","#r4b"],{transformOrigin:"center"});
+tl.fromTo(["#r4a","#r4b"],{scaleX:0},{scaleX:1,duration:.6,ease:"power2.out",stagger:.12},3.0);
+tl.fromTo("#cap4",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},3.4);
+window.__timelines["04-every-week"]=tl;
+</script>
+</template></body></html>

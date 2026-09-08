@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>01-two-people</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .hl{color:#f5f1ea;font-weight:800;letter-spacing:-.035em;line-height:1.14;}
+#root .sig{color:#ff3bff;}
+#root .hair{position:absolute;background:#f5f1ea;opacity:.28;}
+#root .eb{position:absolute;top:132px;left:70px;width:940px;font-size:24px;color:#a59d92;}
+#root .pane{position:absolute;left:70px;width:940px;height:600px;border:1px solid rgba(245,241,234,.18);}
+#root .pane .wk{position:absolute;top:34px;left:34px;font-size:30px;color:#a59d92;}
+#root #divA{top:962px;left:70px;width:940px;height:2px;opacity:1;}
+#root .hlwrap{position:absolute;top:1660px;left:70px;width:960px;font-size:86px;}
+</style>
+<div id="root" data-composition-id="01-two-people" data-width="1080" data-height="1920" data-duration="4.5">
+<div id="bg-01-two-people" class="bg clip" data-start="0" data-duration="4.5"></div>
+<div class="eb mono">SOMSSCREATIVE · 클래식과정 66기</div>
+<div class="pane" id="p-up" style="top:300px;"><div class="wk mono">WEEK 01</div></div>
+<div class="hair" id="divA"></div>
+<div class="pane" id="p-dn" style="top:1010px;"><div class="wk mono">WEEK 01</div></div>
+<div class="hlwrap hl"><div id="h1a">외워서 자르는 사람,</div><div id="h1b"><span id="sig1" class="sig">이해하고</span> 자르는 사람</div></div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo(".eb",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},0);
+gsap.set("#divA",{transformOrigin:"left center"});
+tl.fromTo("#divA",{scaleX:0},{scaleX:1,duration:.6,ease:"power3.inOut"},.6);
+tl.fromTo("#p-up",{rotation:3,opacity:0},{rotation:0,opacity:1,duration:.8,ease:"power3.out"},1.2);
+tl.fromTo("#p-dn",{rotation:-3,opacity:0},{rotation:0,opacity:1,duration:.8,ease:"power3.out"},1.2);
+tl.fromTo(["#h1a","#h1b"],{yPercent:40,opacity:0},{yPercent:0,opacity:1,duration:.75,ease:"power3.out",stagger:.5},2.0);
+tl.fromTo("#sig1",{scale:1},{scale:1.08,duration:.22,ease:"power2.out",transformOrigin:"left center"},3.4);
+tl.to("#sig1",{scale:1,duration:.3,ease:"back.out(1.7)"},3.62);
+window.__timelines["01-two-people"]=tl;
+</script>
+</template></body></html>

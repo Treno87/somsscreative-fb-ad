@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>05-offer</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .hl{color:#f5f1ea;font-weight:800;letter-spacing:-.035em;line-height:1.14;}
+#root .sig{color:#ff3bff;}
+#root .hair{position:absolute;background:#f5f1ea;opacity:.28;}
+#root #head5{position:absolute;top:400px;left:70px;width:940px;font-size:82px;}
+#root .row{position:absolute;left:110px;width:900px;font-size:36px;color:#f5f1ea;display:flex;align-items:center;gap:22px;}
+#root .row i{width:10px;height:10px;background:#ff3bff;display:block;flex:none;}
+#root #card5{position:absolute;top:1050px;left:70px;width:940px;height:400px;border:1px solid rgba(245,241,234,.18);}
+</style>
+<div id="root" data-composition-id="05-offer" data-width="1080" data-height="1920" data-duration="4.0">
+<div id="bg-05-offer" class="bg clip" data-start="0" data-duration="4.0"></div>
+<div id="head5" class="hl"><div>10월 5일 개강,</div><div><span id="sig5" class="sig">7명</span>이 차면</div><div>마감합니다</div></div>
+<div id="card5"></div>
+<div class="row" id="r1" style="top:1110px;"><i></i>10월 5일(월) 개강</div>
+<div class="row" id="r2" style="top:1195px;"><i></i>매주 월요일 10–13시</div>
+<div class="row" id="r3" style="top:1280px;"><i></i>소수정예 7명</div>
+<div class="row" id="r4" style="top:1365px;"><i></i>수강료 160만원</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#head5 div",{opacity:0,y:26},{opacity:1,y:0,duration:.6,ease:"power3.out",stagger:.38},0);
+tl.fromTo("#sig5",{scale:1},{scale:1.16,duration:.2,ease:"power2.out",transformOrigin:"left center"},1.5);
+tl.to("#sig5",{scale:1,duration:.24,ease:"back.out(2)"},1.7);
+tl.fromTo("#card5",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},1.9);
+tl.fromTo(["#r1","#r2","#r3","#r4"],{opacity:0,x:-18},{opacity:1,x:0,duration:.45,ease:"power2.out",stagger:.18},1.95);
+window.__timelines["05-offer"]=tl;
+</script>
+</template></body></html>

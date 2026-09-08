@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>03-gap</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .hl{color:#f5f1ea;font-weight:800;letter-spacing:-.035em;line-height:1.14;}
+#root .sig{color:#ff3bff;}
+#root .hair{position:absolute;background:#f5f1ea;opacity:.28;}
+#root .pane{position:absolute;left:70px;width:940px;border:1px solid rgba(245,241,234,.18);}
+#root .db{position:absolute;left:100px;width:880px;height:118px;border-left:5px solid #ff3bff;background:rgba(245,241,234,.05);
+ display:flex;align-items:center;padding:0 28px;box-sizing:border-box;color:#f5f1ea;font-size:40px;font-weight:800;}
+#root #divC{top:962px;left:70px;width:940px;height:2px;}
+#root .copy{position:absolute;top:790px;left:70px;width:940px;text-align:center;font-size:64px;}
+</style>
+<div id="root" data-composition-id="03-gap" data-width="1080" data-height="1920" data-duration="5.6">
+<div id="bg-03-gap" class="bg clip" data-start="0" data-duration="5.6"></div>
+<div class="pane" style="top:250px;height:500px;"></div>
+<div class="ub mono" style="position:absolute;top:470px;left:100px;width:880px;height:110px;border:1px solid rgba(245,241,234,.22);display:flex;align-items:center;padding:0 28px;box-sizing:border-box;color:#a59d92;font-size:34px;">형태 1개</div>
+<div class="hair" id="divC"></div>
+<div class="pane" style="top:1080px;height:500px;"></div>
+<div class="db" style="top:1430px;">레이어</div><div class="db" style="top:1300px;">그래쥬에이션</div><div class="db" style="top:1170px;">라인</div>
+<div class="copy hl"><span id="c3a">커트에는 쌓이는 </span><span id="sig3" class="sig">순서</span><span id="c3b">가 있습니다</span></div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#c3a",{opacity:0,y:20},{opacity:1,y:0,duration:.7,ease:"power3.out"},.5);
+tl.fromTo("#sig3",{scale:1.4,opacity:0},{scale:1,opacity:1,duration:.28,ease:"back.out(1.7)",transformOrigin:"center"},1.6);
+gsap.set("#divC",{transformOrigin:"center"});
+tl.fromTo("#divC",{scaleX:1},{scaleX:1.06,duration:.18,ease:"power2.out"},2.1);
+tl.to("#divC",{scaleX:1,duration:.32,ease:"power2.inOut",overwrite:"auto"},2.30);
+tl.fromTo("#c3b",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},2.6);
+window.__timelines["03-gap"]=tl;
+</script>
+</template></body></html>

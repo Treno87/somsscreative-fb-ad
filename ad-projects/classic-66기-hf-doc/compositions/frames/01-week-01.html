@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>01-week-01</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .grid{position:absolute;inset:0;opacity:.10;
+ background-image:repeating-linear-gradient(0deg,#f5f1ea 0 1px,transparent 1px 120px),repeating-linear-gradient(90deg,#f5f1ea 0 1px,transparent 1px 120px);}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .sig{color:#ff3bff;}
+#root .idx{position:absolute;left:40px;font-size:30px;color:#6b635c;}
+#root .ttl{position:absolute;left:200px;width:790px;font-size:50px;font-weight:800;color:#f5f1ea;letter-spacing:-.03em;line-height:1.24;}
+#root .rule{position:absolute;left:150px;width:880px;height:1px;background:#f5f1ea;opacity:.22;}
+#root #spine{position:absolute;top:0;left:150px;width:1px;height:100%;background:#f5f1ea;opacity:.22;}
+#root #stage1{position:absolute;inset:0;}
+#root #big1{position:absolute;top:600px;left:56px;width:1000px;font-size:206px;font-weight:800;color:#f5f1ea;letter-spacing:-.05em;line-height:1;}
+#root #sub1{position:absolute;top:900px;left:60px;width:960px;font-size:42px;font-weight:800;color:#f5f1ea;letter-spacing:-.02em;}
+#root #sub1b{position:absolute;top:972px;left:60px;width:960px;font-size:26px;color:#a59d92;}
+#root .r1{position:absolute;left:0;width:1080px;height:1px;background:#f5f1ea;opacity:.22;}
+</style>
+<div id="root" data-composition-id="01-week-01" data-width="1080" data-height="1920" data-duration="4.0">
+<div id="bg-01-week-01" class="bg clip" data-start="0" data-duration="4.0"></div>
+<div class="grid"></div>
+<div id="stage1">
+<div class="r1" style="top:520px;"></div>
+<div id="big1" class="mono">WEEK 01</div>
+<div id="sub1">용어 및 커트 이론</div>
+<div id="sub1b">헤어커트의 역사, 용어 소개, 헤어커트 이론</div>
+<div class="r1" style="top:1400px;"></div></div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo(".grid",{opacity:0},{opacity:.10,duration:.5,ease:"power2.out"},0);
+tl.fromTo("#big1",{scale:.86,opacity:0},{scale:1,opacity:1,duration:.8,ease:"power3.out",transformOrigin:"left center"},.5);
+tl.fromTo("#sub1",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},1.3);
+tl.fromTo("#sub1b",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},1.6);
+tl.fromTo("#stage1",{y:0},{y:-150,duration:.8,ease:"none"},3.2);
+window.__timelines["01-week-01"]=tl;
+</script>
+</template></body></html>

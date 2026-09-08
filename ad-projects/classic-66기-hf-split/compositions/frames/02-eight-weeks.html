@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><title>02-eight-weeks</title></head><body>
+<template>
+<style>
+@font-face{font-family:"Pretendard";font-weight:100 900;src:url("fonts/PretendardVariable.woff2") format("woff2");font-display:block;}
+#root{position:absolute;inset:0;font-family:Pretendard,system-ui,sans-serif;overflow:hidden;}
+#root .bg{position:absolute;inset:0;background:#121010;}
+#root .mono{font-family:ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;}
+#root .hl{color:#f5f1ea;font-weight:800;letter-spacing:-.035em;line-height:1.14;}
+#root .sig{color:#ff3bff;}
+#root .hair{position:absolute;background:#f5f1ea;opacity:.28;}
+#root .lab{position:absolute;left:70px;font-size:26px;color:#a59d92;}
+#root #divB{top:962px;left:70px;width:940px;height:2px;}
+#root .ub{position:absolute;top:430px;left:70px;width:940px;height:150px;border:1px solid rgba(245,241,234,.22);
+ display:flex;align-items:center;gap:26px;padding:0 34px;box-sizing:border-box;color:#f5f1ea;font-size:44px;font-weight:800;letter-spacing:-.03em;}
+#root .db{position:absolute;left:70px;width:940px;height:132px;border-left:5px solid #ff3bff;background:rgba(245,241,234,.05);
+ display:flex;align-items:center;gap:26px;padding:0 30px;box-sizing:border-box;color:#f5f1ea;font-size:44px;font-weight:800;letter-spacing:-.03em;}
+#root .wl{flex:none;min-width:210px;font-size:24px;color:#a59d92;font-weight:400;}
+#root #ctr{position:absolute;bottom:34px;left:70px;width:940px;text-align:center;font-size:44px;color:#ff3bff;}
+</style>
+<div id="root" data-composition-id="02-eight-weeks" data-width="1080" data-height="1920" data-duration="10.5">
+<div id="bg-02-eight-weeks" class="bg clip" data-start="0" data-duration="10.5"></div>
+<div class="lab mono" style="top:340px;">외워서 — 매주 리셋</div><div class="ub" id="ub0"><span class="mono wl">WEEK 02</span>라인</div><div class="ub" id="ub1"><span class="mono wl">WEEK 03</span>라인 위드 그래쥬에이션</div><div class="ub" id="ub2"><span class="mono wl">WEEK 04</span>라인 위드 그래쥬에이션</div><div class="ub" id="ub3"><span class="mono wl">WEEK 05</span>그래쥬에이션</div><div class="ub" id="ub4"><span class="mono wl">WEEK 06</span>레이어 (FLAT)</div><div class="ub" id="ub5"><span class="mono wl">WEEK 07</span>레이어 (CONVEX)</div><div class="ub" id="ub6"><span class="mono wl">WEEK 08</span>레이어 (CONCAVE)</div><div class="hair" id="divB"></div><div class="lab mono" style="top:1010px;">이해하고 — 매주 누적</div><div class="db" id="db0" style="bottom:120px;"><span class="mono wl">W02</span>라인</div><div class="db" id="db1" style="bottom:270px;"><span class="mono wl">W03–05</span>그래쥬에이션</div><div class="db" id="db2" style="bottom:420px;"><span class="mono wl">W06–08</span>레이어</div><div id="ctr" class="mono">WEEK 01 → 08</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo("#ub0",{yPercent:-90,opacity:0},{yPercent:0,opacity:1,duration:.34,ease:"power3.out"},0.40);
+tl.to("#ub0",{yPercent:90,opacity:0,duration:.3,ease:"power2.in"},0.82);
+tl.fromTo("#ub1",{yPercent:-90,opacity:0},{yPercent:0,opacity:1,duration:.34,ease:"power3.out"},1.08);
+tl.to("#ub1",{yPercent:90,opacity:0,duration:.3,ease:"power2.in"},1.50);
+tl.fromTo("#ub2",{yPercent:-90,opacity:0},{yPercent:0,opacity:1,duration:.34,ease:"power3.out"},1.76);
+tl.to("#ub2",{yPercent:90,opacity:0,duration:.3,ease:"power2.in"},2.18);
+tl.fromTo("#ub3",{yPercent:-90,opacity:0},{yPercent:0,opacity:1,duration:.34,ease:"power3.out"},2.44);
+tl.to("#ub3",{yPercent:90,opacity:0,duration:.3,ease:"power2.in"},2.86);
+tl.fromTo("#ub4",{yPercent:-90,opacity:0},{yPercent:0,opacity:1,duration:.34,ease:"power3.out"},3.12);
+tl.to("#ub4",{yPercent:90,opacity:0,duration:.3,ease:"power2.in"},3.54);
+tl.fromTo("#ub5",{yPercent:-90,opacity:0},{yPercent:0,opacity:1,duration:.34,ease:"power3.out"},3.80);
+tl.to("#ub5",{yPercent:90,opacity:0,duration:.3,ease:"power2.in"},4.22);
+tl.fromTo("#ub6",{yPercent:-90,opacity:0},{yPercent:0,opacity:1,duration:.34,ease:"power3.out"},4.48);
+tl.to("#ub6",{yPercent:90,opacity:0,duration:.3,ease:"power2.in"},4.90);
+tl.fromTo("#db0",{yPercent:70,opacity:0},{yPercent:0,opacity:1,duration:.55,ease:"power3.out"},0.40);
+tl.fromTo("#db1",{yPercent:70,opacity:0},{yPercent:0,opacity:1,duration:.55,ease:"power3.out"},1.76);
+tl.fromTo("#db2",{yPercent:70,opacity:0},{yPercent:0,opacity:1,duration:.55,ease:"power3.out"},3.80);
+tl.fromTo("#ctr",{opacity:0},{opacity:1,duration:.5,ease:"power2.out"},5.2);
+tl.fromTo(["#db0","#db1","#db2"],{y:0},{y:-18,duration:1.6,ease:"power2.inOut"},7.0);
+window.__timelines["02-eight-weeks"]=tl;
+</script>
+</template></body></html>
