@@ -73,9 +73,25 @@ courses/**/*.jpg
 courses/**/*.jpeg
 courses/**/*.pdf
 
+# public/ 아래 렌더 산출물·검수 스냅샷 (public/hf66 사고 재발 방지).
+# 위 ad-projects/** 규칙은 경로가 ad-projects/ 로 시작할 때만 막으므로 public/ 은 따로 막는다.
+public/**/renders/
+public/**/snapshots/
+public/**/.thumbnails/
+public/**/*.mp4
+
 # 카메라 원본(raw) — 저장소 안에 두되 커밋하지 않는다. 규약: docs/ad-asset-organization.md
 assets/raw/*
 !assets/raw/README.md
+
+# 66기 고아 클립 — 원본·생성 스크립트가 없어 지우면 복구 불가. 예외로 추적한다.
+# 근거: assets/raw/classic-66기/ORPHANS.md
+!assets/raw/classic-66기/
+assets/raw/classic-66기/*
+!assets/raw/classic-66기/ORPHANS.md
+!assets/raw/classic-66기/clip3.mp4
+!assets/raw/classic-66기/s2-student-a.mp4
+!assets/raw/classic-66기/s3-instructor.mp4
 
 # 광고 작업 프로젝트(ad-projects/{course}-{기수}-hf).
 # 추적/미추적은 확장자가 아니라 역할로 정한다 —
