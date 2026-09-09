@@ -1,0 +1,11 @@
+{
+  "name": "classic-66기-hf-beat",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.7.82 preview",
+    "check": "npx --yes hyperframes@0.7.82 check",
+    "beats": "npx --yes hyperframes@0.7.82 beats",
+    "render": "npx --yes hyperframes@0.7.82 render"
+  }
+}

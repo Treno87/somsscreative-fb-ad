@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Pretendard"; font-weight: 100 900; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-display: block; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      /* ===== 브랜드 정본 ad-projects/_brand/frame.md ===== */
+      :root {
+        --bg: #0a0908;
+        --ink: #f5f1ea;
+        --muted: #a59d92;
+        --hairline: #3a3430;
+        --sig: #ff3bff;          /* 강조 — 전 구간 하나로 통일 */
+        --cta-surface: #f5f1ea;
+        --on-cta: #171310;
+        --on-cta-sub: #6b6257;
+      }
+      html, body {
+        width: 1080px; height: 1920px; overflow: hidden; background: var(--bg);
+        font-family: "Pretendard", sans-serif;
+        -webkit-font-smoothing: antialiased; color: var(--ink);
+      }
+      #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+
+      /* ===== 실사 컷 — 화면 전체를 채운다. 정사각 밴드 없음 ===== */
+      /* 원본이 밝아(흰 벽·흰 가운) 글자가 묻힌다 — 영상 레이어를 눌러 대비를 만든다 */
+      #shots { position: absolute; inset: 0; z-index: 1; filter: brightness(0.72) saturate(1.14) contrast(1.04); will-change: transform; }
+      .shot { position: absolute; inset: 0; opacity: 0; will-change: transform; }
+      .shot video { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; display: block; }
+
+      /* 텍스트 가독용 스크림 — 실사 위에 글자를 얹기 때문에 상시 필요하다 */
+      #scrim {
+        position: absolute; inset: 0; z-index: 2; pointer-events: none;
+        background: linear-gradient(180deg,
+          rgba(6,5,5,0.86) 0%, rgba(6,5,5,0.58) 20%, rgba(6,5,5,0.26) 38%,
+          rgba(6,5,5,0.86) 60%, rgba(6,5,5,0.94) 78%, rgba(6,5,5,0.97) 100%);
+      }
+      /* 텍스트가 많은 후반부(사다리·강사·오퍼·CTA)에서 한 단계 더 덮는다 */
+      #dim { position: absolute; inset: 0; z-index: 3; background: rgba(6,5,5,0.58); opacity: 0; pointer-events: none; }
+
+      /* ===== 공용 타이포 ===== */
+      .cap {
+        position: absolute; left: 60px; width: 960px; z-index: 5;
+        opacity: 0; will-change: transform;
+      }
+      .cap .l {
+        font-size: 88px; font-weight: 800; line-height: 1.16; letter-spacing: -0.035em; color: var(--ink);
+        text-shadow: 0 4px 34px rgba(0,0,0,0.55);
+      }
+      .cap .sig { color: var(--sig); display: inline-block; will-change: transform; }
+
+      .eyebrow {
+        position: absolute; top: 330px; left: 0; width: 1080px; text-align: center; z-index: 5;
+        font-size: 20px; font-weight: 600; letter-spacing: 0.02em; color: #eae4db; opacity: 0;
+      }
+      .watermark {
+        position: absolute; bottom: 96px; left: 0; width: 1080px; text-align: center; z-index: 6;
+        font-size: 19px; font-weight: 600; letter-spacing: 0.28em; color: #a29a92;
+      }
+
+      /* 비트 마커 — 마디마다 한 칸씩 찬다 */
+      #beatbar {
+        position: absolute; left: 60px; bottom: 60px; width: 960px; height: 5px; z-index: 6;
+        background: rgba(245,241,234,0.14); border-radius: 999px; overflow: hidden;
+      }
+      #beatbar i {
+        position: absolute; left: 0; top: 0; height: 100%; width: 960px; display: block;
+        background: var(--sig); transform-origin: 0% 50%; will-change: transform;
+      }
+
+      /* ===== 커리큘럼 사다리 ===== */
+      #ladder { top: 700px; }
+      #ladder-rows { position: absolute; top: 300px; left: 0; width: 960px; }
+      #ladder-rows .row {
+        display: flex; align-items: baseline; gap: 30px;
+        padding: 22px 0 22px 26px; border-left: 5px solid var(--sig);
+        font-size: 52px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink);
+        opacity: 0; will-change: transform;
+      }
+      #ladder-rows .row.alt { border-left-color: var(--hairline); }
+      #ladder-rows .wk { font-size: 28px; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); min-width: 210px; }
+      #ladder-rows .sig { color: var(--sig); }
+
+      /* ===== 강사 ===== */
+      #cred { top: 640px; text-align: center; }
+      #cred .quote { font-size: 72px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.18; }
+      #cred-face {
+        display: block; margin: 66px auto 0; width: 300px; height: 300px; border-radius: 999px;
+        object-fit: cover; opacity: 0; will-change: transform, filter;
+      }
+      #cred .name { margin-top: 34px; font-size: 56px; font-weight: 800; letter-spacing: -0.03em; opacity: 0; }
+      #cred .hist { margin-top: 26px; font-size: 30px; font-weight: 600; line-height: 1.7; color: var(--muted); opacity: 0; }
+
+      /* ===== 오퍼 ===== */
+      #offer { top: 620px; text-align: center; }
+      #offer .head { font-size: 84px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.2; }
+      #offer .rows { margin-top: 66px; display: inline-block; text-align: left; }
+      #offer .rows div {
+        font-size: 40px; font-weight: 600; color: var(--ink); padding: 14px 0 14px 34px; position: relative; opacity: 0;
+      }
+      #offer .rows div::before {
+        content: ""; position: absolute; left: 0; top: 30px; width: 14px; height: 14px; border-radius: 999px; background: var(--sig);
+      }
+
+      /* ===== CTA ===== */
+      #cta { top: 620px; text-align: center; }
+      #cta .head { font-size: 84px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.2; }
+      #cta-bar {
+        position: absolute; left: -60px; top: 900px; width: 1080px; z-index: 6;
+        background: var(--cta-surface); color: var(--on-cta);
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 46px 60px; opacity: 0; will-change: transform;
+      }
+      #cta-bar .pre { font-size: 30px; font-weight: 600; color: var(--on-cta-sub); }
+      #cta-bar .big { font-size: 64px; font-weight: 800; letter-spacing: -0.03em; margin-top: 10px; }
+      #cta-bar .btn {
+        font-size: 36px; font-weight: 800; color: var(--cta-surface); background: #171310;
+        padding: 24px 46px; border-radius: 999px; opacity: 0; will-change: transform;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-stage" id="stage" data-composition-id="root" data-width="1080" data-height="1920" data-start="0" data-duration="25.25">
+
+      <!-- ===== 실사 컷 22개 — 전부 비트(0.3156s) 위에서 끊긴다 ===== -->
+      <div data-hf-id="hf-shots" id="shots">
+        <div data-hf-id="hf-sh00" class="shot"><video data-hf-id="hf-v00" id="clip-00" class="clip" src="video/salon-a.mp4" data-start="0" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh01" class="shot"><video data-hf-id="hf-v01" id="clip-01" class="clip" src="video/hands-a.mp4" data-start="1.2624" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh02" class="shot"><video data-hf-id="hf-v02" id="clip-02" class="clip" src="video/room-a.mp4" data-start="2.5248" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh03" class="shot"><video data-hf-id="hf-v03" id="clip-03" class="clip" src="video/solo-a.mp4" data-start="3.7872" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <!-- 「같은 커트를 두 번 해도」 — 같은 두 컷을 두 번 반복해 카피를 눈으로 증명한다 -->
+        <div data-hf-id="hf-sh04" class="shot"><video data-hf-id="hf-v04" id="clip-04" class="clip" src="video/hands-b.mp4" data-start="5.0496" data-duration="0.6312" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh05" class="shot"><video data-hf-id="hf-v05" id="clip-05" class="clip" src="video/hands-c.mp4" data-start="5.6808" data-duration="0.6312" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh06" class="shot"><video data-hf-id="hf-v06" id="clip-06" class="clip" src="video/hands-b.mp4" data-start="6.3120" data-duration="0.6312" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh07" class="shot"><video data-hf-id="hf-v07" id="clip-07" class="clip" src="video/hands-c.mp4" data-start="6.9432" data-duration="0.6312" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh08" class="shot"><video data-hf-id="hf-v08" id="clip-08" class="clip" src="video/room-b.mp4" data-start="7.5744" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh09" class="shot"><video data-hf-id="hf-v09" id="clip-09" class="clip" src="video/solo-b.mp4" data-start="8.8368" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh10" class="shot"><video data-hf-id="hf-v10" id="clip-10" class="clip" src="video/hands-d.mp4" data-start="10.0992" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh11" class="shot"><video data-hf-id="hf-v11" id="clip-11" class="clip" src="video/salon-b.mp4" data-start="11.3616" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh12" class="shot"><video data-hf-id="hf-v12" id="clip-12" class="clip" src="video/room-c.mp4" data-start="12.6240" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh13" class="shot"><video data-hf-id="hf-v13" id="clip-13" class="clip" src="video/room-d.mp4" data-start="13.8864" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh14" class="shot"><video data-hf-id="hf-v14" id="clip-14" class="clip" src="video/hands-a.mp4" data-start="15.1488" data-duration="1.2624" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh15" class="shot"><video data-hf-id="hf-v15" id="clip-15" class="clip" src="video/solo-a.mp4" data-start="16.4112" data-duration="1.2624" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh16" class="shot"><video data-hf-id="hf-v16" id="clip-16" class="clip" src="video/room-b.mp4" data-start="17.6736" data-duration="1.2624" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh17" class="shot"><video data-hf-id="hf-v17" id="clip-17" class="clip" src="video/hands-c.mp4" data-start="18.9360" data-duration="1.2624" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh18" class="shot"><video data-hf-id="hf-v18" id="clip-18" class="clip" src="video/room-c.mp4" data-start="20.1984" data-duration="1.2624" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh19" class="shot"><video data-hf-id="hf-v19" id="clip-19" class="clip" src="video/solo-b.mp4" data-start="21.4608" data-duration="1.2624" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh20" class="shot"><video data-hf-id="hf-v20" id="clip-20" class="clip" src="video/room-d.mp4" data-start="22.7232" data-duration="1.2624" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-sh21" class="shot"><video data-hf-id="hf-v21" id="clip-21" class="clip" src="video/salon-a.mp4" data-start="23.9856" data-duration="1.2624" data-media-start="0.34" data-track-index="0" muted playsinline></video></div>
+      </div>
+
+      <div data-hf-id="hf-scrim" id="scrim"></div>
+      <div data-hf-id="hf-dim" id="dim"></div>
+
+      <div data-hf-id="hf-eyebrow" class="eyebrow" id="eyebrow">SOMSSCREATIVE · 클래식과정 66기</div>
+
+      <!-- ===== 카피 — 66기 확정본 그대로 ===== -->
+      <div data-hf-id="hf-t1" class="cap" id="t1" style="top:1080px">
+        <div data-hf-id="hf-t1l" class="l">외워서 자르는 사람,<br data-hf-id="hf-br1"><span data-hf-id="hf-t1s" id="t1s" class="sig">알고</span> 자르는 사람</div>
+      </div>
+      <div data-hf-id="hf-t2" class="cap" id="t2" style="top:1080px">
+        <div data-hf-id="hf-t2l" class="l">같은 커트를 두 번 해도<br data-hf-id="hf-br2">결과는 <span data-hf-id="hf-t2s" id="t2s" class="sig">매번 달라집니다</span></div>
+      </div>
+      <div data-hf-id="hf-t3" class="cap" id="t3" style="top:1080px">
+        <div data-hf-id="hf-t3l" class="l">커트를 배운 게 아니라<br data-hf-id="hf-br3"><span data-hf-id="hf-t3s" id="t3s" class="sig">형태</span>를 외웠기 때문입니다</div>
+      </div>
+      <div data-hf-id="hf-t4" class="cap" id="t4" style="top:1080px">
+        <div data-hf-id="hf-t4l" class="l">커트에는 쌓이는<br data-hf-id="hf-br4"><span data-hf-id="hf-t4s" id="t4s" class="sig">순서</span>가 있습니다</div>
+      </div>
+
+      <!-- ===== 커리큘럼 사다리 ===== -->
+      <div data-hf-id="hf-ladder" class="cap" id="ladder">
+        <div data-hf-id="hf-ladder-h" class="l">8주, 이렇게 쌓습니다</div>
+        <div data-hf-id="hf-ladder-rows" id="ladder-rows">
+          <div data-hf-id="hf-lr1" class="row"><span data-hf-id="hf-lw1" class="wk">WEEK 02</span>라인</div>
+          <div data-hf-id="hf-lr2" class="row"><span data-hf-id="hf-lw2" class="wk">WEEK 03–05</span>그래쥬에이션</div>
+          <div data-hf-id="hf-lr3" class="row"><span data-hf-id="hf-lw3" class="wk">WEEK 06–08</span>레이어</div>
+          <div data-hf-id="hf-lr4" class="row alt"><span data-hf-id="hf-lw4" class="wk">매주</span>개별훈련 · <span data-hf-id="hf-lr4s" id="lr4s" class="sig">리포트</span></div>
+        </div>
+      </div>
+
+      <!-- ===== 강사 ===== -->
+      <div data-hf-id="hf-cred" class="cap" id="cred">
+        <div data-hf-id="hf-cq" class="quote">8주차엔 <span data-hf-id="hf-cqs" class="sig">디플로마</span>를 받습니다</div>
+        <img data-hf-id="hf-cface" id="cred-face" src="images/instructor.png" alt="">
+        <div data-hf-id="hf-cname" class="name">심일보 수석강사</div>
+        <div data-hf-id="hf-chist" class="hist">런던 비달사순 TTC 수료<br data-hf-id="hf-br5">비달사순 커트콘테스트 2위<br data-hf-id="hf-br6">교육경력 16년 · 클래식 64기 배출</div>
+      </div>
+
+      <!-- ===== 오퍼 ===== -->
+      <div data-hf-id="hf-offer" class="cap" id="offer">
+        <div data-hf-id="hf-oh" class="head">10월 5일 개강,<br data-hf-id="hf-br7"><span data-hf-id="hf-ohs" id="ohs" class="sig">7명</span>이 차면 마감합니다</div>
+        <div data-hf-id="hf-orows" class="rows">
+          <div data-hf-id="hf-or1">10월 5일(월) 개강</div>
+          <div data-hf-id="hf-or2">매주 월요일 10–13시</div>
+          <div data-hf-id="hf-or3">소수정예 7명</div>
+          <div data-hf-id="hf-or4">수강료 160만원</div>
+        </div>
+      </div>
+
+      <!-- ===== CTA ===== -->
+      <div data-hf-id="hf-cta" class="cap" id="cta">
+        <div data-hf-id="hf-ctah" class="head">무엇을 배우는지<br data-hf-id="hf-br8">커리큘럼에 다 있습니다</div>
+        <div data-hf-id="hf-ctabar" id="cta-bar">
+          <div data-hf-id="hf-ctabl">
+            <div data-hf-id="hf-ctapre" class="pre">10월 5일 개강 · 정원 7명</div>
+            <div data-hf-id="hf-ctabig" class="big">커리큘럼 보기</div>
+          </div>
+          <span data-hf-id="hf-ctabtn" id="cta-btn" class="btn">지금 →</span>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-beatbar" id="beatbar"><i data-hf-id="hf-beatbar-i" id="beatbar-fill"></i></div>
+      <div data-hf-id="hf-wm" class="watermark">SOMSSCREATIVE</div>
+
+      <!-- BGM — born-fighter. 5.6416s(비트 #16, 마디 시작)부터 잘라 써서 영상 t=0 이 정박에 떨어진다 -->
+      <audio data-hf-id="hf-music" id="music" data-timeline-role="music" src="audio/bgm.mp3" data-start="0" data-duration="25.25" data-media-start="5.6416"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ===== 비트 그리드 =====
+         hyperframes beats 검출값: 첫 비트 0.592s, 간격 0.3156s (190BPM, 편차 0.001s).
+         음원을 비트 #16(5.6416s)부터 잘라 썼으므로 영상 t=0 이 정박이다.
+         아래 모든 시각은 예외 없이 B(비트)의 배수로만 찍는다. */
+      const B = 0.3156;              /* 1비트 */
+      const BAR = 8 * B;             /* 1마디 = 2.5248s */
+      const b = (n) => n * B;        /* n번째 비트의 시각 */
+
+      /* ── 컷: 22개, 전부 정박에서 끊긴다 ── */
+      const CUTS = [
+        [0, 4], [4, 4], [8, 4], [12, 4],
+        [16, 2], [18, 2], [20, 2], [22, 2],
+        [24, 4], [28, 4], [32, 4], [36, 4], [40, 4], [44, 4],
+        [48, 4], [52, 4], [56, 4], [60, 4], [64, 4], [68, 4], [72, 4], [76, 4]
+      ];
+      const shots = gsap.utils.toArray("#shots .shot");
+      CUTS.forEach(function (cut, i) {
+        const t = b(cut[0]);
+        tl.set(shots[i], { opacity: 1 }, t);
+        tl.set(shots[i], { opacity: 0 }, t + b(cut[1]) - 0.001);
+        /* 컷이 바뀌는 순간마다 한 번씩 눌렸다 펴진다 — 컷 자체가 비트를 친다 */
+        tl.fromTo(shots[i], { scale: 1.055 }, { scale: 1, duration: 0.24, ease: "power3.out" }, t);
+      });
+
+      /* ── 마디마다 화면 전체가 한 번 펌프 (10마디) ── */
+      for (let m = 0; m < 10; m++) {
+        const t = m * BAR;
+        tl.to("#shots", { scale: 1.03, duration: 0.085, ease: "power2.out" }, t);
+        tl.to("#shots", { scale: 1.0, duration: 0.42, ease: "power2.out" }, t + 0.09);
+      }
+
+      /* ── 비트 마커: 마디마다 한 칸씩 ── */
+      tl.set("#beatbar-fill", { scaleX: 0 }, 0);
+      for (let m = 0; m < 10; m++) {
+        tl.to("#beatbar-fill", { scaleX: (m + 1) / 10, duration: 0.18, ease: "power2.out" }, m * BAR);
+      }
+
+      tl.fromTo("#eyebrow", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, b(1));
+      tl.to("#eyebrow", { opacity: 0, duration: 0.2, ease: "none" }, b(16));
+
+      /* ===== 카피 블록 — 들어오는 시각도 전부 정박 ===== */
+      /* enter(대상, 시작비트, 끝비트) — 밑에서 올라오며 붙는다 */
+      function enter(sel, inBeat, outBeat) {
+        tl.fromTo(sel, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, b(inBeat));
+        if (outBeat !== null) tl.to(sel, { opacity: 0, duration: 0.12, ease: "none" }, b(outBeat));
+      }
+      /* slam(대상, 비트) — 강조어가 정박에 꽂힌다 */
+      function slam(sel, beat) {
+        tl.fromTo(sel, { scale: 1.55, y: -8 }, { scale: 1, y: 0, duration: 0.34, ease: "back.out(2.2)", immediateRender: false }, b(beat));
+      }
+
+      enter("#t1", 0, 16);   slam("#t1s", 4);
+      enter("#t2", 16, 24);  slam("#t2s", 20);
+      enter("#t3", 24, 32);  slam("#t3s", 28);
+      enter("#t4", 32, 40);  slam("#t4s", 36);
+
+      /* 후반부는 글자가 많아 스크림을 한 겹 더 덮는다 */
+      tl.fromTo("#dim", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, b(40));
+
+      /* ── 사다리: 4행이 2비트 간격으로 착지 ── */
+      enter("#ladder", 40, 56);
+      [44, 46, 48, 50].forEach(function (beat, i) {
+        const row = "#ladder-rows .row:nth-child(" + (i + 1) + ")";
+        tl.fromTo(row, { opacity: 0, y: -46, scaleY: 1.14 },
+                       { opacity: 1, y: 0, scaleY: 1, duration: 0.3, ease: "back.out(1.8)" }, b(beat));
+        /* 착지 충격이 스택 전체에 전달된다 */
+        tl.to("#ladder-rows", { y: 6, duration: 0.06, ease: "power2.in" }, b(beat) + 0.14);
+        tl.to("#ladder-rows", { y: 0, duration: 0.16, ease: "back.out(2.4)" }, b(beat) + 0.2);
+      });
+      slam("#lr4s", 52);
+
+      /* ── 강사 ── */
+      enter("#cred", 56, 64);
+      tl.fromTo("#cred-face", { opacity: 0, scale: 0.82, filter: "grayscale(1) blur(8px)" },
+                              { opacity: 1, scale: 1, filter: "grayscale(0) blur(0px)", duration: 0.63, ease: "power3.out" }, b(58));
+      tl.fromTo("#cred .name", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, b(60));
+      tl.fromTo("#cred .hist", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, b(61));
+
+      /* ── 오퍼: 4행이 1비트 간격으로 ── */
+      enter("#offer", 64, 72);
+      slam("#ohs", 66);
+      [66, 67, 68, 69].forEach(function (beat, i) {
+        tl.fromTo("#offer .rows div:nth-child(" + (i + 1) + ")", { opacity: 0, x: -26 },
+                  { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, b(beat));
+      });
+
+      /* ── CTA ── */
+      enter("#cta", 72, null);
+      tl.fromTo("#cta-bar", { opacity: 0, y: 96 }, { opacity: 1, y: 0, duration: 0.42, ease: "back.out(1.4)" }, b(74));
+      tl.fromTo("#cta-btn", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" }, b(76));
+      /* 마지막 3비트 — 버튼이 정박마다 뛴다 */
+      [77, 78, 79].forEach(function (beat) {
+        tl.to("#cta-btn", { scale: 1.1, duration: 0.09, ease: "power2.out" }, b(beat));
+        tl.to("#cta-btn", { scale: 1, duration: 0.21, ease: "back.out(2.6)" }, b(beat) + 0.1);
+      });
+
+      tl.set({}, {}, 25.25); /* 총 길이 = 10마디 */
+
+      window.__timelines["root"] = tl;
+    </script>
+  </body>
+</html>

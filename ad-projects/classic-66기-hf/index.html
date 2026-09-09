@@ -47,6 +47,16 @@
         overflow: hidden; border-radius: 20px; background: var(--surface);
       }
       .band video { width: 100%; height: 100%; object-fit: cover; display: block; }
+      /* 클립 카메라 무브 전용 래퍼 — .clip(video)은 프레임워크 소유라 직접 트윈하지 않는다 */
+      .band-inner {
+        position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform, filter;
+      }
+      /* 씬 전환용 와이프 패널 — 마젠타 선단이 화면을 가로지른다 (S1→S2 1회 한정) */
+      #wipe1 {
+        position: absolute; inset: 0; background: var(--bg);
+        border-left: 14px solid var(--promise);
+        z-index: 10; will-change: transform; /* 시작 위치는 GSAP xPercent:-100 이 잡는다 — CSS transform 과 합산되면 안 된다 */
+      }
 
       /* 공용 타이포 */
       .eyebrow {
@@ -116,9 +126,10 @@
       #s3-a .l .sig { color: var(--pain-text); }
       /* 헤드라인을 상단으로 올리고 그 아래 밴드에 clip3 을 붙인다 (s3-a 와 같은 골격) */
       #s3-b {
-        position: absolute; top: 380px; left: 60px; width: 960px; text-align: center; opacity: 0;
+        position: absolute; top: 330px; left: 60px; width: 960px; text-align: center; opacity: 0;
       }
-      #s3-b .t { font-size: 88px; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; color: var(--ink); }
+      /* 3줄 × 82px × 1.2 = 295px — top 330 기준 하단 625px 로 밴드(660px) 위에서 끝난다 */
+      #s3-b .t { font-size: 82px; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em; color: var(--ink); }
       #s3-b .t .sig { color: var(--promise); }
       #s3b-band { opacity: 0; }
 
@@ -134,6 +145,9 @@
         position: absolute; top: 560px; left: 150px; width: 780px;
         display: flex; flex-direction: column; gap: 18px;
       }
+      #s4-stack, #s4-stack .row { will-change: transform; }
+      /* 행이 위에서 떨어져 눌리며 착지 — transform-origin 이 아래여야 "쌓임"으로 읽힌다 */
+      #s4-stack .row { transform-origin: 50% 100%; }
       #s4-stack .row {
         display: flex; align-items: baseline; gap: 24px;
         border-left: 5px solid var(--promise); padding: 22px 0 22px 28px;
@@ -174,7 +188,8 @@
         position: absolute; top: 620px; left: 60px; width: 960px; text-align: center;
         font-size: 80px; font-weight: 800; line-height: 1.18; letter-spacing: -0.03em; color: var(--ink);
       }
-      #s5-head .sig { color: var(--promise); }
+      /* 슬램으로 꽂히므로 시작은 투명. inline-block 이라 글자 자리는 그대로 → 리플로우 없음 */
+      #s5-head .sig { color: var(--promise); opacity: 0; }
       #s5-card {
         position: absolute; top: 940px; left: 220px; width: 580px;
         display: flex; flex-direction: column; gap: 20px;
@@ -220,12 +235,13 @@
   <body>
     <div data-hf-id="hf-kzfz" id="stage" data-composition-id="root" data-width="1080" data-height="1920" data-start="0" data-duration="34.5">
       <div data-hf-id="hf-2xc0" id="bg"></div>
+      <div data-hf-id="hf-wp01" id="wipe1"></div>
 
       <!-- ===== Scene 1 · HOOK (0–4.4s) ===== -->
       <div data-hf-id="hf-yihu" id="s1" class="scene">
         <div data-hf-id="hf-6a6v" class="eyebrow">SOMSSCREATIVE · 클래식과정 66기</div>
         <div data-hf-id="hf-6xhb" class="badge-pill"><span data-hf-id="hf-c01q">클래식 66기 10월 개강반 모집중</span></div>
-        <div data-hf-id="hf-e2x4" id="s1-head">외워서 자르는 사람,<br data-hf-id="hf-x5px"><span data-hf-id="hf-3fmc" class="sig">알고</span> 자르는 사람</div>
+        <div data-hf-id="hf-e2x4" id="s1-head">외워서 자르는 사람,<br data-hf-id="hf-x5px"><span data-hf-id="hf-3fmc" class="sig"><span data-hf-id="hf-al01" class="ch">알</span><span data-hf-id="hf-al02" class="ch">고</span></span> 자르는 사람</div>
         <div data-hf-id="hf-7r4g" id="s1-rule"></div>
       </div>
 
@@ -235,8 +251,10 @@
           <div data-hf-id="hf-qeli" class="l" data-l=""><span data-hf-id="hf-c3cx" class="w">같은</span> <span data-hf-id="hf-mnao" class="w">커트를</span> <span data-hf-id="hf-rbf4" class="w">두</span> <span data-hf-id="hf-bl4k" class="w">번</span> <span data-hf-id="hf-c3cy" class="w">해도</span></div>
           <div data-hf-id="hf-vbai" class="l" data-l=""><span data-hf-id="hf-s8wp" class="w">결과는</span> <span data-hf-id="hf-w38c" class="sig">매번 달라집니다</span></div>
         </div>
-        <div data-hf-id="hf-a71x" class="band">
-          <video data-hf-id="hf-m2jg" id="clip-s2" class="clip" src="video/s2-student-a.mp4" data-start="4.4" data-duration="4.4" data-track-index="0" muted playsinline></video>
+        <div data-hf-id="hf-a71x" class="band" id="s2-band">
+          <div data-hf-id="hf-bi01" class="band-inner" id="s2-band-inner">
+            <video data-hf-id="hf-m2jg" id="clip-s2" class="clip" src="video/s2-student-a.mp4" data-start="4.4" data-duration="4.4" data-track-index="0" muted playsinline></video>
+          </div>
         </div>
       </div>
 
@@ -247,7 +265,9 @@
           <div data-hf-id="hf-cffv" class="l"><span data-hf-id="hf-s19k" class="sig">형태<span data-hf-id="hf-yo88" id="s3a-strike"></span></span>를 외웠기 때문입니다.</div>
         </div>
         <div data-hf-id="hf-fba3" class="band" id="s3-band">
-          <video data-hf-id="hf-6z05" id="clip-s3" class="clip" src="video/s3-instructor.mp4" data-start="8.8" data-duration="2.5" data-track-index="0" muted playsinline></video>
+          <div data-hf-id="hf-bi02" class="band-inner" id="s3-band-inner">
+            <video data-hf-id="hf-6z05" id="clip-s3" class="clip" src="video/s3-instructor.mp4" data-start="8.8" data-duration="2.5" data-track-index="0" muted playsinline></video>
+          </div>
         </div>
         <div data-hf-id="hf-8frm" id="s3-b">
           <div data-hf-id="hf-na5n" class="t">커트에는<br data-hf-id="hf-rsrt">쌓이는 <span data-hf-id="hf-nrp6" class="sig">순서<span data-hf-id="hf-y7cy" id="s3b-uline"></span></span>가<br data-hf-id="hf-rsru">있습니다</div>
@@ -255,7 +275,9 @@
         <!-- clip3 은 4개 샷 중 ②측면 섹션 격자 + ③뒷모습 격자만 쓴다.
              ①정면 얼굴파츠 분석은 메시지 불일치, ④는 "Hair Academy" 타 브랜드 자막 포함 -->
         <div data-hf-id="hf-tk6b" class="band" id="s3b-band">
-          <video data-hf-id="hf-xjpy" id="clip-s3b" class="clip" src="video/clip3.mp4" data-start="13.4" data-duration="4.5" data-media-start="2.1" data-track-index="0" muted playsinline></video>
+          <div data-hf-id="hf-bi03" class="band-inner" id="s3b-band-inner">
+            <video data-hf-id="hf-xjpy" id="clip-s3b" class="clip" src="video/clip3.mp4" data-start="13.4" data-duration="4.5" data-media-start="2.1" data-track-index="0" muted playsinline></video>
+          </div>
         </div>
       </div>
 
@@ -316,86 +338,144 @@
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      /* ===== S1 · HOOK (0–4.4s) — 썸네일 대비: t=0에 완전 노출, 미세 모션만 ===== */
-      /* letterSpacing 트윈은 글리프가 정수 픽셀로 스냅해 렌더에서 떨린다 — transform 미세 정착으로 대체 */
-      tl.fromTo("#s1-head", { scale: 1.035 }, { scale: 1, duration: 3.6, ease: "sine.out" }, 0);
-      tl.fromTo("#s1 .eyebrow", { opacity: 0.5 }, { opacity: 1, duration: 1.0, ease: "sine.out" }, 0);
+      /* ===== S1 · HOOK (0–4.4s) — 헤드라인 슬램 착지 + 「알고」 글자 스냅 ===== */
+      /* t=0 썸네일에 문장이 다 보여야 하므로 opacity 는 건드리지 않는다 (transform 만) */
+      tl.fromTo("#s1-head", { scale: 1.18 }, { scale: 1, duration: 0.52, ease: "power4.out" }, 0);
+      /* 착지 반동 3프레임(30fps=0.033s). 트윈 사이 0.01s 간격은 겹침 경고를 피하려는 것 */
+      tl.to("#s1-head", { y: -8, duration: 0.033, ease: "none" }, 0.52);
+      tl.to("#s1-head", { y: 5, duration: 0.033, ease: "none" }, 0.563);
+      tl.to("#s1-head", { y: 0, duration: 0.033, ease: "none" }, 0.606);
+      tl.fromTo("#s1 .eyebrow", { opacity: 0.35 }, { opacity: 1, duration: 0.9, ease: "sine.out" }, 0.2);
       tl.fromTo("#s1 .badge-pill", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.3);
-      tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.6);
-      /* 신호어 '왜' — 한 박자 뒤 펄스로 시선 고정 (썸네일 t=0은 그대로) */
-      tl.fromTo("#s1-head .sig", { scale: 1 }, { scale: 1.18, duration: 0.3, ease: "power2.out" }, 1.2);
-      tl.to("#s1-head .sig", { scale: 1, duration: 0.55, ease: "back.out(2.5)" }, 1.51);
-      tl.to("#s1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 4.0);
-      tl.set("#s1", { opacity: 0 }, 4.4);
+      tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.7);
+      /* 강조 ①/4 — 「알고」는 글자가 어긋난 채 들어와 제자리로 스냅한다 (다른 씬과 다른 문법) */
+      tl.fromTo(
+        "#s1-head .sig .ch",
+        { y: 30, rotation: 7, scale: 1.4 },
+        /* immediateRender:false 없으면 어긋난 from 값이 t=0 부터 보여 썸네일이 깨진다 */
+        { y: 0, rotation: 0, scale: 1, duration: 0.5, ease: "back.out(2.4)", stagger: 0.09, immediateRender: false },
+        0.9
+      );
+      /* 정착 후 아주 느린 드리프트 — 정지 화면으로 보이지 않게.
+         같은 대상에 두 번째 fromTo 라 immediateRender:false 필수 —
+         없으면 이 from(scale:1)이 작성 시점에 적용돼 위의 슬램이 사라진다 */
+      tl.fromTo("#s1-head", { scale: 1 }, { scale: 1.022, duration: 2.3, ease: "none", immediateRender: false }, 1.7);
 
-      /* ===== S2 · 공감 reveal @4.4 ===== */
-      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 4.4);
-      /* 단어 단위 waterfall — 줄 페이드 대신 단어가 아래에서 차오른다 */
+      /* 전환 ①: 마젠타 선단 와이프 (이 영상에서 한 번만 쓰는 서명 전환) */
+      tl.fromTo("#wipe1", { xPercent: -100 }, { xPercent: 0, duration: 0.26, ease: "power3.in" }, 4.04);
+      tl.fromTo("#s1", { opacity: 1 }, { opacity: 0, duration: 0.01 }, 4.3);
+      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 4.3);
+      /* immediateRender:false 없으면 from(xPercent:0)이 t=0에 적용돼 패널이 처음부터 화면을 덮는다 */
+      tl.fromTo("#wipe1", { xPercent: 0 }, { xPercent: 100, duration: 0.34, ease: "power3.out", immediateRender: false }, 4.31);
+
+      /* ===== S2 · 공감 (4.4–8.8s) — 클립 느린 푸시인 ===== */
+      /* 카메라 무브는 .band-inner(래퍼)에 건다. video.clip 은 프레임워크가 소유한다 */
+      tl.fromTo("#s2-band-inner", { scale: 1 }, { scale: 1.1, duration: 4.4, ease: "none" }, 4.4);
       tl.fromTo("#s2-text .w", { opacity: 0, y: 46 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out", stagger: 0.09 }, 4.7);
-      /* 신호어 '제자리인 느낌' — 마지막에 크게 내려앉는 슬램 */
+      /* 강조 ②/4 — 아래에서 크게 솟아 앉는다 */
       tl.fromTo("#s2-text .sig", { opacity: 0, y: 60, scale: 1.28 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, 5.55);
-      tl.to("#s2", { opacity: 0, duration: 0.4, ease: "power2.in" }, 8.4);
-      tl.set("#s2", { opacity: 0 }, 8.8);
 
-      /* ===== S3 · 진단(전반) → 원리(후반) reveal @8.8 ===== */
-      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 8.8);
-      /* 진단 문장 — 블러에서 초점이 맞으며 들어온다 ("문제를 정확히 짚는다"를 모션으로) */
+      /* 전환 ②: S2 가 위로 밀려나며 S3 가 아래에서 올라온다 */
+      tl.fromTo("#s2", { y: 0, opacity: 1 }, { y: -160, opacity: 0, duration: 0.45, ease: "power2.in", immediateRender: false }, 8.35);
+      /* 8.8s 는 clip-s3 시작 경계 — 역방향 탐색이 페이드 뒤에 착지해도 잔상이 남지 않게 하드킬 */
+      tl.set("#s2", { opacity: 0 }, 8.8);
+      tl.fromTo("#s3", { y: 160, opacity: 0 }, { y: 0, opacity: 1, duration: 0.52, ease: "power3.out" }, 8.55);
+
+      /* ===== S3 · 진단(전반) → 원리(후반) (8.8–18.4s) ===== */
+      /* 클립 카메라: S2 와 반대로 당겨 빠진다 (연속 푸시인이면 둘 다 안 보인다) */
+      tl.fromTo("#s3-band-inner", { scale: 1.14, xPercent: 2 }, { scale: 1, xPercent: 0, duration: 2.5, ease: "none" }, 8.8);
       tl.fromTo("#s3-a .l", { opacity: 0, filter: "blur(16px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.75, ease: "power2.out", stagger: 0.5 }, 9.1);
-      /* 신호어 '헤어스타일' — 취소선이 그어진다 */
+      /* 강조 ③/4 — 「형태」 취소선 + 배경 클립을 흐려 초점을 글자로 당긴다(랙포커스) */
       tl.fromTo("#s3a-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power3.inOut" }, 10.6);
-      /* 11.3초: 클립(2.5초)이 끝나면 밴드만 먼저 물러난다. 진단 문장은 다크 위에 홀로 남아 12.5까지 읽힌다 */
+      tl.fromTo("#s3-band-inner", { filter: "blur(0px)", opacity: 1 }, { filter: "blur(10px)", opacity: 0.45, duration: 0.55, ease: "power2.out", immediateRender: false }, 10.5);
+      /* 취소선이 끝나는 순간 화면이 한 번 튄다 */
+      tl.to("#s3-a", { y: -6, duration: 0.033, ease: "none" }, 11.05);
+      tl.to("#s3-a", { y: 4, duration: 0.033, ease: "none" }, 11.093);
+      tl.to("#s3-a", { y: 0, duration: 0.033, ease: "none" }, 11.136);
       tl.to("#s3-band", { opacity: 0, duration: 0.5, ease: "power2.in" }, 11.3);
-      tl.to("#s3-a", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 12.5);
-      /* 13.1초: 진단 → 전환 */
-      tl.fromTo("#s3-b", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 13.1);
-      tl.fromTo("#s3-b .t", { opacity: 0, y: 26, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" }, 13.1);
-      /* 신호어 '원리' — 전환의 정점: 팝 + 밑줄 드로우 */
+      /* 전환 ③(씬 내부): 「순서」로 줌스루 — 앞 문장이 확대되며 흐려지고 뒤 문장이 솟는다 */
+      tl.fromTo("#s3-a", { scale: 1, opacity: 1, filter: "blur(0px)" }, { scale: 1.3, opacity: 0, filter: "blur(12px)", duration: 0.62, ease: "power2.in", immediateRender: false }, 12.5);
+      tl.fromTo("#s3-b", { opacity: 0, scale: 0.84 }, { opacity: 1, scale: 1, duration: 0.72, ease: "power3.out" }, 13.0);
+      tl.fromTo("#s3-b .t", { y: 30 }, { y: 0, duration: 0.72, ease: "power3.out" }, 13.0);
       tl.fromTo("#s3-b .sig", { scale: 1 }, { scale: 1.16, duration: 0.28, ease: "power2.out" }, 13.9);
       tl.to("#s3-b .sig", { scale: 1, duration: 0.5, ease: "back.out(2)" }, 14.19);
       tl.fromTo("#s3b-uline", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out" }, 14.1);
-      tl.to("#s3b-band", { opacity: 1, duration: 0.5, ease: "power2.out" }, 13.4);
-      tl.to("#s3", { opacity: 0, duration: 0.45, ease: "power2.in" }, 17.95);
-      tl.set("#s3", { opacity: 0 }, 18.4);
+      tl.fromTo("#s3b-band", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 13.4);
+      tl.fromTo("#s3b-band-inner", { scale: 1, yPercent: 0 }, { scale: 1.09, yPercent: -2, duration: 4.5, ease: "none" }, 13.4);
 
-      /* ===== S4 · 변화 reveal @18.4 ===== */
-      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 18.4);
+      /* 전환 ④: S3 가 뒤로 물러나고 S4 가 앞으로 나온다 */
+      tl.fromTo("#s3", { scale: 1, opacity: 1 }, { scale: 0.93, opacity: 0, duration: 0.45, ease: "power2.in", immediateRender: false }, 17.95);
+      tl.set("#s3", { opacity: 0 }, 18.4);
+      tl.fromTo("#s4", { scale: 1.09, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.52, ease: "power3.out" }, 18.15);
+
+      /* ===== S4 · PROOF 8주 설계도 (18.4–25.2s) ===== */
       tl.fromTo("#s4-text .l", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 18.6);
-      /* 사다리 — 한 칸씩 아래에서 올라와 얹힌다. "쌓입니다"(S3)를 눈으로 회수하는 지점 */
-      tl.fromTo("#s4-stack .row", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.34 }, 19.15);
-      /* 신호어 '리포트' — 마지막 칸이 얹힌 뒤 한 번 눌러준다 */
-      tl.fromTo("#s4-stack .sig", { scale: 1 }, { scale: 1.16, duration: 0.26, ease: "power2.out" }, 20.75);
-      tl.to("#s4-stack .sig", { scale: 1, duration: 0.46, ease: "back.out(2)" }, 21.01);
-      /* 21.5초: 사다리와 헤드가 함께 물러나 화면을 완전히 비운다 */
-      tl.to("#s4-stack", { opacity: 0, duration: 0.5, ease: "power2.in" }, 21.5);
+      /* 사다리 — 위에서 떨어져 눌리며 착지한다. "쌓입니다"를 모션이 그대로 말하게 */
+      tl.fromTo(
+        "#s4-stack .row",
+        { opacity: 0, y: -70, scaleY: 1.16 },
+        { opacity: 1, y: 0, scaleY: 1, duration: 0.44, ease: "back.out(1.7)", stagger: 0.34 },
+        19.15
+      );
+      /* 착지 충격이 이미 쌓인 행들에 전달된다 — 행마다 스택 전체가 한 번 눌린다 */
+      for (let i = 0; i < 4; i++) {
+        const land = 19.42 + i * 0.34; /* 착지 시점 = 행 시작 + duration 절반 + stagger */
+        tl.to("#s4-stack", { y: 7, duration: 0.07, ease: "power2.in" }, land);
+        tl.to("#s4-stack", { y: 0, duration: 0.18, ease: "back.out(2.2)" }, land + 0.08);
+      }
+      /* 강조 ④/4 — 「리포트」는 짧고 날카로운 2연타 (다른 셋과 리듬이 다르다) */
+      tl.fromTo("#s4-stack .sig", { scale: 1 }, { scale: 1.24, duration: 0.16, ease: "power3.out" }, 20.75);
+      tl.to("#s4-stack .sig", { scale: 0.95, duration: 0.11, ease: "power2.inOut" }, 20.92);
+      tl.to("#s4-stack .sig", { scale: 1, duration: 0.3, ease: "back.out(3)" }, 21.04);
+
+      tl.to("#s4-stack", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 21.5);
       tl.to("#s4-text", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 21.5);
-      /* 22.0초: 빈 화면에 8주의 끝(디플로마)이 뜬다 */
+
       tl.fromTo("#s4-quote .w", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", stagger: 0.14 }, 22.0);
-      /* 22.4초: 가르치는 사람이 등장 — 사진이 커지며 이름 → 약력이 따라온다 */
       tl.fromTo("#s4-cred", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 22.4);
-      tl.fromTo("#s4-face", { scale: 0.8 }, { scale: 1, duration: 1.0, ease: "power3.out" }, 22.4);
+      /* 강사 사진 — 흑백·블러에서 컬러·선명으로. 인물이 '들어온다'는 인상 */
+      tl.fromTo(
+        "#s4-face",
+        { scale: 0.84, filter: "grayscale(1) blur(7px)" },
+        { scale: 1, filter: "grayscale(0) blur(0px)", duration: 1.15, ease: "power3.out" },
+        22.4
+      );
       tl.fromTo("#s4-cred .name", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 22.95);
       tl.fromTo("#s4-cred .hist", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 23.3);
-      tl.to("#s4", { opacity: 0, duration: 0.45, ease: "power2.in" }, 24.75);
 
-      /* ===== S5 · 오퍼 reveal @25.2 ===== */
-      tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 25.2);
+      /* 전환 ⑤: 카드 스와이프 — S4 가 왼쪽으로 빠지고 S5 가 오른쪽에서 들어온다 */
+      tl.fromTo("#s4", { x: 0, opacity: 1 }, { x: -140, opacity: 0, duration: 0.45, ease: "power2.in", immediateRender: false }, 24.75);
+      tl.set("#s4", { opacity: 0 }, 25.2);
+      tl.fromTo("#s5", { x: 160, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out" }, 24.95);
+
+      /* ===== S5 · 오퍼 (25.2–31.0s) ===== */
       tl.fromTo("#s5-badge", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 25.4);
       tl.fromTo("#s5-head", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 25.6);
-      /* 신호어 '다릅니다' — 헤드라인 정착 직후 펄스 */
-      tl.fromTo("#s5-head .sig", { scale: 1 }, { scale: 1.14, duration: 0.28, ease: "power2.out" }, 26.35);
-      tl.to("#s5-head .sig", { scale: 1, duration: 0.5, ease: "back.out(2)" }, 26.64);
-      tl.fromTo("#s5-card [data-row]", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.22 }, 26.4);
-      tl.to("#s5", { opacity: 0, duration: 0.45, ease: "power2.in" }, 30.55);
+      /* 「7명」 슬램 — 문장에 비워둔 자리로 숫자가 위에서 꽂힌다 */
+      tl.fromTo("#s5-head .sig", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.46, ease: "back.out(1.7)" }, 26.3);
+      tl.to("#s5-head", { y: 6, duration: 0.033, ease: "none" }, 26.78);
+      tl.to("#s5-head", { y: 0, duration: 0.05, ease: "none" }, 26.823);
+      tl.fromTo("#s5-card [data-row]", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", stagger: 0.22 }, 26.5);
+      tl.to("#s5", { opacity: 0, duration: 0.42, ease: "power2.in" }, 30.5);
 
-      /* ===== S6 · CTA reveal @31.0 ===== */
-      tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 31.0);
-      tl.fromTo("#s6-head", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 31.2);
-      /* 프리셋 모션 노트: 느리고 절제된 전환만 — 바운스 이징 대신 power3 */
-      tl.fromTo("#s6-bar", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 31.8);
+      /* 전환 ⑥: 상향 와이프 — CTA 가 아래에서 화면을 덮어 올라온다.
+         목적지에 opacity:1 을 반드시 명시한다 — 콜드 렌더 워커는 CSS 의 opacity:0 을
+         복원하므로, from 에만 있으면 인코딩 결과에서 S6 이 통째로 사라진다 */
+      tl.fromTo(
+        "#s6",
+        { opacity: 1, clipPath: "inset(100% 0% 0% 0%)" },
+        { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.58, ease: "power3.inOut" },
+        30.66
+      );
+
+      /* ===== S6 · CTA (31.0–34.5s) ===== */
+      tl.fromTo("#s6-head", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 31.3);
+      tl.fromTo("#s6-bar", { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: 0.75, ease: "back.out(1.3)" }, 31.8);
       tl.fromTo("#s6-bar .btn", { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 32.5);
-      /* CTA 버튼 — 등장 후 한 번 더 눌러주는 탭 유도 펄스 */
-      tl.to("#s6-bar .btn", { scale: 1.08, duration: 0.2, ease: "power2.in" }, 33.4);
-      tl.to("#s6-bar .btn", { scale: 1, duration: 0.45, ease: "back.out(3)" }, 33.61);
+      /* CTA 버튼 — 눌렸다 튀어오르는 탭 유도 (누름 → 오버슈트 → 정착) */
+      tl.to("#s6-bar .btn", { scale: 0.92, duration: 0.12, ease: "power2.in" }, 33.4);
+      tl.to("#s6-bar .btn", { scale: 1.12, duration: 0.18, ease: "back.out(2)" }, 33.53);
+      tl.to("#s6-bar .btn", { scale: 1, duration: 0.34, ease: "back.out(3)" }, 33.72);
 
       tl.set({}, {}, 34.5); /* 총 길이 34.5초 고정 */
 
